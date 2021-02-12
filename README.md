@@ -1,2 +1,2 @@
 # SZEMA
-University project for application development
+Public repo for uni SZEMA project
