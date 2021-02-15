@@ -1,10 +1,8 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-import 'firebase/auth'
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
-var config = {
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+var firebaseConfig = {
     apiKey: "AIzaSyAd3KZ66PnsaxND0hFbrPrClErl04d2irE",
     authDomain: "szema-ac882.firebaseapp.com",
     databaseURL: "https://szema-ac882.firebaseio.com",
@@ -14,9 +12,7 @@ var config = {
     appId: "1:656907898468:web:63c36f21df7bd80b091971",
     measurementId: "G-PZJ5XKGQJ"
 };
-//Initialize Firebase
-firebase.initializeApp(config);
-firebase.analytics();
-firebase.firestore().settings({timestampsnSnapshots: true}); //ez mar valszeg nem kell
+firebase.initializeApp(firebaseConfig);
+firebase.firestore();
 
 export default firebase;

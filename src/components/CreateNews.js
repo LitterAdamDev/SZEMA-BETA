@@ -3,11 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -63,7 +58,7 @@ class CreateNews extends Component{
             <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-            Sign in
+            Új hír létrehozása
             </Typography>
             <form className={classes.form} noValidate  onSubmit={this.handleSubmit}>
             <TextField
@@ -75,7 +70,7 @@ class CreateNews extends Component{
                 name="date"
                 disabled
                 onChange={this.handleChange}
-            />{new Date().getFullYear()}
+            />{new Date().getUTCDate}
             <TextField
                 variant="outlined"
                 margin="normal"
@@ -106,7 +101,7 @@ class CreateNews extends Component{
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    createNews : (news) => dispatch(createNews(news))
-  }
+    createNews : news => dispatch(createNews(news))
+  };
 }
 export default withStyles(useStyles)(connect(null, mapDispatchToProps)(CreateNews))

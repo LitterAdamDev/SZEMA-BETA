@@ -1,14 +1,12 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import React from 'react';
 import ButtonAppBar from './components/ButtonAppBar'
-import LeftDrawer from './components/LeftDrawer'
 import Dashboard from './components/Dashboard'
 import SignInDashboard from './components/SignInDashboard'
 import CreateNews from './components/CreateNews'
 import NewsDashboard from './components/NewsDashboard'
 
-function App() {
-  const darkmode = false;
+const App = () => {
   return (
     <BrowserRouter>
       <div className="App">

@@ -8,8 +8,13 @@ const initState = {
 const newsReducer = (state = initState, action) =>{
     switch(action.type){
         case 'CREATE_NEWS':
-            console.log('created news', action.news)
+            console.log('created news', action.news);
+            return state;
+        case 'CREATE_NEWS_ERROR':
+            console.log('create news error', action.err);
+            return state;
+        default:
+            return state;
     }
-    return state
 }
 export default newsReducer
