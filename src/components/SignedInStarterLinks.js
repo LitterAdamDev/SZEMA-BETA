@@ -27,9 +27,10 @@ const HomePageLinks = () =>{
             <Typography variant="h6" className={classes.title}>
                 SZEMA
             </Typography>
-            <Button color="inherit" href='/'>Feladatgyűjtemények</Button>
-            <Button color="inherit" href='/'>Adatbázis</Button>
-            <Button color="inherit" href='/'>Feladatsor készítése</Button>
+            <Button color="inherit" href='/'>Kérdésbázis</Button>
+            <Button color="inherit" href='/'>Feladatsor készítés</Button>
+            <Button color="inherit" href='/news'>Híroldal</Button>
+            <Button color="inherit" href='/'>Kijelentkezés</Button>
         </>
     )
 }

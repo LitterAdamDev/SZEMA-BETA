@@ -10,6 +10,7 @@ import HomePageLinks from './HomePageLinks'
 import DatabaseLinks from './DatabaseLinks'
 import TestMakerLinks from './TestMakerLinks'
 import SignedInStarterLinks from './SignedInStarterLinks'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +31,7 @@ export default function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar position="fixed">
         <Toolbar>
-          <HomePageLinks />
+          <SignedInStarterLinks />
         </Toolbar>
       </AppBar>
     </div>

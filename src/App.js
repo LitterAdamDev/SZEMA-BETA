@@ -4,6 +4,7 @@ import ButtonAppBar from './components/ButtonAppBar'
 import LeftDrawer from './components/LeftDrawer'
 import Dashboard from './components/Dashboard'
 import SignInDashboard from './components/SignInDashboard'
+import CreateNews from './components/CreateNews'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Switch>
           <Route exact path='/' component={Dashboard} />
           <Route path='/signin' component={SignInDashboard} />
+          <Route path='/news' component={CreateNews} />
         </Switch>
       </div>
     </BrowserRouter>

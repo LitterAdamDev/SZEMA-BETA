@@ -1,3 +1,4 @@
+/*itt kellene egy baszom form ami megfelel a firestore peldaknak felepitesre*/
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -13,19 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Component } from 'react';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = theme => ({
   paper: {
@@ -47,10 +35,12 @@ const useStyles = theme => ({
   },
 });
 
-class SignInDashboard extends Component{
+class CreateNews extends Component{
   state = {
-      email: '',
-      password: ''
+      date: '',
+      message: '',
+      profileImage: '',
+      user: ''
   }
   handleChange = (e) => {
    this.setState({
@@ -64,7 +54,6 @@ class SignInDashboard extends Component{
   render(){
     const {classes} = this.props;
     return (
-        
         <Container component="main" maxWidth="xs">
         <Typography component="div" style={{ backgroundColor: 'white', height: '70vh', width: '50vh' }}>
         <CssBaseline />
@@ -79,30 +68,24 @@ class SignInDashboard extends Component{
             <TextField
                 variant="outlined"
                 margin="normal"
-                required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
+                id="date"
+                label="Dátum"
+                name="date"
+                disabled="true"
                 onChange={this.handleChange}
-            />
+            />{new Date().getFullYear()}
             <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
+                name="message"
+                label="Tartalom"
+                type="text"
+                id="message"
                 autoComplete="current-password"
                 onChange={this.handleChange}
-            />
-            <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
             />
             <Button
                 type="submit"
@@ -111,28 +94,13 @@ class SignInDashboard extends Component{
                 color="primary"
                 className={classes.submit}
             >
-                Sign In
+                Küldés
             </Button>
-            <Grid container>
-                <Grid item xs>
-                <Link href="#" variant="body2">
-                    Forgot password?
-                </Link>
-                </Grid>
-                <Grid item>
-                <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                </Link>
-                </Grid>
-            </Grid>
             </form>
         </div>
-        <Box mt={8}>
-            <Copyright />
-        </Box>
         </Typography>
         </Container>
     );
   }
 }
-export default withStyles(useStyles)(SignInDashboard)
+export default withStyles(useStyles)(CreateNews)
