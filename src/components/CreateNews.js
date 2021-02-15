@@ -1,4 +1,3 @@
-/*itt kellene egy baszom form ami megfelel a firestore peldaknak felepitesre*/
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -14,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Component } from 'react';
+import { createNews } from '../store/actions/newsActions';
+import { connect } from 'react-redux';
 
 const useStyles = theme => ({
   paper: {
@@ -27,7 +28,7 @@ const useStyles = theme => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '80%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -49,7 +50,7 @@ class CreateNews extends Component{
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state);
+    this.props.createNews(this.state);
   }
   render(){
     const {classes} = this.props;
@@ -72,7 +73,7 @@ class CreateNews extends Component{
                 id="date"
                 label="Dátum"
                 name="date"
-                disabled="true"
+                disabled
                 onChange={this.handleChange}
             />{new Date().getFullYear()}
             <TextField
@@ -103,4 +104,9 @@ class CreateNews extends Component{
     );
   }
 }
-export default withStyles(useStyles)(CreateNews)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createNews : (news) => dispatch(createNews(news))
+  }
+}
+export default withStyles(useStyles)(connect(null, mapDispatchToProps)(CreateNews))

@@ -13,9 +13,11 @@
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
+    "react-redux-firebase": "^2.1.8",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "redux": "^4.0.5",
+    "redux-firestore": "^0.15.0",
     "redux-thunk": "^2.3.0",
     "web-vitals": "^1.0.1"
   },

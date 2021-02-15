@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  menuBackground: {
+    backgroundColor: 'white',
+    color: 'black'
+  },
 }));
 
 export default function ButtonAppBar() {
@@ -30,7 +34,7 @@ export default function ButtonAppBar() {
   return (
     <div className={classes.root}>
       <AppBar position="fixed">
-        <Toolbar>
+        <Toolbar className={classes.menuBackground}>
           <SignedInStarterLinks />
         </Toolbar>
       </AppBar>

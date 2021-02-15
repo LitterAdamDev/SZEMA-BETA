@@ -14,7 +14,11 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
       flexGrow: 1,
+      fontFamily: 'Anton'
     },
+    buttonTitle: {
+      fontFamily: 'Anton'
+    }
   }));
 
 const HomePageLinks = () =>{
@@ -27,10 +31,10 @@ const HomePageLinks = () =>{
             <Typography variant="h6" className={classes.title}>
                 SZEMA
             </Typography>
-            <Button color="inherit" href='/'>Kérdésbázis</Button>
-            <Button color="inherit" href='/'>Feladatsor készítés</Button>
-            <Button color="inherit" href='/news'>Híroldal</Button>
-            <Button color="inherit" href='/'>Kijelentkezés</Button>
+            <Button className={classes.buttonTitle} color="inherit" href='/createnews'>Kérdésbázis</Button>
+            <Button className={classes.buttonTitle} color="inherit" href='/'>Feladatsor készítés</Button>
+            <Button className={classes.buttonTitle} color="inherit" href='/news'>Híroldal</Button>
+            <Button className={classes.buttonTitle} color="inherit" href='/'>Kijelentkezés</Button>
         </>
     )
 }
