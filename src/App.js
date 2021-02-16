@@ -44,7 +44,7 @@ class App extends React.Component{
   }
 
   //Add data
-  addData = () => {
+  setData = () => {
     db.collection("schools")
       .add({
         id: "negy",
