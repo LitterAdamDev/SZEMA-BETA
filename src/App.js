@@ -1,145 +1,60 @@
-import React, { useState} from "react"
-import {db, auth} from "./firebase_config"
+import logo from './logo.svg';
+import './App.css';
+import { Login, Register } from "./components/login/index";
+import React from "react";
 
-import firebase from "firebase"
+class App extends React.Component {
 
+  constructor(props){
+    super(props);
+    this.state = {
+      isLogginActive: true
+    };
+  }
 
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+  //change state between reg. and login component to be on the right or on the left side
+  changeState() {
+    const { isLogginActive } = this.state;
 
-class App extends React.Component{
-
-
-  uiConfig = {
-    signInFlow: "popup",
-    signInOption: [
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID
-    ],
-    callbacks: {
-      signInSucces: () => false
+    if (isLogginActive) {
+      this.rightSide.classList.remove("right");
+      this.rightSide.classList.add("left");
+    } else {
+      this.rightSide.classList.remove("left");
+      this.rightSide.classList.add("right");
     }
-  }
-
-  //Init data
-  state =  {
-    data_from_web: null,
-    isSignedIn: false,
-    name:"",
-    photo:"",
-  } 
-
-  //Get data
-  getData = () => {
-    db.collection("schools")
-      .get()
-      .then( snapshot => {
-        const data_from_web = []
-        snapshot.forEach(doc => {
-          const data = doc.data()
-          data_from_web.push(data)
-        })
-        this.setState({data_from_web: data_from_web})
-        console.log(snapshot)
-      })
-      .catch( error => console.log(error))
-  }
-
-  //Add data
-  setData = () => {
-    db.collection("schools")
-      .add({
-        id: "negy",
-        title: "negy_title",
-        desc: "negy_desc"
-      })
-      .catch( error => console.log(error))
-  }
-
-  //-------------- Authentication -------------- 
-  componentDidMount = () => {
-    console.log('mounted')
-    firebase.auth().onAuthStateChanged(user => {
-      this.setState({isSignedIn:!!user})
-    })
-    
-    //Check singed in state
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        console.log("User signed in");
-        console.log(user)
-        this.setState = {
-          isSignedIn:true,
-          name:user.displayName,
-          photo:user.photoURL
-        }
-      } else {
-        console.log("No user is signed in")
-      }
-    });
-  }
-
-  onSubmit = () => {
-      var provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth()
-      .signInWithPopup(provider)
-      .then((result) => {
-      /** @type {firebase.auth.OAuthCredential} */
-      var credential = result.credential;
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = credential.accessToken;
-      // The signed-in user info.
-      var user = result.user;
-    }).catch((error) => {
-      console.log(error)
-    });
+    this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
   }
 
   render(){
-    return (
-      <div className = "App">
-        {this.state.isSignedIn ?
-          <div>Signed in!
-            <h1>Móka és kacagás</h1>
-          <button onClick={()=>firebase.auth().signOut()}>Sign out!</button>{
-            
-          }
-          <button onClick={this.getData}>Get data</button>{
-            this.state.data_from_web &&
-            this.state.data_from_web.map( data => {
-              return (
-                <div>
-                  <p>{data.id}</p>
-                </div>
-              )
-            })
-          }
-          <button onClick={this.addData}>Add new data</button>
-          {
-            this.state.data_from_web &&
-            this.state.data_from_web.map( data => {
-              return (
-                <div>
-                  <p>{data.id}</p>
-                </div>
-              )
-            })
-          }
-          </div> 
-          :     
-          <div>
-            You have to sign in!
-            <button
-            type = "button"  
-            className = "btn btn-primary text white w-100"
-            onClick={this.onSubmit}
-            >
-            Login with Google 
-            </button> 
+    const { isLogginActive } = this.state;
+    const current = isLogginActive ? "Regisztráció" : "Belépés";
+    const currentActive = isLogginActive ? "login" : "register";
+    return(
+      <div className="App">
+        <div className="login">
+          <div className="container">
+            {isLogginActive && <Login containerRef={(ref) => this.current = ref}/>}
+            {!isLogginActive && <Register containerRef={(ref) => this.current = ref} />}
           </div>
-          
-        }     
+          <RightSide
+            current={current}
+            currentActive={currentActive}
+            containerRef={ref => (this.rightSide = ref)}
+            onClick={this.changeState.bind(this)}
+          />
+        </div>
       </div>
     )
   }
+}
+
+const RightSide = props => {
+  return <div className="right-side" ref={props.containerRef} onClick={props.onClick}>
+     <div className="inner-container">
+       <div className="text">{props.current}</div>
+     </div>
+  </div>
 }
 
 export default App;
