@@ -94,6 +94,18 @@ export class Login extends React.Component {
                   Sign out
               </button>
           </div>
+          <div className="footer">
+            {this.state.isSignedIn ? 
+              <label >
+                Logged in!
+              </label>
+            :
+              <label >
+                Logged out!
+              </label>
+            } 
+            
+          </div>
         </div>
        );
     }
