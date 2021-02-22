@@ -76,7 +76,8 @@ export class Login extends React.Component {
     render() {
         return (
         <div className="base-container" ref={this.props.containerRef}>
-            <div className="header">Bejelentkezés</div>
+            <div className="header">Széchenyi István Egyetem -<strong> SZEMA</strong><p></p></div>
+            <div className="headerLogin">Bejelentkezés</div><p></p>
             <div className="content">
             <div className="image">
                 <img src={loginImg}></img>
@@ -86,22 +87,22 @@ export class Login extends React.Component {
             </div>
           <div className="footer">
               <button type="button" onClick={this.signInGoogle} className="btn">
-                  Login with Google
+                  Bejelentkezés Google fiókkal
               </button>
           </div>
           <div className="footer">
               <button type="button" onClick={this.signOutGoogle} className="btn">
-                  Sign out
+                  Kijelentkezés
               </button>
           </div>
           <div className="footer">
             {this.state.isSignedIn ? 
               <label >
-                Logged in!
+                Bejelentkezve!
               </label>
             :
               <label >
-                Logged out!
+                Kijelentkezve!
               </label>
             } 
             

@@ -17,11 +17,19 @@ class App extends React.Component {
     const { isLogginActive } = this.state;
 
     if (isLogginActive) {
+
+
+     {/*
       this.rightSide.classList.remove("right");
-      this.rightSide.classList.add("left");
+      this.rightSide.classList.add("left"); */}
     } else {
+
+
+
+
+      {/*
       this.rightSide.classList.remove("left");
-      this.rightSide.classList.add("right");
+      this.rightSide.classList.add("right");*/}
     }
     this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
   }
@@ -35,20 +43,25 @@ class App extends React.Component {
         <div className="login">
           <div className="container">
             {isLogginActive && <Login containerRef={(ref) => this.current = ref}/>}
-            {!isLogginActive && <Register containerRef={(ref) => this.current = ref} />}
+            {/*
+            
+            Ide johetne, ha !isLogginActive akkor az jelentse azt,hogy azert nem aktiv,mert mar be van jelentkezve. Tehat a homepagera iranyitson at!
+            
+            */}
+            {/*{isLogginActive && <Login containerRef={(ref) => this.current = ref}/>}
+            {!isLogginActive && <Register containerRef={(ref) => this.current = ref} />}*/}
           </div>
-          <RightSide
+          {/*<RightSide
             current={current}
             currentActive={currentActive}
             containerRef={ref => (this.rightSide = ref)}
-            onClick={this.changeState.bind(this)}
-          />
+            onClick={this.changeState.bind(this)}*/}
         </div>
       </div>
     )
   }
 }
-
+{/*
 const RightSide = props => {
   return <div className="right-side" ref={props.containerRef} onClick={props.onClick}>
      <div className="inner-container">
@@ -56,5 +69,6 @@ const RightSide = props => {
      </div>
   </div>
 }
+*/}
 
 export default App;
