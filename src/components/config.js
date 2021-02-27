@@ -1,8 +1,4 @@
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore"
-
-const firebaseConfig = {
+export const config = {
     apiKey: "AIzaSyAd3KZ66PnsaxND0hFbrPrClErl04d2irE",
     authDomain: "szema-ac882.firebaseapp.com",
     databaseURL: "https://szema-ac882.firebaseio.com",
@@ -12,11 +8,3 @@ const firebaseConfig = {
     appId: "1:656907898468:web:110b5ca6f17f5d63091971",
     measurementId: "G-7FDCFR048G"
   };
-
-  firebase.initializeApp(firebaseConfig);
-
-  export const auth = firebase.auth()
-  export const db = firebase.firestore()
-
-  
-  export default firebase
