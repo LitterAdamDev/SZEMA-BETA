@@ -12,10 +12,11 @@ import firebase from "firebase/app";
 import 'firebase/firestore';
 import {db} from './config';
 import SaveDialog from './SaveDialog';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    position: 'relative',
+    position: 'inherited',
   },
   title: {
     marginLeft: theme.spacing(2),
@@ -30,31 +31,33 @@ function useForceUpdate(){
   const [value, setValue] = useState(0); 
   return () => setValue(value => value + 1); 
 }
-
-export default function AddNewsDialog() {
+var content = ""
+export default function UpdateNewsDialog({toUpdate}) {
 
   const forceUpdate = useForceUpdate();
-
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState();
 
   const handleClickOpen = () => {
     setOpen(true);
+    content = toUpdate["message"];
   };
-
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleChange = (event) =>{
+    content = event.target.value;
     setValue(event.target.value);
+    
+    console.log(event.target.value);
   };
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        Új hír létrehozása
+      <Button size="small" color ="primary" onClick={handleClickOpen}>
+        <EditIcon />
       </Button>
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
@@ -63,14 +66,15 @@ export default function AddNewsDialog() {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Új hír létrehozása
+              Hír szerkesztése
             </Typography>
-            <SaveDialog toSave={value} Type="save"/>
+            <SaveDialog toSave={value} Type="update" id={toUpdate["id"]}/>
           </Toolbar>
         </AppBar>
             <div style={{display: "inline-flex", justifyContent: "center",alignContent:"center", margin:"auto", width:"80%", height:"400px", paddingTop:"20px"}}>
                 <textarea 
                     placeholder="Tartalom"
+                    value={content}
                     style={{
                         margin:"auto",
                         width:"100%",

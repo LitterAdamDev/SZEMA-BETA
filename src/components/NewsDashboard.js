@@ -13,14 +13,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import SignedInStarterLinks from './SignedInStarterLinks'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import AddNewsDialog from './AddNewsDialog'
 import 'firebase/firestore'
 import {db} from './config'
 import uuid from 'react-uuid'
 import { withStyles } from "@material-ui/core/styles";
-import { render } from "@testing-library/react";
+import UpdateNewsDialog from "./UpdateNewsDialog";
+import DeleteNewsDialog from './DeleteNewsDialog';
 
 const useStyles = (theme) => ({
   icon: {
@@ -63,7 +63,7 @@ class NewsDashboard extends React.Component {
         const data_from_web = []
         snapshot.forEach(doc => {
           const data = doc.data()
-          data_from_web.push(data)
+          data_from_web.push({...data,id:doc.id})
         })
         this.setState({cards_array : data_from_web})
       })
@@ -108,7 +108,7 @@ class NewsDashboard extends React.Component {
             {/* End hero unit */}
             <Grid container spacing={4}>
               {this.state.cards_array.map((card) => (
-                <Grid item key={uuid()} xs={12} sm={6} md={4}>
+                <Grid item key={card["id"]} xs={12} sm={6} md={4}>
                   <Card className={classes.card}>
                     <CardMedia
                       className={classes.cardMedia}
@@ -123,23 +123,10 @@ class NewsDashboard extends React.Component {
                       </Typography>
                     </CardContent>
                     <CardActions style={{ justifyContent:"centers", display:"table"}}> 
-                      <div>
-                        <div style={{width:"33%", float:"right"}}>
-                        <Button size="small" color="primary" >
-                          <VisibilityIcon />
-                        </Button>
-                        </div>
-                        <div style={{width:"33%", float:"right"}}>
-                        <Button size="small" color="primary">
-                          <EditIcon />
-                        </Button>
-                        </div>
-                        <div style={{width:"33%", float:"right"}}>
-                        <Button size="small" color="primary">
-                          <DeleteForeverIcon />
-                        </Button>
-                        </div>
-                      </div>
+                    <Grid container spacing={2} justify="center"> 
+                      <UpdateNewsDialog toUpdate={card} />
+                      <DeleteNewsDialog toUpdate={card}/>
+                    </Grid>
                     </CardActions>
                   </Card>
                 </Grid>
