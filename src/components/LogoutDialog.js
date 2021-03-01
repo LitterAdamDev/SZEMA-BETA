@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function ResponsiveDialog() {
+export default function LogoutDialog() {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();

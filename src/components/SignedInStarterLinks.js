@@ -4,7 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import "firebase/auth";
-import ResponsiveDialog from './ResponsiveDialog';
+import LogoutDialog from './LogoutDialog';
+import Link from '@material-ui/core/Link'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,13 +29,13 @@ const HomePageLinks = () =>{
         <>
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             </IconButton>
-            <Typography variant="h5" className={classes.title}>
-                SZEMA
-            </Typography>
+              <Typography variant="h5" className={classes.title}>
+                <Link variant="inherit" color="inherit" href="/">SZEMA</Link>
+              </Typography>
             <Button className={classes.buttonTitle} color="inherit" href='/questionbase'>Kérdésbázis</Button>
             <Button className={classes.buttonTitle} color="inherit" href='/createtest'>Feladatsor készítés</Button>
             <Button className={classes.buttonTitle} color="inherit" href='/news'>Híroldal</Button>
-            <ResponsiveDialog />
+            <LogoutDialog />
         </>
     )
 }

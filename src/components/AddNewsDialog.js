@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -25,8 +25,15 @@ const useStyles = makeStyles((theme) => ({
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+function useForceUpdate(){
+  const [value, setValue] = useState(0); 
+  return () => setValue(value => value + 1); 
+}
 
 export default function AddNewsDialog() {
+
+  const forceUpdate = useForceUpdate();
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState();
@@ -63,6 +70,7 @@ export default function AddNewsDialog() {
         })
         .catch( error => console.log(error));
     setOpen(false);
+   /*forceUpdate();*/
   };
 
   return (
