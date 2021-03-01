@@ -8,7 +8,6 @@ import "firebase/auth";
 import "./components/login/style.scss";
 import { FirebaseAuthProvider, IfFirebaseAuthed, IfFirebaseUnAuthed } from "@react-firebase/auth";
 import loginImg from "./login.svg";
-import ButtonAppBar from './components/ButtonAppBar';
 import QuestionBaseDashboard from './components/QuestionBaseDashboard';
 import CreateTestDashboard from './components/CreateTestDashboard';
 import NewsDashboard from './components/NewsDashboard';
@@ -62,5 +61,4 @@ const App = () => {
     </FirebaseAuthProvider>
   );
 };
-
 export default App;
