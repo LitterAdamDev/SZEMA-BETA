@@ -4,9 +4,11 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import "firebase/auth";
-import LogoutDialog from './LogoutDialog';
+import LogoutDialog from './dialogs/LogoutDialog';
 import Link from '@material-ui/core/Link'
-
+import firebase from "firebase/app";
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider(); 
+firebase.auth().signInWithPopup(googleAuthProvider);
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -34,7 +36,6 @@ const HomePageLinks = () =>{
               </Typography>
             <Button className={classes.buttonTitle} color="inherit" href='/questionbase'>Kérdésbázis</Button>
             <Button className={classes.buttonTitle} color="inherit" href='/createtest'>Feladatsor készítés</Button>
-            <Button className={classes.buttonTitle} color="inherit" href='/news'>Híroldal</Button>
             <LogoutDialog />
         </>
     )

@@ -10,7 +10,8 @@ import { useTheme } from '@material-ui/core/styles';
 import "firebase/auth";
 import { makeStyles } from '@material-ui/core/styles';
 import 'firebase/firestore';
-import {db} from './config';
+import {db} from '../../config/base'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,7 +36,7 @@ const getCurrentDate = (separator='-') =>{
     return `${year}${separator}${month<10?`0${month}`:`${month}`}${separator}${date<10?`0${date}`:`${date}`}`
   };
 
-export default function SaveDialog({toSave, Type, id}) {
+export default function SaveDialog({toUpdate}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -43,39 +44,23 @@ const classes = useStyles();
 
   const handleClickOpen = () => {
     setOpen(true);
-    console.log(id);
-    console.log(toSave);
-    console.log(Type);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSave = () => { 
+  const handleDelete = () => { 
     db.collection("news")
-        .add({
-            date: getCurrentDate(),
-            message: toSave,
-            profileImage:`https://firebasestorage.googleapis.com/v0/b/szema-ac882.
-                      appspot.com/o/management.png?alt=media&token=1ded933d-08
-                      ca-40f2-8180-bbcd7dffb767`,
-            user: "Admin"
-        })
-        .catch( error => console.log(error));
-    setOpen(false);
-  };
-  const handleUpdate = () => { 
-    db.collection("news")
-        .doc(id)
-        .update({message:toSave})
+        .doc(toUpdate["id"])
+        .delete()
         .catch( error => console.log(error));
     setOpen(false);
   };
 
   return (
     <div>
-      <Button className={classes.buttonTitle} color="inherit" onClick={handleClickOpen}>
-        Mentés
+      <Button size="small" color ="primary" style={{justify:"center"}} onClick={handleClickOpen}>
+        <DeleteForeverIcon />
       </Button>
       <Dialog
         fullScreen={fullScreen}
@@ -83,15 +68,15 @@ const classes = useStyles();
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">{"Biztosan szeretné menteni a változtatásokat?"}</DialogTitle>
+        <DialogTitle id="responsive-dialog-title">{"Biztosan törölni szeretné az elemet?"}</DialogTitle>
         <DialogContent>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="inherit">
             Mégsem
           </Button>
-          <Button onClick={Type == "save"? handleSave : handleUpdate} color="inherit" autoFocus>
-            Mentés
+          <Button onClick={handleDelete} color="inherit" autoFocus>
+            Törlés
           </Button>
         </DialogActions>
       </Dialog>

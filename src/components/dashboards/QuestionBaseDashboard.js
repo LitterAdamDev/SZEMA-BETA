@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import SignedInStarterLinks from './SignedInStarterLinks'
+import SignedInStarterLinks from '../SignedInStarterLinks'
 import 'firebase/firestore'
 import { withStyles } from "@material-ui/core/styles";
 
@@ -40,7 +40,7 @@ const useStyles = (theme) => ({
   },
 });
 
-class CreateTestDashboard extends React.Component {
+class QuestionBaseDashboard extends React.Component {
 
   
   constructor(props) {
@@ -65,7 +65,7 @@ class CreateTestDashboard extends React.Component {
           <div className={classes.heroContent}>
             <Container maxWidth="sm">
               <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                 Kezőlap
+                 Kérdésbázis
               </Typography>
             </Container>
           </div>
@@ -85,4 +85,4 @@ class CreateTestDashboard extends React.Component {
     );
   }
 }
-export default withStyles(useStyles)(CreateTestDashboard);
+export default withStyles(useStyles)(QuestionBaseDashboard);
