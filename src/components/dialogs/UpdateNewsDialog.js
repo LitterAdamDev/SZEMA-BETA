@@ -8,9 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import firebase from "firebase/app";
 import 'firebase/firestore';
-import {db} from '../../config/base'
 import SaveDialog from './SaveDialog';
 import EditIcon from '@material-ui/icons/Edit';
 

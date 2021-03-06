@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import 'firebase/firestore';
-import {db} from '../../config/base'
 import SaveDialog from './SaveDialog';
 
 const useStyles = makeStyles((theme) => ({

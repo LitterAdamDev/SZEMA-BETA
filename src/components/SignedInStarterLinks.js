@@ -6,9 +6,6 @@ import IconButton from '@material-ui/core/IconButton';
 import "firebase/auth";
 import LogoutDialog from './dialogs/LogoutDialog';
 import Link from '@material-ui/core/Link'
-import firebase from "firebase/app";
-const googleAuthProvider = new firebase.auth.GoogleAuthProvider(); 
-firebase.auth().signInWithPopup(googleAuthProvider);
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
