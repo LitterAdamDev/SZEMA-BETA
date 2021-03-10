@@ -8,15 +8,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import firebase from "firebase/app";
 import 'firebase/firestore';
-import {db} from './config';
 import SaveDialog from './SaveDialog';
-import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    position: 'inherited',
+    position: 'relative',
   },
   title: {
     marginLeft: theme.spacing(2),
@@ -31,33 +28,31 @@ function useForceUpdate(){
   const [value, setValue] = useState(0); 
   return () => setValue(value => value + 1); 
 }
-var content = ""
-export default function UpdateNewsDialog({toUpdate}) {
+
+export default function AddNewsDialog() {
 
   const forceUpdate = useForceUpdate();
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState();
 
   const handleClickOpen = () => {
     setOpen(true);
-    content = toUpdate["message"];
   };
+
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleChange = (event) =>{
-    content = event.target.value;
     setValue(event.target.value);
-    
-    console.log(event.target.value);
   };
 
   return (
     <div>
-      <Button size="small" color ="primary" onClick={handleClickOpen}>
-        <EditIcon />
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+        Új hír létrehozása
       </Button>
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
@@ -66,15 +61,14 @@ export default function UpdateNewsDialog({toUpdate}) {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Hír szerkesztése
+              Új hír létrehozása
             </Typography>
-            <SaveDialog toSave={value} Type="update" id={toUpdate["id"]}/>
+            <SaveDialog toSave={value} Type="save"/>
           </Toolbar>
         </AppBar>
             <div style={{display: "inline-flex", justifyContent: "center",alignContent:"center", margin:"auto", width:"80%", height:"400px", paddingTop:"20px"}}>
                 <textarea 
                     placeholder="Tartalom"
-                    value={content}
                     style={{
                         margin:"auto",
                         width:"100%",

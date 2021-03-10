@@ -9,18 +9,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import SignedInStarterLinks from './SignedInStarterLinks'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import AddNewsDialog from './AddNewsDialog'
+import SignedInStarterLinks from '../SignedInStarterLinks'
+import AddNewsDialog from '../dialogs/AddNewsDialog'
 import 'firebase/firestore'
-import {db} from './config'
-import uuid from 'react-uuid'
+import {db} from '../../config/base'
 import { withStyles } from "@material-ui/core/styles";
-import UpdateNewsDialog from "./UpdateNewsDialog";
-import DeleteNewsDialog from './DeleteNewsDialog';
+import UpdateNewsDialog from "../dialogs/UpdateNewsDialog";
+import DeleteNewsDialog from '../dialogs/DeleteNewsDialog';
 
 const useStyles = (theme) => ({
   icon: {
