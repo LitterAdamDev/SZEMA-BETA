@@ -6,6 +6,7 @@
 - [x] Creating more pages example
 - [x] Database requests etc.
 - [ ] Style, design..
+- [ ] If someone delete/save the news then make it responsive so modify the components without loading the whole page.
 - [ ] etc?
 - [ ] QuestionBaseDashboard - ability to add new questions, search from the questions, modify the questions. Create specific groups and assign them with people.
 - [ ] CreateTestDashboard - Compile tests (from questions) and add students (students in groups). 2 type of test: 1. In current firebase collection (necessary) 2. Exam tests - must have a new collection and you can add it to the groups.
