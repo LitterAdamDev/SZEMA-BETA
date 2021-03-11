@@ -44,9 +44,19 @@ const Login = ({ history }) => {
               <div className="form"></div>
             </div>
             <div className="footer">
+            <div className="container">
+            <div className="center">
               <button type="button" onClick={handleLogin} className="btn">
-                Bejelentkezés Google fiókkal
+
+              <svg width="180px" height="60px" viewBox="0 0 180 60" className="border">
+                 <polyline points="179,1 179,59 1,59 1,1 179,1" className="bg-line" />
+                 <polyline points="179,1 179,59 1,59 1,1 179,1" className="hl-line" />
+             </svg>
+
+                <span>Bejelentkezés Google fiókkal</span>
               </button>
+            </div>
+            </div>
             </div>
         </div>
       </div>
