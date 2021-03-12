@@ -94,7 +94,7 @@ class NewsDashboard extends React.Component {
               <div className={classes.heroButtons}>
                 <Grid container spacing={1} justify="center">
                   <Grid item>
-                    <AddNewsDialog />
+                   <AddNewsDialog /> 
                   </Grid>
                 </Grid>
               </div>

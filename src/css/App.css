@@ -105,7 +105,8 @@
     margin-left: 3em;
 }
 
-.btn {
+
+.btnL {
     /*
 	 font-size: 21px;
 	 padding: 5px 20px;
@@ -128,7 +129,7 @@
     transition: 200ms ease-in-out;
 }
 
-.btn:hover {
+.btnL:hover {
     background-color: #2e23c8;
     /*new*/
     transition: 200ms ease-in-out;
@@ -144,7 +145,7 @@
 
 /*new button animations*/
 
-svg {
+.login svg {
     position: absolute;
     left: 0;
     top: 0;
@@ -155,11 +156,11 @@ svg {
     transition: 1s ease-in-out;
 }
 
-.btn:hover svg {
+.btnL:hover svg{
     stroke-dashoffset: -480;
 }
 
-.btn span {
+.btnL span {
     color: white;
     font-size: 18px;
     font-weight: 100;
