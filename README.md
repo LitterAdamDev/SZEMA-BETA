@@ -16,6 +16,7 @@
 	- [x] Két oszlopba rendezés!
 	- [ ] Kérdés létrehozásakor a válaszok megadásának száma legyen opcinális, aszerint jelenjenek meg a válaszadás lehetőség fieldek.
 	- [ ] Új hozzáadásának lehetősége
+	- [ ] "Kérdések a ... témában" egy adott kérdére kattintva, betölti az adatokat a "kérdés létrehozása (ennek kérdés kezelésnek kellene lennie akkor)" régióba, ahol lehetőség van szerkeszteni az adott kérdést, vagy akár törölni egy gombbal. Tehát törlés, hozzáadás gomb.
 - [ ] CreateTestDashboard - Compile tests (from questions) and add students (students in groups). 2 type of test: 1. In current firebase collection (necessary) 2. Exam tests - must have a new collection and you can add it to the groups.
 - [ ] Rules by Geri.
 

@@ -24,10 +24,14 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
 
 //for lists
 function ListItemLink(props) {
+  
+  
   return <ListItem button component="a" {...props} />;
+  
 }
 
 
@@ -98,7 +102,7 @@ const useStyles = (theme) => ({
 
 class QuestionBaseDashboard extends React.Component {
 
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -107,6 +111,8 @@ class QuestionBaseDashboard extends React.Component {
   componentDidMount(){
   }
   render(){
+  
+
     const { classes } = this.props;
     return (
       <React.Fragment>
@@ -148,11 +154,10 @@ class QuestionBaseDashboard extends React.Component {
         <FormHelperText>Válassza ki a témakörbe kategorizáláshoz</FormHelperText>
       </FormControl>
 
-      <h3>Megadható válaszok száma: </h3>
+      <h4>Megadható válaszok száma</h4>
       <TextField
-          
           id="outlined-number"
-          label="Írjon be egy számot"
+          //label="Válaszok száma"
           type="number"
           InputLabelProps={{
             shrink: true,
@@ -178,7 +183,7 @@ class QuestionBaseDashboard extends React.Component {
         />
         <TextField
           id="outlined-full-width"
-          label="Új válasz létrehozása"
+          label="Helyes válasz megadása"
           style={{ margin: 8 }}
           placeholder="Kérem adja meg a helyes választ."
          // helperText="Full width!"
@@ -190,6 +195,46 @@ class QuestionBaseDashboard extends React.Component {
           }}
           variant="outlined"
         />
+        
+        <TextField
+          id="outlined-full-width"
+          //label="Új válasz létrehozása"
+          style={{ margin: 8 }}
+          placeholder="Kérem adjon meg egy választ."
+         // helperText="Full width!"
+          fullWidth
+          multiline
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
+        />
+        <TextField
+          id="outlined-full-width"
+         //label="Új válasz létrehozása"
+          style={{ margin: 8 }}
+          placeholder="Kérem adjon meg egy választ."
+         // helperText="Full width!"
+          fullWidth
+          multiline
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
+        />
+
+    
+    <Button variant="contained">Eldobás</Button>
+    <Button variant="contained" color="primary">
+     Módosítás
+    </Button>
+    <Button variant="contained" color="secondary">
+      Kérdés hozzáadása
+    </Button>
+
+       
 
   {/*><TextField id="filled-basic" label="Filled" variant="filled" />
   <TextField id="outlined-basic" label="Outlined" variant="outlined" />*/}
