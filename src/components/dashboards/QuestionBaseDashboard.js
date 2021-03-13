@@ -18,12 +18,18 @@ import Divider from '@material-ui/core/Divider';
 import InboxIcon from '@material-ui/icons/Inbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 
-
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
 
 //for lists
 function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
+
 
 const useStyles = (theme) => ({
   icon: {
@@ -67,8 +73,27 @@ const useStyles = (theme) => ({
     boxShadow: '0px 0px 12px 2px rgba(15, 15, 15, 0.2)',
     borderRadius: '6px',
     padding: '17px 10px',
-    marginTop: '40px',
+    marginTop: '15px',
   },
+  createQuestion: {
+    display: 'center',
+    //verticalAlign: 'text-top',
+    //margin: '15px',
+    //width: '100%',
+    minWidth: 920,
+    maxWidth: 450,
+    backgroundColor: theme.palette.background.paper,
+    //boxShadow: '0px 0px 12px 2px rgba(15, 15, 15, 0.281)',
+    boxShadow: '0px 0px 12px 2px rgba(15, 15, 15, 0.2)',
+    borderRadius: '6px',
+    padding: '17px 10px',
+    marginTop: '-25px',
+    marginBottom: '15px',
+  },
+  formControl: {
+    float: 'left',
+    marginBottom: '10px',
+  }
 });
 
 class QuestionBaseDashboard extends React.Component {
@@ -95,14 +120,81 @@ class QuestionBaseDashboard extends React.Component {
           {/* Hero unit */}
           <div className={classes.heroContent}>
             <Container maxWidth="sm">
-              <Typography component="h1" variant="h3" align="center" color="textPrimary" gutterBottom>
+             {/*  <Typography component="h1" variant="h3" align="center" color="textPrimary" gutterBottom>
                  Kérdésbázis
-              </Typography>
+              </Typography>*/}
             </Container>
 
             <center>
             
-            
+      <div className={classes.createQuestion}>
+      <h1>Kérdés létrehozása</h1><Divider />
+      
+      <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-helper-label">Témakör...</InputLabel>
+        <Select
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper">
+          <MenuItem value="">
+            <em>Nincs témakör</em>
+          </MenuItem>
+          <MenuItem>Térelemek ábrázolása</MenuItem>
+          <MenuItem >Síklapú testek vetületi ábrázolása</MenuItem>
+          <MenuItem >Forgástestek vetületi ábrázolás</MenuItem>
+          <MenuItem>Áthjatások/vetítési. Rajzi egyszerűsítések</MenuItem>
+          <MenuItem >Metszeti ábrázolás</MenuItem>
+          <MenuItem >Méretmegadás műszaki rajzokon</MenuItem>
+        </Select>
+        <FormHelperText>Válassza ki a témakörbe kategorizáláshoz</FormHelperText>
+      </FormControl>
+
+      <h3>Megadható válaszok száma: </h3>
+      <TextField
+          
+          id="outlined-number"
+          label="Írjon be egy számot"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
+        />
+
+      <form className={classes.root} noValidate autoComplete="off">
+      {/*<TextField id="standard-basic" label="Kérdés" />*/}
+      <TextField
+          id="outlined-full-width"
+          label="Új kérdés létrehozása"
+          style={{ margin: 8 }}
+          placeholder="Kérem írja be a kérdést..."
+         // helperText="Full width!"
+          fullWidth
+          multiline
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
+        />
+        <TextField
+          id="outlined-full-width"
+          label="Új válasz létrehozása"
+          style={{ margin: 8 }}
+          placeholder="Kérem adja meg a helyes választ."
+         // helperText="Full width!"
+          fullWidth
+          multiline
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
+        />
+
+  {/*><TextField id="filled-basic" label="Filled" variant="filled" />
+  <TextField id="outlined-basic" label="Outlined" variant="outlined" />*/}
+  </form>
+      </div>
             
       <div className={classes.themeQuestions}>
       
@@ -166,11 +258,11 @@ class QuestionBaseDashboard extends React.Component {
         </main>
         {/* Footer */}
         <footer className={classes.footer}>
-          <Typography variant="h6" align="center" gutterBottom>
+         {/* <Typography variant="h6" align="center" gutterBottom>
             SZEMA
-          </Typography>
+          </Typography>*/}
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-              Széchenyi István Egyetem
+              <strong>SZEMA - </strong>Széchenyi István Egyetem
           </Typography>
           
         </footer>

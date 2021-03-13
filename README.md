@@ -8,13 +8,15 @@
 - [ ] If someone delete/save the news then make it responsive so modify the components without loading the whole page.
 - [ ] etc?
 - [ ] QuestionBaseDashboard - ability to add new questions, search from the questions, modify the questions. Create specific groups and assign them with people.
-- [ ]Static concept design of questionbase has started... (Tivi)
-	- [ ]"Keresés a kérdések között" keresőmezőbe írva folyamatosan filtereződik a témakörök a kérdésekhez lista.
-	- [ ]"Keresés a témakörök között" keresőmezőbe írva folyamatosan filtereződik a kérdések listája (Csak témakörökön belül, tehát dupla szűrés!)
+- [x] Static concept design of questionbase has started... (Tivi)
+	- [ ] "Keresés a kérdések között" keresőmezőbe írva folyamatosan filtereződik a témakörök a kérdésekhez lista.
+	- [ ] "Keresés a témakörök között" keresőmezőbe írva folyamatosan filtereződik a kérdések listája (Csak témakörökön belül, tehát dupla szűrés!)
 	- [ ] Keresés a témakörökön belül régióban egy adott kérdésre kattintva kérdés módosítása, törlése, válasz módosítása stb. opciók, akár egy dialógban? (lehet más jobb)
-	- [ ]Kérdésbázis alatt lehetőség új kérdése megadására: 1.témakör kiválasztás, kérdés megadása, válaszok megadása, kérdés felvételének rögzítése=kérdése feltöltése a listába.
-	- [ ] Két oszlopba rendezés!
-	- [ ] CreateTestDashboard - Compile tests (from questions) and add students (students in groups). 2 type of test: 1. In current firebase collection (necessary) 2. Exam tests - must have a new collection and you can add it to the groups.
+	- [ ] Kérdésbázis alatt lehetőség új kérdése megadására: 1.témakör kiválasztás, kérdés megadása, válaszok megadása, kérdés felvételének rögzítése=kérdése feltöltése a listába.
+	- [x] Két oszlopba rendezés!
+	- [ ] Kérdés létrehozásakor a válaszok megadásának száma legyen opcinális, aszerint jelenjenek meg a válaszadás lehetőség fieldek.
+	- [ ] Új hozzáadásának lehetősége
+- [ ] CreateTestDashboard - Compile tests (from questions) and add students (students in groups). 2 type of test: 1. In current firebase collection (necessary) 2. Exam tests - must have a new collection and you can add it to the groups.
 - [ ] Rules by Geri.
 
 #### Adamdev-rol:
