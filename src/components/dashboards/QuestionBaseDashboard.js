@@ -231,7 +231,7 @@ class QuestionBaseDashboard extends React.Component {
      Módosítás
     </Button>
     <Button variant="contained" color="secondary">
-      Kérdés hozzáadása
+      Hozzáadás
     </Button>
 
        
