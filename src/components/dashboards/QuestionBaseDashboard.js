@@ -54,18 +54,21 @@ const useStyles = (theme) => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
+    
   },
   themeQuestions: {
-
+    display: 'inline-block',
+    verticalAlign: 'text-top',
+    margin: '15px',
     width: '100%',
-    maxWidth: 360,
+    maxWidth: 450,
     backgroundColor: theme.palette.background.paper,
+    //boxShadow: '0px 0px 12px 2px rgba(15, 15, 15, 0.281)',
+    boxShadow: '0px 0px 12px 2px rgba(15, 15, 15, 0.2)',
+    borderRadius: '6px',
+    padding: '17px 10px',
+    marginTop: '40px',
   },
-  questionManage: {
-    display: 'flex',
-    flexDirection: 'column',
-
-  }
 });
 
 class QuestionBaseDashboard extends React.Component {
@@ -98,12 +101,13 @@ class QuestionBaseDashboard extends React.Component {
             </Container>
 
             <center>
-            <SearchField placeholder='Keresés a kérdések között...'  /> <style> white-space: normal;</style>
-            <SearchField placeholder='Keresés a témakörök között...'  />
-
-            <h1>Témakörök a kérdésekhez</h1>
+            
+            
+            
       <div className={classes.themeQuestions}>
       
+      <SearchField placeholder='Keresés a témakörök között...'  />
+      <h1>Témakörök a kérdésekhez</h1>
       <Divider />
       <List component="nav" aria-label="secondary mailbox folders"> 
         <ListItem button> {/*  simple button */}
@@ -126,18 +130,15 @@ class QuestionBaseDashboard extends React.Component {
         </ListItem>
       </List>
 
-      
-
-
-
     </div>
-
-    <div className={classes.questionManage}><h1>Kérdések a ... témakörön belül</h1></div>
-
+   
     
-    <div className={classes.themeQuestions}><Divider />
+
+    <div className={classes.themeQuestions}>
+    <SearchField placeholder='Keresés a kérdések között...'  />
+      <h1>Kérdések a ... témakörben</h1><Divider />
     <List component="nav" aria-label="secondary mailbox folders">  
-          <ListItem button> {/*  simple button */}
+          <ListItem button > {/*  simple button */}
           <ListItemText primary="Elso kerdes" />
           </ListItem>
           <ListItem button> {/*  simple button */}
@@ -149,13 +150,19 @@ class QuestionBaseDashboard extends React.Component {
           <ListItem button> {/*  simple button */}
           <ListItemText primary="Negyedik kerdes" />
           </ListItem>
+          <ListItem button> 
+          <ListItemText primary="Otodik kerdes" />
+          </ListItem>
+          <ListItem button> 
+          <ListItemText primary="Hatodik kerdes.." />
+          </ListItem>
     </List>
     </div>
 
-
     </center>
+ 
 
-          </div>
+      </div>
         </main>
         {/* Footer */}
         <footer className={classes.footer}>
