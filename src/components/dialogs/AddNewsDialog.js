@@ -10,6 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import 'firebase/firestore';
 import SaveDialog from './SaveDialog';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -51,9 +52,11 @@ export default function AddNewsDialog() {
 
   return (
     <div>
+      <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Ezzel a gombbal hozzáadható egy új hír.</h1>}>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Új hír létrehozása
       </Button>
+      </Tooltip>
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>

@@ -3,7 +3,8 @@
 - [x] Login page without registration (bug)
 - [x] Redirect to a homepage after authentication.
 - [x] Creating more pages example
-- [x] Database requests etc.
+- [x] Database requests etc. basics
+- [x] ToolTips added
 - [ ] Style, design..
 - [ ] If someone delete/save the news then make it responsive so modify the components without loading the whole page.
 - [ ] etc?

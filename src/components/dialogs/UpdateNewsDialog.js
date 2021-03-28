@@ -12,6 +12,7 @@ import 'firebase/firestore';
 import SaveDialog from './SaveDialog';
 import EditIcon from '@material-ui/icons/Edit';
 
+import Tooltip from '@material-ui/core/Tooltip';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'inherited',
@@ -54,9 +55,11 @@ export default function UpdateNewsDialog({toUpdate}) {
 
   return (
     <div>
+      <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Hír szerkesztése.</h1>}>
       <Button size="small" color ="primary" onClick={handleClickOpen}>
         <EditIcon />
       </Button>
+      </Tooltip>
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>

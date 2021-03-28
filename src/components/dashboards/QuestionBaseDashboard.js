@@ -26,6 +26,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 
+import Tooltip from '@material-ui/core/Tooltip';
+
 //for lists
 function ListItemLink(props) {
   
@@ -225,14 +227,18 @@ class QuestionBaseDashboard extends React.Component {
           variant="outlined"
         />
 
-    
-    <Button variant="contained">Eldobás</Button>
+
+    <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Ezzel a gombbal a kérdés létrehozása mezők törölhetők.</h1>}>
+    <Button variant="contained">Elvetés</Button>
+    </Tooltip>
+    <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Ezzel a gombbal a jelenleg betöltött kérdés módosítható.</h1>}>
     <Button variant="contained" color="primary">
      Módosítás
-    </Button>
+    </Button></Tooltip>
+    <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Ezzel a gombbal a eegy új kérdés adható hozzá a kiválasztott témakorhöz.</h1>}>
     <Button variant="contained" color="secondary">
       Hozzáadás
-    </Button>
+    </Button></Tooltip>
 
        
 

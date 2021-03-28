@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import 'firebase/firestore';
 import {db} from '../../config/base'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-
+import Tooltip from '@material-ui/core/Tooltip';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -58,9 +58,10 @@ const classes = useStyles();
 
   return (
     <div>
+      <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Hír törlése.</h1>}>
       <Button size="small" color ="primary" style={{justify:"center"}} onClick={handleClickOpen}>
         <DeleteForeverIcon />
-      </Button>
+      </Button></Tooltip>
       <Dialog
         fullScreen={fullScreen}
         open={open}

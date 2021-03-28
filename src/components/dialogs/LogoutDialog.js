@@ -9,7 +9,7 @@ import { useTheme } from '@material-ui/core/styles';
 import "firebase/auth";
 import firebase from "firebase/app";
 import { makeStyles } from '@material-ui/core/styles';
-
+import Tooltip from '@material-ui/core/Tooltip';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -46,9 +46,11 @@ const classes = useStyles();
 
   return (
     <div>
+      <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Kijelentkezés az fiókomból.</h1>}>
       <Button className={classes.buttonTitle} color="inherit" onClick={handleClickOpen}>
         Kijelentkezés
       </Button>
+      </Tooltip>
       <Dialog
         fullScreen={fullScreen}
         open={open}

@@ -18,6 +18,8 @@ import { withStyles } from "@material-ui/core/styles";
 import UpdateNewsDialog from "../dialogs/UpdateNewsDialog";
 import DeleteNewsDialog from '../dialogs/DeleteNewsDialog';
 
+import Tooltip from '@material-ui/core/Tooltip';
+
 const useStyles = (theme) => ({
   icon: {
     marginRight: theme.spacing(2),
