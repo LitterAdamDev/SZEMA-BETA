@@ -1,10 +1,18 @@
-### TO-DO
+## TO-DO
+
+### 2021.03.18. megbeszlés / igények tanárok részéről:
+
+	- Hírek elrendezése: 
+		- Olyan hírek megjelenítése, mint például az oldalon lévő funkcionális változások, újítások.stb.
+		- Tantárggyal, számonkérés, tananyag.stb.-vel kapcsolatos hírek szelearningre feltöltve, és majd onnan kellene lekérni API-val. (ráér a legvégén)
+		- Hírek legyenek hasonlóan a kérdésbázis felépítés szerint (árnyékolt boxos elrendezés) azonban egy hírre ránagyítva az aktuális kerüljön fókuszba, megnagyítás-többi lekicsinyítése..		
+
+
 
 - [x] Login page without registration (bug)
 - [x] Redirect to a homepage after authentication.
 - [x] Creating more pages example
-- [x] Database requests etc. basics
-- [x] ToolTips added
+- [x] Database requests etc.
 - [ ] Style, design..
 - [ ] If someone delete/save the news then make it responsive so modify the components without loading the whole page.
 - [ ] etc?
