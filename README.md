@@ -48,5 +48,7 @@
 	- Solve:		npm install --save firebase
 
 
+	- Problem: Module not found: Can't resolve 'material-ui/AutoComplete'
+	- Solve: npm install @material-ui/lab
 
 
