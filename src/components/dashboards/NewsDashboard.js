@@ -17,7 +17,7 @@ import {db} from '../../config/base'
 import { withStyles } from "@material-ui/core/styles";
 import UpdateNewsDialog from "../dialogs/UpdateNewsDialog";
 import DeleteNewsDialog from '../dialogs/DeleteNewsDialog';
-
+import backgroundIMG from '../../SZEMA_WEB_background_3.svg'
 import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = (theme) => ({
@@ -25,8 +25,13 @@ const useStyles = (theme) => ({
     marginRight: theme.spacing(2),
   },
   heroContent: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: 'white',
+    backgroundImage: `url(${backgroundIMG})`,
+    backgroundAttachement: 'fixed',
+    backgroundRepeat: 'no-repeat',
+    background: '100%',
     padding: theme.spacing(8, 0, 6),
+    backgroundSize: 'cover'
   },
   heroButtons: {
     marginTop: theme.spacing(4),

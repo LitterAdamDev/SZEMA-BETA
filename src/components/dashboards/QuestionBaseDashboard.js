@@ -33,6 +33,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import QuestionAddAnswer from './questionBaseComponents/QuestionAddAnswer';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from "@material-ui/icons/Search";
+import backgroundIMG from '../../SZEMA_WEB_background_3.svg'
 
 //for lists
 function ListItemLink(props) {
@@ -67,8 +68,13 @@ const useStyles = (theme) => ({
     marginRight: theme.spacing(2),
   },
   heroContent: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: 'white',
+    backgroundImage: `url(${backgroundIMG})`,
+    backgroundAttachement: 'fixed',
+    backgroundRepeat: 'no-repeat',
+    background: '100%',
     padding: theme.spacing(8, 0, 6),
+    backgroundSize: 'cover'
   },
   heroButtons: {
     marginTop: theme.spacing(4),
