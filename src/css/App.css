@@ -5,38 +5,12 @@
     justify-content: center;
     align-items: center;
     font-family: "Open Sans", sans-serif;
+    height: 100vh;
+    overflow: none;
 }
-
-.App-logo {
-    animation: App-logo-spin infinite 20s linear;
-    height: 40vmin;
-    pointer-events: none;
+header{
+    background: '#2196f3'
 }
-
-.App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-}
-
-.App-link {
-    color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 .login {
     width: 27em;
     height: 40em;
@@ -47,7 +21,6 @@
     position: relative;
     z-index: 99;
 }
-
 .login .container {
     display: flex;
     justify-content: center;
@@ -181,6 +154,44 @@
     width: 180px;
     height: 60px;
     position: absolute;
-  }
-
-  
+}
+.dropdownNavs{
+    display: contents;
+}
+.listNavs{
+    display: none;
+}
+@media screen and (min-width: 700px) {
+    .dropdownNavs{
+      display: none;
+    }
+    .listNavs{
+      display: contents;
+    }
+    .listNavs h5{
+        display: flex;
+        justify-content: left;
+    }
+    #home{
+        align-self: center;
+    }
+}
+.review-question:last-child{
+    margin-bottom: 50px;
+}
+.review-answer:last-child{
+    margin-bottom: 50px;
+}
+.MuiStepIcon-root.MuiStepIcon-active {
+    color: #2196f3 !important;
+}
+.MuiStepIcon-root.MuiStepIcon-completed {
+    color: #2196f3 !important;
+}
+footer{
+    bottom: 0;
+}
+.MuiAppBar-colorPrimary {
+    color: #fff;
+    background-color:#2196f3 !important;
+}

@@ -53,7 +53,7 @@ export default function AddNewsDialog() {
   return (
     <div>
       <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Ezzel a gombbal hozzáadható egy új hír.</h1>}>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" color="primary" style={{ background: '#2196f3'}} onClick={handleClickOpen}>
         Új hír létrehozása
       </Button>
       </Tooltip>

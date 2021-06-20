@@ -81,7 +81,7 @@ class NewsDashboard extends React.Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        <AppBar position="relative">
+        <AppBar style={{ background: '#2196f3'}} position="relative">
           <Toolbar>
             <SignedInStarterLinks />
           </Toolbar>

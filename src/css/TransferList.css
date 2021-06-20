@@ -1,0 +1,119 @@
+.transferlist{
+    position: relative;
+    height: 50vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.left-transferlist, .right-transferlist{
+    position: relative;
+    background-color: white;
+    width: 40%;
+    height: 80%;
+    box-sizing: border-box;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid grey;
+    padding: 0;
+    margin: 0;
+}
+.transferlist-items{
+    width: 100%;
+    height: 87.5%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+}
+.transfer-item{
+    width: 100%;
+    height: 12.5%;
+    border:  .25px solid grey;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+.transferlist-items::-webkit-scrollbar{
+    width: 0.25em;
+    padding: 0;
+    margin: 0;
+}
+
+.transferlist-items::-webkit-scrollbar-track{
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    padding: 0;
+    margin: 0;
+}
+
+.transferlist-items::-webkit-scrollbar-thumb{
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+.transferlist-header{
+    width: 100%;
+    height: 12.5%;
+    background-color: white;
+    display: flex;
+    border: outset;
+}
+.transferlist-header-checkbox{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+.transferlist-header-checkbox input{
+    width: 50%;
+    height: 50%;
+}
+.transferlist-header-text{
+    width: 100%;
+    height: 100%;
+    font-size: 1.5vw;
+    font-weight: bold;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+.transferlist-item-parameters{
+    width: 80%;
+    height: 100%;
+    font-size: 1vw;
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.transferlist-item-checkbox{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+.transferlist-item-checkbox input{
+    width: 50%;
+    height: 50%;
+}
+.active-transferlist-item{
+    background-color: rgb(135, 214, 135);
+}
+.active-transferlist-item div:nth-child(2){
+    justify-content: center;
+    width: 100%;
+}
+.active-transferlist-item .transferlist-item-checkbox{
+    display: none;
+}
+.transfer-item:hover{
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: antiquewhite;
+}

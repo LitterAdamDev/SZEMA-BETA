@@ -57,14 +57,14 @@ export default function UpdateNewsDialog({toUpdate}) {
     <div>
       <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Hír szerkesztése.</h1>}>
       <Button size="small" color ="primary" onClick={handleClickOpen}>
-        <EditIcon />
+        <EditIcon style={{ color: '#2196f3'}}/>
       </Button>
       </Tooltip>
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-              <CloseIcon />
+              <CloseIcon/>
             </IconButton>
             <Typography variant="h6" className={classes.title}>
               Hír szerkesztése
