@@ -71,10 +71,10 @@ const useStyles = (theme) => ({
     backgroundColor: 'white',
     backgroundImage: `url(${backgroundIMG})`,
     backgroundAttachement: 'fixed',
-    backgroundRepeat: 'no-repeat',
+    backgroundRepeat: 'repeat',
     background: '100%',
     padding: theme.spacing(8, 0, 6),
-    backgroundSize: 'cover'
+    backgroundSize: 'auto'
   },
   heroButtons: {
     marginTop: theme.spacing(4),
