@@ -14,7 +14,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import 'firebase/firestore'
 import {db} from '../../config/base'
-import backgroundIMG from '../../SZEMA_WEB_background_3.svg'
+import backgroundIMG from '../../SZEMA_WEB_background_2.svg'
 
 const useStyles = (theme) => ({
   icon: {
@@ -46,7 +46,9 @@ const useStyles = (theme) => ({
     flexGrow: 1,
   },
   mainTitle:{
+    paddingTop: '10%',
     fontWeight: 'bold',
+    paddingBottom: '0%',
   },
   root:{
     flexGrow: 1,
@@ -55,9 +57,10 @@ const useStyles = (theme) => ({
   },
   simpleButton:{
     width: "100%",
-    height: "10vh",
-    marginTop:"10vh",
-    textTransform: "none"
+    height: "8vh",
+    marginTop:"6.5vh",
+    textTransform: "none",
+    fontWeight: 'bold',
   }, 
   cardGrid: {
     marginTop:"10vh"
@@ -108,7 +111,7 @@ class CreateTestDashboard extends React.Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        <AppBar position="relative" style={{background: '#2196f3'}}>
+        <AppBar position="fixed" style={{background: '#2196f3'}}>
           <Toolbar>
             <SignedInStarterLinks />
           </Toolbar>
@@ -117,7 +120,7 @@ class CreateTestDashboard extends React.Component {
           {/* Hero unit */}
           <div className={classes.heroContent}>
             <Container maxWidth="sm">
-              <Typography className={classes.mainTitle} component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+              <Typography className={classes.mainTitle} component="h1" variant="h3" align="center" color="textPrimary" gutterBottom>
                  Üdvözlünk a SZEMA honlapján!
               </Typography>
               <Grid className={classes.root} container spacing={3}>

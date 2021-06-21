@@ -2,18 +2,19 @@ import React, { useCallback, useContext } from "react";
 import { withRouter, Redirect } from "react-router";
 import { AuthContext } from "./Auth.js";
 import '../../css/App.css';
-import "./style.scss"; 
-import loginImg from "../img/login.svg";
-import backgroundIMG from '../../SZEMA_WEB_background_3.svg'
+import backgroundIMG from '../../SZEMA_WEB_background_1.svg'
 import firebase from "firebase/app";
 import "firebase/auth";
+import googleIcon from '../../Google__G__Logo.svg.png'
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import SingedOutLinks from '../SignedOutLinks'
 const Login = ({ history }) => {
 
   const handleLogin = useCallback(
     async event => {
       event.preventDefault();
-      const googleAuthProvider = new firebase.auth.GoogleAuthProvider(); 
-      ;
+      const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
       try {
         await firebase.auth()
         .signInWithPopup(googleAuthProvider)
@@ -32,37 +33,44 @@ const Login = ({ history }) => {
   }
 
   return (
-      <div className="App" style={{backgroundImage: `url(${backgroundIMG})`,backgroundRepeat: 'no-repeat',backgroundSize: 'cover', backgroundColor:'white'}}>
-      <div className="login">
-        <div className="container">
-          <div className="base-container" >
-            <div className="header">Széchenyi István Egyetem -<strong> SZEMA</strong><p></p></div>
-            <div className="headerLogin">Bejelentkezés</div><p></p>
-              <div className="content">
-                <div className="image">
-                  <img src={loginImg}></img>
-                </div>
-                <div className="form"></div>
-              </div>
-              <div className="footer">
-              <div className="container">
-              <div className="center">
-                <button type="button" onClick={handleLogin} className="btnL">
-
-                <svg width="180px" height="60px" viewBox="0 0 180 60" className="border">
-                  <polyline points="179,1 179,59 1,59 1,1 179,1" className="bg-line" />
-                  <polyline points="179,1 179,59 1,59 1,1 179,1" className="hl-line" />
-              </svg>
-
-                  <span>Bejelentkezés Google fiókkal</span>
-                </button>
-              </div>
-              </div>
-              </div>
+    <div className="App" style={{backgroundImage: `url(${backgroundIMG})`,backgroundRepeat: 'no-repeat',backgroundSize: 'cover', backgroundColor:'white'}}>
+      <header>
+        <AppBar style={{ background: '#2196f3'}} position="relative">
+          <Toolbar>
+            <SingedOutLinks />
+          </Toolbar>
+        </AppBar>
+      </header>
+      <main>
+        <div className="login">
+          <div class="title-container">
+            SZEMA
           </div>
+          <div class="login-title-container">
+            Bejelentkezés
+          </div>
+          <div class="button-container">
+              <button onClick={handleLogin}>
+                <div class='google-icon'>
+                  <img
+                    src={googleIcon}
+                    alt="google icon"
+                  />
+                </div>
+                <div class='google-title'>
+                  Google
+                </div>
+                <div class="rest-google-title">
+
+                </div>
+                
+              </button>
+          </div>
+          <div class="rest-container"></div>
         </div>
-      </div>
+      </main>
     </div>
+    
   
   );
 };
