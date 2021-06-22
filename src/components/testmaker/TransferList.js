@@ -1,11 +1,28 @@
 import React, { useState, useEffect, Component } from "react"
 import 'firebase/firestore'
 import '../../css/TransferList.css'
-export default class TransferList extends React.Component {
+import Modal from '@material-ui/core/Modal';
+import QuestionDataModal from "./QuestionDataModal";
+import { withStyles } from '@material-ui/styles';
+
+const styles = theme => ({
+    paper: {
+        position: 'absolute',
+        width: 400,
+        backgroundColor: 'white',
+        border: '2px solid #000',
+        boxShadow: 5,
+        padding: '2rem 3rem 2rem 4rem',
+      },
+});
+
+class TransferList extends React.Component {
 
     constructor(props) {
       super(props);
-      this.state = {};
+      this.state = {
+          activeModalID : "",
+      };
     }
     handleChangeLeft = (event) =>{
         if(event.target.checked){
@@ -71,7 +88,24 @@ export default class TransferList extends React.Component {
             document.getElementById(leftId).parentElement.parentElement.children[1].style.width = '80%'
         }
     }
+    handleQuestionData = (event) =>{
+        var id = event.target.id
+        var modalID = id.substring(0,id.indexOf('-data')) + '-modal'
+        document.getElementById(modalID).style.display = 'flex'
+        this.setState({
+            activeModalID : modalID
+        })
+    }
+    handleModalClose =(event) =>{
+        var id = event.target.id
+        var modalID = id.substring(0,id.indexOf('-button')) + '-modal'
+        document.getElementById(modalID).style.display = 'none'
+        this.setState({
+            activeModalID : ""
+        })
+    }
     render(){
+        const { classes } = this.props;
         return(
          <>
             <div class="transferlist">
@@ -99,7 +133,7 @@ export default class TransferList extends React.Component {
                         ) 
                         : 
                         (
-                            this.props.questions.map((question) =>{
+                            this.props.questions.map((question,index) =>{
                                 return(
                                 <div class={"left-item transfer-item".concat(this.props.usedIDs.includes(question['id'])? " active-transferlist-item" : '')} 
                                      key={question['id']} 
@@ -107,8 +141,8 @@ export default class TransferList extends React.Component {
                                     <div class="transferlist-item-checkbox">
                                         <input type="checkbox" id={question['id']} onChange={this.handleChangeLeft}/>
                                     </div>
-                                    <div class="transferlist-item-parameters">
-                                        {question['question']}
+                                    <div class="transferlist-item-parameters" id={question['id']  + '-data'}  onClick={this.handleQuestionData}>
+                                        {question['question'].substring(0,50) + '...'}
                                     </div>
                                 </div>)
                             })
@@ -145,8 +179,8 @@ export default class TransferList extends React.Component {
                                     <div class="transferlist-item-checkbox">
                                         <input type="checkbox" id={question['id']  + '-right'} defaultChecked onChange={this.handleChangeRight}/>
                                     </div>
-                                    <div class="transferlist-item-parameters">
-                                        {question['question']}
+                                    <div class="transferlist-item-parameters" id={question['id']  + '-data'} onClick={this.handleQuestionData}>
+                                        {question['question'].substring(0,50) + '...'}
                                     </div>
                                 </div>)
                             })) : (
@@ -156,6 +190,33 @@ export default class TransferList extends React.Component {
                     </div>
                 </div>
             </div>
+            {this.props.questions.map((question,index) =>{
+                return(
+                    <div class="question-modal"  tabindex="1" id={question['id']  + '-modal'}>
+                        <div class="question-modal-content">
+                            <div>
+                                {index+1}. Kérdés: {question['question']} ({question['points']} pont)
+                            </div>
+                            { [1, 2, 3, 4].includes(question['quizType'])?( 
+                                question['válaszok'].map((answer, index) => (
+                                <div>
+                                    &diams; {answer}  [{question['helyes'][index]}]
+                                </div>
+                                ))
+                            ):(
+                                question['válaszok'].map((answer, index) => (
+                                <div>
+                                    &diams; {answer}  { question['helyes'][0] === index+1? (<span>[Helyes]</span>):(null)}
+                                </div>
+                            )))}
+                        </div>
+                        <div class="question-modal-footer">
+                            <button id={question['id']  + '-button'} onClick={this.handleModalClose}>Bezárás</button>
+                        </div>
+
+                    </div>
+                )
+            })}
          </>
         )
     }
@@ -173,3 +234,4 @@ TransferList.defaultProps = {
         actQuiz : undefined,
         usedIDs : []
 }
+export default withStyles(styles)(TransferList);

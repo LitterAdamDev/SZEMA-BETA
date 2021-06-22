@@ -395,7 +395,9 @@ export default class TestMakerDashboard extends React.Component {
         alert(newValue['value'])
     };
     handleModuleAttributeChange = (newValue, actionMeta) => {
-        alert(newValue['value'])
+        this.setState({
+            searchedModul : newValue['value']
+        })
     };
     handleSearchChange = (event) =>{
         alert(event.target.value)

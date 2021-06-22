@@ -3,20 +3,27 @@
     text-align: center;
     display: flex;
     justify-content: center;
-    align-items: center;
     font-family: "Open Sans", sans-serif;
-    height: 100vh;
-    overflow: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+    align-content: flex-end;
 }
 header{
     background: '#2196f3';
     top:0;
     position: fixed;
     width: 100%;
+    z-index: 9999;
 }
 .login {
     width: 40em;
     height: 40em;
+    margin-top: 15%
 }
 .title-container{
     width: 100%;
@@ -204,4 +211,14 @@ footer{
 .MuiAppBar-colorPrimary {
     color: #fff;
     background-color:#2196f3 !important;
+}
+.main{
+    display: flex;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    overflow: hidden;
 }

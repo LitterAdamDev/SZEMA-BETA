@@ -29,6 +29,7 @@ footer{
     position: relative;
 }
 #main-start{
+    width: 100%;
     padding-top: 20vh;
     padding-bottom: 20vh;
     display:none; /*none*/
@@ -96,14 +97,17 @@ footer{
     position: relative;
     top: 50%;
     left: 50%;
-    -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    width: 60%;
+    width: 80%;
     background-color: whitesmoke;
     border-radius: 4px;
     border: outset;
-    display: table;
+    display: flex;
     margin-bottom: 40vh;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: stretch;
 }
 .choose-content{
     width:100%;

@@ -40,7 +40,11 @@ const Login = ({ history }) => {
         .catch( error => console.log(error))
     }
   }, [currentUser]);
-
+  useEffect(() => {
+    var headerHeight = document.getElementsByTagName("header")[0].offsetHeight
+    document.getElementsByClassName('main')[0].setAttribute("style","height: calc(100vh - "+ headerHeight +")");
+    console.log(headerHeight)
+  }, []);
   const handleLogin = useCallback(
    
     async event => {
@@ -68,7 +72,7 @@ const Login = ({ history }) => {
           </Toolbar>
         </AppBar>
       </header>
-      <main>
+      <div class="main">
         <div className="login">
           <div class="title-container">
             SZEMA
@@ -95,9 +99,8 @@ const Login = ({ history }) => {
           </div>
           <div class="rest-container"></div>
         </div>
-      </main>
+      </div>
     </div>
-    
   
   );
 };
