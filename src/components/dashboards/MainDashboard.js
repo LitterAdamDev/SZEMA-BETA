@@ -104,7 +104,6 @@ class CreateTestDashboard extends React.Component {
   componentDidMount(){
     this.getCards();
     this.state.cards_array.sort()
-    console.log(this.state.cards_array)
   }
   render(){
     const { classes } = this.props;
