@@ -543,7 +543,24 @@ export default class TestMakerDashboard extends React.Component {
                     </div>
                     <br/>
                     <div class="member-content">
-                        <h1>Felhasználók hozzárendelése a feladatsorhoz</h1>
+                        <h1>Csoportok hozzárendelése a feladatsorhoz</h1>
+                        <TransferList 
+                        headers={['Választható','Választott']} 
+                        />
+                        
+                        <h1>Felhasználók hozzárendelése a csoportokhoz</h1>
+                        <form>
+                            <div class="center-fullwidth">
+                                <div class="select-multy">
+                                    <Select width="50%" 
+                                    id="test-select" 
+                                    placeholder="Csoport kiválasztása..." 
+                                    options={this.state.tests} 
+                                    onChange={this.handleTestAttributeChange}
+                                    />
+                                </div>
+                            </div>
+                        </form>
                         <TransferList 
                         headers={['Választható','Választott']} 
                         type='group' containedMembers={this.state.theQuiz.group} 
