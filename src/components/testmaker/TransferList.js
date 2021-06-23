@@ -2,27 +2,31 @@ import React, { useState, useEffect, Component } from "react"
 import 'firebase/firestore'
 import '../../css/TransferList.css'
 import Modal from '@material-ui/core/Modal';
-import QuestionDataModal from "./QuestionDataModal";
-import { withStyles } from '@material-ui/styles';
 
-const styles = theme => ({
-    paper: {
-        position: 'absolute',
-        width: 400,
-        backgroundColor: 'white',
-        border: '2px solid #000',
-        boxShadow: 5,
-        padding: '2rem 3rem 2rem 4rem',
-      },
-});
-
-class TransferList extends React.Component {
+export default class TransferList extends React.Component {
 
     constructor(props) {
       super(props);
+      this.escFunction = this.escFunction.bind(this);
       this.state = {
           activeModalID : "",
       };
+    }
+    escFunction(event){
+        if(event.keyCode === 27) {
+          if(this.state.activeModalID != ""){
+            document.getElementById(this.state.activeModalID).style.display = 'none'
+            this.setState({
+                activeModalID : ""
+            })
+          }
+        }
+    }
+    componentDidMount(){
+        document.addEventListener("keydown", this.escFunction, false);
+    }
+    componentWillUnmount(){
+        document.removeEventListener("keydown", this.escFunction, false);
     }
     handleChangeLeft = (event) =>{
         if(event.target.checked){
@@ -89,12 +93,14 @@ class TransferList extends React.Component {
         }
     }
     handleQuestionData = (event) =>{
-        var id = event.target.id
-        var modalID = id.substring(0,id.indexOf('-data')) + '-modal'
-        document.getElementById(modalID).style.display = 'flex'
-        this.setState({
-            activeModalID : modalID
-        })
+        if(this.state.activeModalID === ""){
+            var id = event.target.id
+            var modalID = id.substring(0,id.indexOf('-data')) + '-modal'
+            document.getElementById(modalID).style.display = 'flex'
+            this.setState({
+                activeModalID : modalID
+            })
+        }
     }
     handleModalClose =(event) =>{
         var id = event.target.id
@@ -103,6 +109,81 @@ class TransferList extends React.Component {
         this.setState({
             activeModalID : ""
         })
+    }
+    generateQuestionModals = (question,index) =>{
+
+        var header = (
+            <>
+                <div class="modal-content-question">
+                    {question['question']} ({question['points']} pont)
+                </div>
+                <div class="modal-content-image">
+                    {question['isPicture'] ? (
+                        <img src={question["picture"]}></img>
+                    ):(
+                        <></>
+                    )}
+                </div>
+                <div class="modal-content-answers">
+                    {
+                        question['quizType'] === 0?
+                        (
+                            <>
+                                {question['válaszok'].map((answer,indexa) =>{
+                                        return(
+                                            <div class={"answer-type-0" + (question['helyes'] === (indexa+1)? " good-answer" : "")}>
+                                              <strong>{['A','B','C','D','E','F','G'][indexa]}. lehetőség:</strong>{ "\t" + answer}
+                                            </div>
+                                        )
+                                })}
+                            </>
+                        ):(
+                            question['quizType'] === 1?
+                            (
+                                <>
+                                    {question['válaszok'].map((answer,indexa) =>{
+                                            return(
+                                                <div class={"answer-type-0" + (question['helyes'][indexa]? " good-answer" : "")}>
+                                                <strong>{['A','B','C','D','E','F','G'][indexa]}. lehetőség:</strong>{ "\t" + answer}
+                                                </div>
+                                            )
+                                    })}
+                                </>
+                            ):(
+                                question['quizType'] === 3?
+                                (
+                                    <>
+                                        {question['válaszok'].map((answer,indexa) =>{
+                                        return(
+                                            <div class={"answer-type-0"}>
+                                                <strong>{['A','B','C','D','E','F','G'][indexa]}. megoldás:</strong>{ "\t" + answer + "\t"}<var class="good-answer">{question['helyes'][indexa]}</var>
+                                            </div>
+                                        )
+                                        })}
+                                    </>
+                                ):(
+                                    question['quizType'] === 4?
+                                    (
+                                        <>
+                                            {question['válaszok'].map((answer,indexa) =>{
+                                                return(
+                                                    <div class={"answer-type-0"}>
+                                                        <strong>{['A','B','C','D','E','F','G'][indexa]}. megoldás:</strong><span class="good-answer">{ "\t" + answer + "\t"}</span><img class="good-answer-img" src={question['helyes'][indexa]}></img>
+                                                    </div>
+                                                )
+                                            })}
+                                        </>
+                                    ):(
+                                        <></>
+                                    )
+                                )
+                            )
+                        )
+                    }
+                </div>
+            </>    
+        )
+            return(header) 
     }
     render(){
         const { classes } = this.props;
@@ -194,21 +275,7 @@ class TransferList extends React.Component {
                 return(
                     <div class="question-modal"  tabindex="1" id={question['id']  + '-modal'}>
                         <div class="question-modal-content">
-                            <div>
-                                {index+1}. Kérdés: {question['question']} ({question['points']} pont)
-                            </div>
-                            { [1, 2, 3, 4].includes(question['quizType'])?( 
-                                question['válaszok'].map((answer, index) => (
-                                <div>
-                                    &diams; {answer}  [{question['helyes'][index]}]
-                                </div>
-                                ))
-                            ):(
-                                question['válaszok'].map((answer, index) => (
-                                <div>
-                                    &diams; {answer}  { question['helyes'][0] === index+1? (<span>[Helyes]</span>):(null)}
-                                </div>
-                            )))}
+                            {this.generateQuestionModals(question,index)}
                         </div>
                         <div class="question-modal-footer">
                             <button id={question['id']  + '-button'} onClick={this.handleModalClose}>Bezárás</button>
@@ -234,4 +301,3 @@ TransferList.defaultProps = {
         actQuiz : undefined,
         usedIDs : []
 }
-export default withStyles(styles)(TransferList);
