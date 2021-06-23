@@ -202,9 +202,10 @@ footer{
     float: left;
     height: 38px;
     width: 33.33333%;
+    padding: 5px 5px 5px 5px;
 }
 .modul-counter{
-    width: 5%;
+    min-width: 5%;
     font-size: 38px;
     background-color: white;
     border: 1px solid black;
@@ -212,6 +213,12 @@ footer{
     margin-left: 5%;
     margin-right: 5%;
     border-radius: 4px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
 }
 .zh{
     display: none;
