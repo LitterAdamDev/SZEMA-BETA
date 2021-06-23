@@ -37,7 +37,7 @@ export default class TestMakerDashboard extends React.Component {
           valueSelect: undefined,
           testType: undefined,
           testName: undefined,
-          theQuiz : {IsZH: false, quizName: "", group: [], modules: []},
+          theQuiz : {IsZH: false, quizName: "", groups: [], modules: []},
           modules : [
                         { value: 'első', label: 'Modul_0' },
                         { value: 'második', label: 'Modul_1' },
@@ -49,23 +49,20 @@ export default class TestMakerDashboard extends React.Component {
           questionBase : [],
           usedQuestions : [],
           usedQuestionsIDs : [],
-          alreadyMemberIDs : [],
-          memberBase : [
-              { 'name' : 'Kiss Béla', 'title' : 'Hallgató', 'id' : '1'},
-              { 'name' : 'Nagy Károly', 'title' : 'Hallgató', 'id' : '2'},
-              { 'name' : 'Kovács Enikő', 'title' : 'Hallgató', 'id' : '3'},
-              { 'name' : 'Borbély Hunor', 'title' : 'Hallgató', 'id' : '4'},
-              { 'name' : 'Nemismerek Többnevet', 'title' : 'Hallgató', 'id' : '5'}
-                        ],
+          memberBase : [],
           searchedQuiz : undefined,
           searchedModul : undefined,
           searchedWord : undefined,
+          searchedGroup : undefined,
           questionCounter : 0,
           modulCounter : 0,
           availablePoints : 0,
           
           quizzesForFS : [],
           modulNamesForFS : [],
+          groups : [],
+          actGroup : [],
+          allGroupsOfTests : [],
       };
     }
     compare( a, b ) {
@@ -88,9 +85,45 @@ export default class TestMakerDashboard extends React.Component {
             })
             this.setState({
                 memberBase : data_from_web.sort(this.compare)
+            },() =>{
+                this.getGroups()
             })
           })
           .catch( error => console.log(error))
+    }
+    getGroups = () => {
+        db.collection('groups')
+        .get()
+        .then( snapshot => {
+          const data_from_web = []
+          snapshot.forEach(doc => {
+            const data = doc.data()
+            data_from_web.push({...data,id:doc.id})
+          })
+          var allGroups = []
+          data_from_web[0]['IDs'].map((data) =>{
+            allGroups.push({'value' : data, 'label' : data})
+            var myArray = this.state.memberBase.filter(function( obj ) {
+                if(data === 'default'){
+                    return true
+                }else{
+                    if(obj.hasOwnProperty('group')){
+                        return obj.group === data ;
+                    }else{
+                        return false
+                    }
+                }
+            });
+            this.setState({
+                allGroupsOfTests : [...this.state.allGroupsOfTests,{'name' : data, 'members' : myArray}]
+            })
+            
+          })
+          this.setState({
+            groups : [...allGroups]
+          })
+        })
+        .catch( error => console.log(error))
     }
     getQuizzes = () => {
         db.collection('QuizFolder')
@@ -108,7 +141,6 @@ export default class TestMakerDashboard extends React.Component {
         .catch( error => console.log(error))
     }
     getQuestions = () => {
-        console.log('gettingquestions')
         this.state.quizzesForFS.map((quiz) =>{
           quiz['ModuleIDs'].map((moduleName) =>{
             db.collection('QuizFolder')
@@ -189,15 +221,6 @@ export default class TestMakerDashboard extends React.Component {
         this.countAll()
     }
     componentDidMount(){
-        let MemberIDs = []
-        this.state.theQuiz['group'].map((member) =>{
-            if(member.hasOwnProperty('id')){
-                MemberIDs.push(member['id'])
-            }
-        })
-        this.setState({
-            alreadyMemberIDs : [...MemberIDs]
-        })
         this.state.theQuiz['modules'].map((modul, modul_index) =>{
             var contained = modul['questions']
             contained.map((question, question_index) =>{
@@ -277,19 +300,56 @@ export default class TestMakerDashboard extends React.Component {
     };
     handleGroupUpdate = (member, remove) =>{
         if(remove === true){
-            var theGroup = this.state.theQuiz['group']
+            var theGroup = this.state.actGroup
             var id = member['id']
             var pos = theGroup.findIndex(obj => obj['id'] === id)
             if (pos > -1) {
                 theGroup.splice(pos, 1);
             }
-            this.setState({
-                theQuiz : {...this.state.theQuiz, 'group' : theGroup}
-            })
+            var pos2= this.state.allGroupsOfTests.findIndex(obj => obj['name'] === this.state.searchedGroup)
+            if (pos2 > -1) {
+                var allGroup = this.state.allGroupsOfTests
+                allGroup[pos2] = {'name' : this.state.searchedGroup, 'members' : theGroup}
+                this.setState({
+                    allGroupsOfTests : allGroup
+                },)
+            }
+            var rightUserID = this.state.memberBase.findIndex(obj => obj['id'] === member['id'])
+            
+            var allusers = this.state.memberBase
+            
+            if (rightUserID > -1) {
+                var rightUser = allusers[rightUserID]
+                delete rightUser['group']
+                allusers[rightUserID] = rightUser
+                this.setState({
+                    memberBase : allusers
+                })
+            }
         }else{
-            this.setState({
-                theQuiz : {...this.state.theQuiz, 'group' : [...this.state.theQuiz['group'],member]}
-            })
+            var theGroup = this.state.actGroup
+            theGroup.push(member)
+            var pos= this.state.allGroupsOfTests.findIndex(obj => obj['name'] === this.state.searchedGroup)
+            if (pos > -1) {
+                var allGroup = this.state.allGroupsOfTests
+                allGroup[pos] = {'name' : this.state.searchedGroup, 'members' : theGroup}
+                this.setState({
+                    allGroupsOfTests : allGroup
+                })
+            }
+            var rightUserID = this.state.memberBase.findIndex(obj => obj['id'] === member['id'])
+            
+            var allusers = this.state.memberBase
+            
+            if (rightUserID > -1) {
+                var rightUser = allusers[rightUserID]
+                rightUser['group'] = this.state.searchedGroup
+
+                allusers[rightUserID] = rightUser
+                this.setState({
+                    memberBase : allusers
+                })
+            }
         }
         this.countAll()
     }
@@ -388,19 +448,33 @@ export default class TestMakerDashboard extends React.Component {
             })
             document.getElementsByClassName('member-content')[0].style.display = "none"
         }
-        console.log(this.state.questionBase)
-        console.log('this.state.questionBase')
     }
     handleTestAttributeChange = (newValue, actionMeta) => {
-        alert(newValue['value'])
+        this.setState({
+            searchedQuiz : newValue['value']
+        })
     };
     handleModuleAttributeChange = (newValue, actionMeta) => {
         this.setState({
             searchedModul : newValue['value']
         })
     };
+    handleGroupAttributeChange = (newValue, actionMeta) => {
+        this.setState({
+            searchedGroup : newValue['value']
+        })
+        var pos = this.state.allGroupsOfTests.findIndex(obj => obj['name'] === newValue['value'])
+        if (pos > -1) {
+            var theGroup = this.state.allGroupsOfTests[pos]['members']
+            this.setState({
+                actGroup : [...theGroup]
+            })
+        }
+    };
     handleSearchChange = (event) =>{
-        alert(event.target.value)
+        this.setState({
+            searchedWord : event.target.value
+        })
     }
     changeChildState = () => {
         this.childRef.current.handleModulGettingDeleted();
@@ -553,20 +627,21 @@ export default class TestMakerDashboard extends React.Component {
                             <div class="center-fullwidth">
                                 <div class="select-multy">
                                     <Select width="50%" 
-                                    id="test-select" 
+                                    id="group-select" 
                                     placeholder="Csoport kiválasztása..." 
-                                    options={this.state.tests} 
-                                    onChange={this.handleTestAttributeChange}
+                                    options={this.state.groups} 
+                                    onChange={this.handleGroupAttributeChange}
                                     />
                                 </div>
                             </div>
                         </form>
                         <TransferList 
                         headers={['Választható','Választott']} 
-                        type='group' containedMembers={this.state.theQuiz.group} 
+                        type='group' 
+                        containedMembers={this.state.actGroup} 
                         handleGroup={this.handleGroupUpdate} 
                         group={this.state.memberBase}
-                        usedIDs={this.state.alreadyMemberIDs}
+                        act_group={this.state.searchedGroup}
                         />
                     </div>
                     <div class="preview-content">
@@ -576,7 +651,7 @@ export default class TestMakerDashboard extends React.Component {
                         <div class="finish-content-results">
                             <div class="result-question">Kérdések: <var id="result-question">{this.state.questionCounter}</var></div>
                             <div class="result-points">Elérhető pontszám: <var id="result-points">{this.state.availablePoints}</var></div>
-                            <div class="result-members">Hozzárendelt felhasználók: <var id="result-members">{this.state.theQuiz['IsZH'] ? this.state.theQuiz['group'].length : 0}</var></div>
+                            <div class="result-members">Hozzárendelt csoportok: <var id="result-members">{this.state.theQuiz['IsZH'] ? this.state.theQuiz['groups'].length : 0}</var></div>
                             <div class="result-type">Feladatsor jellege: 
                                 <var id="result-type">
                                     {this.state.theQuiz['IsZH'] ? (<var>Zárthelyi dolgozat</var>) : (<var>Nem zárthelyi dolgozat</var>)}
@@ -595,7 +670,7 @@ export default class TestMakerDashboard extends React.Component {
                         <div class="finish-content-results">
                         <div class="result-question">Kérdések: <var id="result-question">{this.state.questionCounter}</var></div>
                             <div class="result-points">Elérhető pontszám: <var id="result-points">{this.state.availablePoints}</var></div>
-                            <div class="result-members">Hozzárendelt felhasználók: <var id="result-members">{this.state.theQuiz['group'].length}</var></div>
+                            <div class="result-members">Hozzárendelt csoportok: <var id="result-members">{this.state.theQuiz['groups'].length}</var></div>
                             <div class="result-type">
                                 Feladatsor jellege: 
                                 <var id="result-type">

@@ -197,11 +197,11 @@ export default class TransferList extends React.Component {
                         </div>
                     </div>
                     <div class="transferlist-items">
-                        {this.props.type === 'group' ? 
+                        {this.props.type === 'group' && this.props.act_group !== 'default'? 
                         (
                             this.props.group.map((member) =>{
                                 return(
-                                <div class={"left-item transfer-item".concat(this.props.usedIDs.includes(member['id'])? " active-transferlist-item" : '')}
+                                <div class={"left-item transfer-item".concat(member['group'] === this.props.act_group ? " active-transferlist-item" : '')}
                                 key={member['id']}>
                                     <div class="transferlist-item-checkbox" >
                                         <input type="checkbox" id={member['id']} onChange={this.handleChangeLeft}/>
@@ -237,7 +237,7 @@ export default class TransferList extends React.Component {
                         </div>
                     </div>
                     <div class="transferlist-items">
-                    {this.props.type === 'group' ? 
+                    {this.props.type === 'group' && this.props.act_group !== 'default'? 
                         (
                             this.props.containedMembers.map((member) =>{
                                 return(
@@ -299,5 +299,6 @@ TransferList.defaultProps = {
         containedQuestions : undefined,
         containedMembers : undefined,
         actQuiz : undefined,
-        usedIDs : []
+        usedIDs : [],
+        act_group : 'default'
 }
