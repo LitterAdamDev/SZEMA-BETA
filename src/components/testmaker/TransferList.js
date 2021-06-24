@@ -41,7 +41,7 @@ export default class TransferList extends React.Component {
                 var result = this.props.groupBase.filter(obj => {
                     return obj.name === id
                 })
-                this.props.handleMultyGroups(result[0], false)
+                this.props.handleMultyGroups(result[0]['name'], false)
             }else{
                 var id = event.target.id
                 var result = this.props.group.filter(obj => {
@@ -86,10 +86,7 @@ export default class TransferList extends React.Component {
             else if(this.props.type === 'multygroup'){
                 var id = event.target.id
                 var leftId = id.replace('-right','')
-                var result = this.props.containedGroups.filter(obj => {
-                    return obj['name'] === leftId
-                })
-                this.props.handleMultyGroups(result[0], true)
+                this.props.handleMultyGroups(leftId, true)
             }else{
                 var id = event.target.id
                 var leftId = id.replace('-right','')
@@ -283,13 +280,13 @@ export default class TransferList extends React.Component {
                         ( this.props.type === 'multygroup'? (
                             this.props.containedGroups.map((group) =>{
                                 return(
-                                    <div class="right-item transfer-item
-                                    " key={group['name'] + '-right'}>
+                                    <div class="right-item transfer-item" 
+                                         key={group + '-right'}>
                                         <div class="transferlist-item-checkbox">
-                                            <input type="checkbox" id={group['name'] + '-right'} defaultChecked onChange={this.handleChangeRight}/>
+                                            <input type="checkbox" id={group + '-right'} defaultChecked onChange={this.handleChangeRight}/>
                                         </div>
                                         <div class="transferlist-item-parameters">
-                                            {group['name']}
+                                            {group}
                                         </div>
                                     </div>
                                 )

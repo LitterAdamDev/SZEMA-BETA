@@ -1,20 +1,20 @@
 import React, { useState, useEffect, Component } from "react"
 import Select from 'react-select'
 import AppBar from '@material-ui/core/AppBar'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import Container from '@material-ui/core/Container'
 import SignedInStarterLinks from '../SignedInStarterLinks'
 import 'firebase/firestore'
 import '../../css/TestMakerDashboard.css'
-import Button from '@material-ui/core/Button'
 import TransferList from '../testmaker/TransferList'
 import Review from '../testmaker/Review'
-import { ThreeDRotationSharp } from "@material-ui/icons"
 import 'firebase/firestore'
 import {db} from '../../config/base'
-
+import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import AddGroupDialog
+ from "../dialogs/AddGroupDialog"
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -63,6 +63,7 @@ export default class TestMakerDashboard extends React.Component {
           groups : [],
           actGroup : [],
           allGroupsOfTests : [],
+          open_ng_dialog : false,
       };
     }
     compare( a, b ) {
@@ -496,7 +497,12 @@ export default class TestMakerDashboard extends React.Component {
     }
     changeChildState = () => {
         this.childRef.current.handleModulGettingDeleted();
-     }
+    }
+    handleAddGroup = (group) =>{
+        this.setState({
+            allGroupsOfTests : [...this.state.allGroupsOfTests,group]
+        })
+    }
     render(){
         return(
         <>
@@ -657,6 +663,11 @@ export default class TestMakerDashboard extends React.Component {
                                     />
                                 </div>
                             </div>
+                            <a>
+                                <div class="center-fullwidth">
+                                        <AddGroupDialog handleGroup={this.handleAddGroup}/>
+                                </div>
+                            </a>
                         </form>
                         <TransferList 
                         headers={['Választható','Választott']} 
