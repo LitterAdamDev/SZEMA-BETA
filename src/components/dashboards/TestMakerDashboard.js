@@ -37,7 +37,7 @@ export default class TestMakerDashboard extends React.Component {
           valueSelect: undefined,
           testType: undefined,
           testName: undefined,
-          theQuiz : {IsZH: false, quizName: "", groups: [], modules: []},
+          theQuiz : {IsZH: false, quizName: "", groups: ['default'], modules: []},
           modules : [
                         { value: 'első', label: 'Modul_0' },
                         { value: 'második', label: 'Modul_1' },
@@ -397,6 +397,24 @@ export default class TestMakerDashboard extends React.Component {
         }
         this.countAll()
     }
+    handleMultyGroupUpdate = (group, remove) =>{
+        if(remove === true){
+            var groups_of_quiz = this.state.theQuiz['groups']
+            var pos = groups_of_quiz.findIndex(obj => obj['name'] === group['name'])
+            if (pos > -1) {
+                groups_of_quiz.splice(pos, 1);
+                this.setState({
+                    theQuiz : {...this.state.theQuiz, 'groups' : [...groups_of_quiz]}
+                })
+            }
+        }else{
+            var groups_of_quiz = this.state.theQuiz['groups']
+            groups_of_quiz.push(group)
+            this.setState({
+                theQuiz : {...this.state.theQuiz, 'groups' : [...groups_of_quiz]}
+            })
+        }
+    }
     handlePreview = () =>{
         document.getElementsByClassName('preview-content')[0].style.display = "block"
         document.getElementsByClassName('preview-finish-content')[0].style.display = "flex"
@@ -619,7 +637,12 @@ export default class TestMakerDashboard extends React.Component {
                     <div class="member-content">
                         <h1>Csoportok hozzárendelése a feladatsorhoz</h1>
                         <TransferList 
+                        type="multygroup"
                         headers={['Választható','Választott']} 
+                        containedGroups={this.state.theQuiz['groups']}
+                        handleMultyGroups={this.handleMultyGroupUpdate}
+                        groupBase ={this.state.allGroupsOfTests}
+                        usedIDs={this.state.theQuiz['groups']}
                         />
                         
                         <h1>Felhasználók hozzárendelése a csoportokhoz</h1>

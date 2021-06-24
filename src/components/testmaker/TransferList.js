@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Component } from "react"
 import 'firebase/firestore'
 import '../../css/TransferList.css'
-import Modal from '@material-ui/core/Modal';
 
 export default class TransferList extends React.Component {
 
@@ -36,6 +35,13 @@ export default class TransferList extends React.Component {
                     return obj.id === id
                 })
                 this.props.handleModul(result[0], false)
+            }
+            else if(this.props.type === 'multygroup'){
+                var id = event.target.id
+                var result = this.props.groupBase.filter(obj => {
+                    return obj.name === id
+                })
+                this.props.handleMultyGroups(result[0], false)
             }else{
                 var id = event.target.id
                 var result = this.props.group.filter(obj => {
@@ -76,6 +82,14 @@ export default class TransferList extends React.Component {
                     return obj['id'] === leftId
                 })
                 this.props.handleModul(result[0], true)
+            }
+            else if(this.props.type === 'multygroup'){
+                var id = event.target.id
+                var leftId = id.replace('-right','')
+                var result = this.props.containedGroups.filter(obj => {
+                    return obj['name'] === leftId
+                })
+                this.props.handleMultyGroups(result[0], true)
             }else{
                 var id = event.target.id
                 var leftId = id.replace('-right','')
@@ -213,7 +227,20 @@ export default class TransferList extends React.Component {
                             })
                         ) 
                         : 
-                        (
+                        ( this.props.type === 'multygroup'? (
+                            this.props.groupBase.map((group,index) =>{
+                                return(
+                                    <div class={"left-item transfer-item".concat(this.props.usedIDs.includes(group['name'])? " active-transferlist-item" : '')}
+                                    key={group['name']}>
+                                        <div class="transferlist-item-checkbox" >
+                                            <input type="checkbox" id={group['name']} onChange={this.handleChangeLeft}/>
+                                        </div>
+                                        <div class="transferlist-item-parameters">
+                                            {group['name']}
+                                        </div>
+                                    </div>)
+                            })
+                        ) : (
                             this.props.questions.map((question,index) =>{
                                 return(
                                 <div class={"left-item transfer-item".concat(this.props.usedIDs.includes(question['id'])? " active-transferlist-item" : '')} 
@@ -227,7 +254,7 @@ export default class TransferList extends React.Component {
                                     </div>
                                 </div>)
                             })
-                        )}
+                        ))}
                     </div>
                 </div>
                 <div class="right-transferlist">
@@ -241,33 +268,48 @@ export default class TransferList extends React.Component {
                         (
                             this.props.containedMembers.map((member) =>{
                                 return(
-                                <div class="right-item transfer-item" key={member['id'] + '-right'}>
-                                    <div class="transferlist-item-checkbox">
-                                        <input type="checkbox" id={member['id'] + '-right'} defaultChecked onChange={this.handleChangeRight}/>
+                                    <div class="right-item transfer-item" key={member['id'] + '-right'}>
+                                        <div class="transferlist-item-checkbox">
+                                            <input type="checkbox" id={member['id'] + '-right'} defaultChecked onChange={this.handleChangeRight}/>
+                                        </div>
+                                        <div class="transferlist-item-parameters">
+                                            {member['name'] + ' [' + member['title'] + ']'}
+                                        </div>
                                     </div>
-                                    <div class="transferlist-item-parameters">
-                                        {member['name'] + ' [' + member['title'] + ']'}
-                                    </div>
-                                </div>)
+                                )
                             })
                         ) 
                         : 
-                        (
-                            this.props.containedQuestions ? (
-                            this.props.containedQuestions.map((question) =>{
+                        ( this.props.type === 'multygroup'? (
+                            this.props.containedGroups.map((group) =>{
                                 return(
-                                <div class="right-item transfer-item" key={question['id']  + '-right'}>
-                                    <div class="transferlist-item-checkbox">
-                                        <input type="checkbox" id={question['id']  + '-right'} defaultChecked onChange={this.handleChangeRight}/>
+                                    <div class="right-item transfer-item
+                                    " key={group['name'] + '-right'}>
+                                        <div class="transferlist-item-checkbox">
+                                            <input type="checkbox" id={group['name'] + '-right'} defaultChecked onChange={this.handleChangeRight}/>
+                                        </div>
+                                        <div class="transferlist-item-parameters">
+                                            {group['name']}
+                                        </div>
                                     </div>
-                                    <div class="transferlist-item-parameters" id={question['id']  + '-data'} onClick={this.handleQuestionData}>
-                                        {question['question'].substring(0,50) + '...'}
-                                    </div>
-                                </div>)
-                            })) : (
-                                null
-                            )
-                        )}
+                                )
+                            })
+                        ) : (
+                            this.props.containedQuestions ? (
+                                this.props.containedQuestions.map((question) =>{
+                                    return(
+                                    <div class="right-item transfer-item" key={question['id']  + '-right'}>
+                                        <div class="transferlist-item-checkbox">
+                                            <input type="checkbox" id={question['id']  + '-right'} defaultChecked onChange={this.handleChangeRight}/>
+                                        </div>
+                                        <div class="transferlist-item-parameters" id={question['id']  + '-data'} onClick={this.handleQuestionData}>
+                                            {question['question'].substring(0,50) + '...'}
+                                        </div>
+                                    </div>)
+                                })) : (
+                                    null
+                                )
+                        ))}
                     </div>
                 </div>
             </div>
@@ -292,13 +334,16 @@ TransferList.defaultProps = {
         headers : ['Választható', 'Választott'],
         questions : [],
         group: [],
+        groupBase : [],
         type: 'questions',
         actModul : undefined,
         handleGroup : undefined,
         handleModul : undefined,
+        handleMultyGroups : undefined,
         containedQuestions : undefined,
         containedMembers : undefined,
+        containedGroups : [],
         actQuiz : undefined,
         usedIDs : [],
-        act_group : 'default'
+        act_group : 'default',
 }
