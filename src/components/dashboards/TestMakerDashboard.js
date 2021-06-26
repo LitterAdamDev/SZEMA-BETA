@@ -728,12 +728,12 @@ export default class TestMakerDashboard extends React.Component {
                 </div>
             </div>
             <footer>
-                <Typography variant="h6" align="center" gutterBottom>
-                    SZEMA
-                </Typography>
-                <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-                    Széchenyi István Egyetem
-                </Typography>
+            <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+              <strong>SZEMA - </strong>Széchenyi István Egyetem
+          </Typography>
+          <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+              Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089 
+          </Typography>
             </footer>
         </>
         )

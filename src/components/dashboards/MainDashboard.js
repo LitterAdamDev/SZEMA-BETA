@@ -169,6 +169,16 @@ class CreateTestDashboard extends React.Component {
           </Container>
           </div>
         </main>
+        {/* Footer */}
+        <footer className={classes.footer}>
+        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+              <strong>SZEMA - </strong>Széchenyi István Egyetem
+          </Typography>
+          <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+              Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089 
+          </Typography>
+        </footer>
+        {/* End footer */}
       </React.Fragment>
     );
   }

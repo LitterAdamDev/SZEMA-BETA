@@ -53,7 +53,7 @@ const useStyles = (theme) => ({
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
+    padding: theme.spacing(2),
   },
 });
 
@@ -139,13 +139,12 @@ class NewsDashboard extends React.Component {
         </main>
         {/* Footer */}
         <footer className={classes.footer}>
-          <Typography variant="h6" align="center" gutterBottom>
-            SZEMA
+        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+              <strong>SZEMA - </strong>Széchenyi István Egyetem
           </Typography>
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-              Széchenyi István Egyetem
+              Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089 
           </Typography>
-          
         </footer>
         {/* End footer */}
       </React.Fragment>

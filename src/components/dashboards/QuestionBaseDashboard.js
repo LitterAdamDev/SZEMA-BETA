@@ -381,7 +381,9 @@ class QuestionBaseDashboard extends React.Component {
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
               <strong>SZEMA - </strong>Széchenyi István Egyetem
           </Typography>
-          
+          <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+              Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089 
+          </Typography>
         </footer>
         {/* End footer */}
       </React.Fragment>
