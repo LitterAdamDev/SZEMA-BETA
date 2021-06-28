@@ -401,19 +401,20 @@ export default class TestMakerDashboard extends React.Component {
     handleMultyGroupUpdate = (group, remove) =>{
         if(remove === true){
             var groups_of_quiz = this.state.theQuiz['groups']
-            var pos = groups_of_quiz.findIndex(obj => obj['name'] === group['name'])
+            var pos = groups_of_quiz.findIndex(obj => obj === group)
             if (pos > -1) {
                 groups_of_quiz.splice(pos, 1);
                 this.setState({
                     theQuiz : {...this.state.theQuiz, 'groups' : [...groups_of_quiz]}
-                })
+                },()=>{console.log(this.state.theQuiz['groups'])})
             }
+            
         }else{
             var groups_of_quiz = this.state.theQuiz['groups']
             groups_of_quiz.push(group)
             this.setState({
                 theQuiz : {...this.state.theQuiz, 'groups' : [...groups_of_quiz]}
-            })
+            },()=>{console.log(this.state.theQuiz['groups'])})
         }
     }
     handlePreview = () =>{

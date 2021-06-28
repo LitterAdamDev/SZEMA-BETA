@@ -71,8 +71,7 @@ const useStyles = (theme) => ({
     backgroundColor: 'white',
     backgroundImage: `url(${backgroundIMG})`,
     backgroundAttachement: 'fixed',
-    backgroundRepeat: 'repeat',
-    background: '100%',
+    backgroundRepeat: 'cover', 
     padding: theme.spacing(8, 0, 6),
     backgroundSize: 'auto'
   },
