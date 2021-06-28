@@ -37,7 +37,7 @@ export default class TestMakerDashboard extends React.Component {
           valueSelect: undefined,
           testType: undefined,
           testName: undefined,
-          theQuiz : {IsZH: false, quizName: "", groups: ['default'], modules: []},
+          theQuiz : {IsZH: false, quizName: "", groups: [], modules: []},
           modules : [
                         { value: 'első', label: 'Modul_0' },
                         { value: 'második', label: 'Modul_1' },
@@ -103,22 +103,19 @@ export default class TestMakerDashboard extends React.Component {
           })
           var allGroups = []
           data_from_web[0]['IDs'].map((data) =>{
-            allGroups.push({'value' : data, 'label' : data})
-            var myArray = this.state.memberBase.filter(function( obj ) {
-                if(data === 'default'){
-                    return true
-                }else{
+            if(data !== 'default'){
+                allGroups.push({'value' : data, 'label' : data})
+                var myArray = this.state.memberBase.filter(function( obj ) {
                     if(obj.hasOwnProperty('group')){
                         return obj.group === data ;
                     }else{
                         return false
                     }
-                }
-            });
-            this.setState({
-                allGroupsOfTests : [...this.state.allGroupsOfTests,{'name' : data, 'members' : myArray}]
-            })
-            
+                });
+                this.setState({
+                    allGroupsOfTests : [...this.state.allGroupsOfTests,{'name' : data, 'members' : myArray}]
+                })
+            }
           })
           this.setState({
             groups : [...allGroups]

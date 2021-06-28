@@ -212,13 +212,13 @@ export default class TransferList extends React.Component {
                         (
                             this.props.group.map((member) =>{
                                 return(
-                                <div class={"left-item transfer-item".concat(member['group'] === this.props.act_group ? " active-transferlist-item" : '')}
+                                <div class={"left-item transfer-item".concat(member['group'] !== undefined? " active-transferlist-item" : '')}
                                 key={member['id']}>
                                     <div class="transferlist-item-checkbox" >
                                         <input type="checkbox" id={member['id']} onChange={this.handleChangeLeft}/>
                                     </div>
                                     <div class="transferlist-item-parameters">
-                                        {member['name'] + ' [' + member['title'] + ']'}
+                                        {member['group'] !== undefined ? member['name'] + ' [' + member['title'] + ' / ' + member['group'] + ']' :  member['name'] + ' [' + member['title'] + ']'}
                                     </div>
                                 </div>)
                             })
