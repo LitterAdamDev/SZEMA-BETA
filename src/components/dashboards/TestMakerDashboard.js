@@ -64,6 +64,7 @@ export default class TestMakerDashboard extends React.Component {
           actGroup : [],
           allGroupsOfTests : [],
           open_ng_dialog : false,
+          basic_group_infos : [],
       };
     }
     compare( a, b ) {
@@ -100,6 +101,13 @@ export default class TestMakerDashboard extends React.Component {
           snapshot.forEach(doc => {
             const data = doc.data()
             data_from_web.push({...data,id:doc.id})
+          })
+          Object.keys(data_from_web[0]).map((key) =>{
+              if(!['id','IDs'].includes(key)){
+                  this.setState({
+                      basic_group_infos : [...this.state.basic_group_infos,{ 'name' : key, 'data' : data_from_web[0][key]}]
+                  })
+              }
           })
           var allGroups = []
           data_from_web[0]['IDs'].map((data) =>{
@@ -498,8 +506,9 @@ export default class TestMakerDashboard extends React.Component {
     }
     handleAddGroup = (group) =>{
         this.setState({
-            allGroupsOfTests : [...this.state.allGroupsOfTests,group]
-        })
+            basic_group_infos : [...this.state.basic_group_infos,group],
+            allGroupsOfTests : [...this.state.allGroupsOfTests,{'name' : group['name'], 'members' : []}]
+        },()=>{console.log(this.state.allGroupsOfTests)})
     }
     render(){
         return(
@@ -661,11 +670,11 @@ export default class TestMakerDashboard extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <a>
+                            {/*<a>
                                 <div class="center-fullwidth">
                                         <AddGroupDialog handleGroup={this.handleAddGroup}/>
                                 </div>
-                            </a>
+                            </a>*/}
                         </form>
                         <TransferList 
                         headers={['Választható','Választott']} 

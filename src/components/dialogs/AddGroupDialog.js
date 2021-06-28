@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,6 +11,11 @@ import 'firebase/firestore';
 import SaveDialog from './SaveDialog';
 import Select from 'react-select'
 import Tooltip from '@material-ui/core/Tooltip';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -36,6 +40,11 @@ export default function AddGroupDialog({handleGroup}) {
   };
 
   const handleClose = () => {
+    setOpen(false);
+  };
+  const handleSave = () =>{
+    let obj = { 'name' : valueName, 'data' : [valueImage, valueDescription, valueOwner]};
+    handleGroup(obj);
     setOpen(false);
   };
 
@@ -68,12 +77,12 @@ export default function AddGroupDialog({handleGroup}) {
             </Typography>
           </Toolbar>
         </AppBar>
-            <div style={{display: "inline-flex", justifyContent: "center",alignContent:"center", margin:"auto", width:"80%", height:"400px", paddingTop:"20px"}}>
+            <div class="add-group-dialog-main">
                 <div class="center-fullwidth">
                     <div class="select-multy">
                         <Select width="50%" 
                         id="test-select" 
-                        placeholder="Picture picker" 
+                        placeholder="Picture picker..." 
                         />
                     </div>
                 </div>
@@ -88,6 +97,14 @@ export default function AddGroupDialog({handleGroup}) {
                 </div>
 
             </div>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Mégse
+              </Button>
+              <Button onClick={handleSave} color="primary">
+                Létrehozás
+              </Button>
+            </DialogActions>
       </Dialog>
       </>
   );

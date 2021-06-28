@@ -130,6 +130,7 @@ footer{
 .member-content{
     text-align: center;
     padding: 30px;
+    transform: none;
     width: 100%;
     min-height: 20vh;
     box-sizing: border-box;
@@ -300,4 +301,16 @@ var{
 }
 .back-preview-button{
     margin-right: 2.5vw;
+}
+.add-group-dialog-main{
+    display: flex;
+    place-content: center;
+    margin: auto;
+    width: 80%;
+    height: 400px;
+    padding-top: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: stretch;
+    justify-content: space-evenly;
 }
