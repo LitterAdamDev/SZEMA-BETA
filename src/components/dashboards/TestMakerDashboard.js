@@ -164,7 +164,7 @@ export default class TestMakerDashboard extends React.Component {
             all_quiz.push(current_quiz)
             this.setState({
                 everyDataTogetherOfQuizzes : all_quiz
-            },()=>{console.log('quiz');console.log(current_quiz)})
+            })
         })
     }
     handleStart = () =>{
@@ -300,50 +300,7 @@ export default class TestMakerDashboard extends React.Component {
     }
     
     handleChange = (newValue, actionMeta) => {
-        
-        this.state.valueSelect = newValue['value']
-        if(this.state.valueSelect != 'uj'){
-            document.getElementsByClassName('new')[0].style.display = "block"
-            document.getElementsByClassName('edit')[0].style.display = "block"
-            document.getElementsByClassName('new')[1].style.display = "block"
-            document.getElementsByClassName('edit')[1].style.display = "block"
-            let arr = document.getElementsByClassName('choose-testattr')
-            for(let i = 0; i < arr.length; i++){
-                arr[i].style.display = 'none'
-            }
-            document.getElementById('edit').checked = true
-            /*Inicializálni kell a tesztet EDITeléshez*/ 
-            var Current_Quiz = undefined 
-            var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === this.state.valueSelect)
-            if (pos > -1) {
-                Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
-                this.setState({
-                    testType : 'EDIT_TEST',
-                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules']}
-                }, () =>{
-                    if(this.state.actModul === 0){
-                        this.handleAddModul()
-                    }
-                })
-            }
-        }else{
-            document.getElementsByClassName('new')[0].style.display = "none"
-            document.getElementsByClassName('edit')[0].style.display = "none"
-            document.getElementsByClassName('new')[1].style.display = "none"
-            document.getElementsByClassName('edit')[1].style.display = "none"
-            let arr = document.getElementsByClassName('choose-testattr')
-            for(let i = 0; i < arr.length; i++){
-                arr[i].style.display = 'flex'
-            }
-            this.setState({
-                testType : 'NEW_TEST',
-                 theQuiz : {...this.state.theQuiz,'quizName' : ''}
-            }, () =>{
-                if(this.state.actModul === 0){
-                    this.handleAddModul()
-                }
-            })
-        }
+        /* ZH opcio megjelenitese*/
         if(newValue['value'] !== undefined){
             this.setState({
                 actModul : this.state.theQuiz['modules'].length
@@ -352,6 +309,56 @@ export default class TestMakerDashboard extends React.Component {
             document.getElementsByClassName('zh')[0].style.display = "block"
             document.getElementsByClassName('zh')[1].style.display = "block"
         }
+        
+        if(newValue['value'] === 'uj'){
+            /*Uj kerdessor letrehozasa*/
+            document.getElementsByClassName('new')[0].style.display = "none"
+            document.getElementsByClassName('edit')[0].style.display = "none"
+            document.getElementsByClassName('new')[1].style.display = "none"
+            document.getElementsByClassName('edit')[1].style.display = "none"
+            let arr = document.getElementsByClassName('choose-testattr')
+            for(let i = 0; i < arr.length; i++){
+                arr[i].style.display = 'flex'
+            }
+
+            this.setState({
+                testType : 'NEW_TEST',
+                theQuiz : {'IsZH': false, 'quizName': "", 'groups': [], 'modules': [], 'DocDetails' : ["","",""], 'Module_Fields' : []}
+            }, () =>{
+                if(this.state.actModul === 0){
+                    this.handleAddModul()
+                }
+            })
+        }else{
+            /*Meglevo kerdessor modositasa*/
+            document.getElementsByClassName('new')[0].style.display = "block"
+            document.getElementsByClassName('edit')[0].style.display = "block"
+            document.getElementsByClassName('new')[1].style.display = "block"
+            document.getElementsByClassName('edit')[1].style.display = "block"
+            let arr = document.getElementsByClassName('choose-testattr')
+            for(let i = 0; i < arr.length; i++){
+                arr[i].style.display = 'flex'
+            }
+            document.getElementById('edit').checked = true
+            var Current_Quiz = undefined 
+            var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === newValue['value'])
+            if (pos > -1) {
+                Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
+                this.setState({
+                    testType : 'EDIT_TEST',
+                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules']}
+                }, () =>{
+                    console.log(this.state.theQuiz)
+                    if(this.state.actModul === 0){
+                        this.handleAddModul()
+                    }
+                })
+            }
+
+        }
+        this.setState({
+            actModul : 0
+        })
         this.countAll()
     };
     handleGroupUpdate = (member, remove) =>{
@@ -652,7 +659,7 @@ export default class TestMakerDashboard extends React.Component {
                     </div>
                     <br/>
                     <div class="question-content">
-                        <h1 onClick={() => { console.log('Modules'); console.log(this.state.everyDataTogetherOfQuizzes)}}>Kérdések hozzáadása a feladatsorhoz</h1>
+                        <h1 onClick={() => { console.log('Modules'); console.log(this.state.theQuiz)}}>Kérdések hozzáadása a feladatsorhoz</h1>
                         <form>
                             <div class="center-fullwidth">
                                 <div class="select-multy">
