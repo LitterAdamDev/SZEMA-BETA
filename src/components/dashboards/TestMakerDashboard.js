@@ -263,7 +263,7 @@ export default class TestMakerDashboard extends React.Component {
         }
         this.countAll()
     }
-    componentDidMount(){
+    handleUsedQuestionIDs = () =>{
         this.state.theQuiz['modules'].map((modul, modul_index) =>{
             var contained = modul['questions']
             contained.map((question, question_index) =>{
@@ -296,6 +296,9 @@ export default class TestMakerDashboard extends React.Component {
                 })
             })
         })
+    }
+    componentDidMount(){
+        this.handleUsedQuestionIDs()
         this.countAll()
     }
     
@@ -348,7 +351,8 @@ export default class TestMakerDashboard extends React.Component {
                     testType : 'EDIT_TEST',
                     theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules']}
                 }, () =>{
-                    console.log(this.state.theQuiz)
+                    
+                    this.handleUsedQuestionIDs()
                     if(this.state.actModul === 0){
                         this.handleAddModul()
                     }
@@ -698,7 +702,7 @@ export default class TestMakerDashboard extends React.Component {
                                     <div>
                                         /
                                     </div>
-                                    <div class="all-modul">
+                                    <div key={this.state.theQuiz['modules'].length}class="all-modul">
                                         {this.state.theQuiz['modules'].length}
                                     </div>
                                 </div>
@@ -723,6 +727,7 @@ export default class TestMakerDashboard extends React.Component {
                         </form>
                         <div class="transferlist">
                             <TransferList 
+                                key={this.state.usedQuestionsIDs.length+'B34'}
                                 headers={['Választható','Választott']} 
                                 type='questions' 
                                 containedQuestions={this.state.theQuiz['modules'][this.state.actModul-1] ? this.state.theQuiz['modules'][this.state.actModul-1]['questions'] : []} 
