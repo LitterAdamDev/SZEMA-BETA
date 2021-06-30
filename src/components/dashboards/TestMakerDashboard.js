@@ -304,6 +304,9 @@ export default class TestMakerDashboard extends React.Component {
     
     setupBackend = (newValue, actionMeta) => {
         /* ZH opcio megjelenitese*/
+        this.setState({
+            valueSelect : newValue['value']
+        })
         if(newValue['value'] !== undefined){
             document.getElementsByClassName('question-content')[0].style.display = "contents"
             document.getElementsByClassName('zh')[0].style.display = "block"
@@ -518,18 +521,29 @@ export default class TestMakerDashboard extends React.Component {
         //pass
     };
     handleTypeChange = (event) => {
+        console.log("event: " + event.target.value)
         this.setState({
             testType : event.target.value
         }, () =>{
+            console.log(this.state.testType)
             if(this.state.actModul === 0){
                 this.handleAddModul()
             }
+            if(this.state.testType === 'EDIT_TEST'){
+                var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === this.state.valueSelect)
+                if (pos > -1) {
+                    var Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
+                    this.setState({
+                        theQuiz: {...this.state.theQuiz, 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails']},
+                    })
+                }
+            }else if(this.state.testType === 'TEMPLATE_TEST'){
+                this.setState({
+                    theQuiz: {...this.state.theQuiz, 'DocDetails' : ["","",""], 'quizName' : ''}
+                })
+            }
         })
-        if(this.state.testType == 'EDIT_TEST'){
-            document.getElementsByClassName('choose-testname')[0].style.display = "none";
-        }else if(this.state.testType == 'TEMPLATE_TEST'){
-            document.getElementsByClassName('choose-testname')[0].style.display = "flex";
-        }
+        
     }
     handleZHChange = (event) => {
         if(event.target.checked){
@@ -656,7 +670,7 @@ export default class TestMakerDashboard extends React.Component {
                     </div>
                     <br/>
                     <div class="question-content">
-                        <h1 onClick={() => { console.log('Modules'); console.log(this.state.theQuiz)}}>Kérdések hozzáadása a feladatsorhoz</h1>
+                        <h1 onClick={() => { console.log('testtype'); console.log(this.state.testType)}}>Kérdések hozzáadása a feladatsorhoz</h1>
                         <form>
                             <div class="center-fullwidth">
                                 <div class="select-multy">
@@ -811,7 +825,7 @@ export default class TestMakerDashboard extends React.Component {
                                     Vissza
                                 </button>
                             </a>
-                            <a>
+                            <a href="/createtest">
                                 <button onClick={this.handleFinish} class="finish-button">
                                     Mentés
                                 </button>
