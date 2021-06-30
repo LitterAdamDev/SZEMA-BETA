@@ -154,7 +154,7 @@ export default class TestMakerDashboard extends React.Component {
                 const data = doc.data()
                 current_quiz['modules'][index_of_module]['questions'] = [...current_quiz['modules'][index_of_module]['questions'],{...data, 'fb-id': doc.id}]
                 this.setState({
-                    questionBase : [...this.state.questionBase,{...data, 'fb-id': doc.id}], //itt majd törölni kell az 1-et
+                    questionBase : [...this.state.questionBase,{...data, 'fb-id': doc.id}],
                 })
               })
             })
@@ -264,13 +264,15 @@ export default class TestMakerDashboard extends React.Component {
         this.countAll()
     }
     handleUsedQuestionIDs = () =>{
+        console.log(this.state.theQuiz['modules'].length)
+        var allIDs = []
         this.state.theQuiz['modules'].map((modul, modul_index) =>{
-            var contained = modul['questions']
-            contained.map((question, question_index) =>{
-                var result = this.state.questionBase.filter(obj => {
+            modul['questions'].map((question, question_index) =>{
+                allIDs.push(question['id'])
+               /* var result = this.state.questionBase.filter(obj => {
                     return obj.id === question['id']
                 })
-                if(result[0]){
+                    if(result[0]){
                     for (const key in result[0]) {
                         
                         let must_update = false
@@ -289,25 +291,20 @@ export default class TestMakerDashboard extends React.Component {
                             })
                         }
                     }
-                }
-                this.setState({
-                    usedQuestions : [...this.state.usedQuestions, this.state.theQuiz['modules'][modul_index]['questions'][question_index]],
-                    usedQuestionsIDs : [...this.state.usedQuestionsIDs, this.state.theQuiz['modules'][modul_index]['questions'][question_index]['id']]
-                })
+                }*/
             })
+        })
+        this.setState({
+            usedQuestionsIDs : [...allIDs]
         })
     }
     componentDidMount(){
-        this.handleUsedQuestionIDs()
         this.countAll()
     }
     
-    handleChange = (newValue, actionMeta) => {
+    setupBackend = (newValue, actionMeta) => {
         /* ZH opcio megjelenitese*/
         if(newValue['value'] !== undefined){
-            this.setState({
-                actModul : this.state.theQuiz['modules'].length
-            })
             document.getElementsByClassName('question-content')[0].style.display = "contents"
             document.getElementsByClassName('zh')[0].style.display = "block"
             document.getElementsByClassName('zh')[1].style.display = "block"
@@ -326,11 +323,11 @@ export default class TestMakerDashboard extends React.Component {
 
             this.setState({
                 testType : 'NEW_TEST',
-                theQuiz : {'IsZH': false, 'quizName': "", 'groups': [], 'modules': [], 'DocDetails' : ["","",""], 'Module_Fields' : []}
+                theQuiz : {...this.state.theQuiz,'IsZH': false, 'quizName': "", 'groups': [], 'modules': [], 'DocDetails' : ["","",""], 'Module_Fields' : []},
+                actModul : 1
             }, () =>{
-                if(this.state.actModul === 0){
                     this.handleAddModul()
-                }
+                    this.handleUsedQuestionIDs()
             })
         }else{
             /*Meglevo kerdessor modositasa*/
@@ -349,20 +346,16 @@ export default class TestMakerDashboard extends React.Component {
                 Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
                 this.setState({
                     testType : 'EDIT_TEST',
-                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules']}
+                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules']},
+                    actModul : 1
                 }, () =>{
-                    
-                    this.handleUsedQuestionIDs()
                     if(this.state.actModul === 0){
                         this.handleAddModul()
                     }
+                    this.handleUsedQuestionIDs()
                 })
             }
-
         }
-        this.setState({
-            actModul : 0
-        })
         this.countAll()
     };
     handleGroupUpdate = (member, remove) =>{
@@ -627,7 +620,7 @@ export default class TestMakerDashboard extends React.Component {
                                     id="test-select" 
                                     placeholder="Új teszt / Sablon kiválasztása..." 
                                     options={this.state.tests} 
-                                    onChange={this.handleChange}
+                                    onChange={this.setupBackend}
                                     />
                                 </div>
                             </div>
@@ -727,7 +720,6 @@ export default class TestMakerDashboard extends React.Component {
                         </form>
                         <div class="transferlist">
                             <TransferList 
-                                key={this.state.usedQuestionsIDs.length+'B34'}
                                 headers={['Választható','Választott']} 
                                 type='questions' 
                                 containedQuestions={this.state.theQuiz['modules'][this.state.actModul-1] ? this.state.theQuiz['modules'][this.state.actModul-1]['questions'] : []} 

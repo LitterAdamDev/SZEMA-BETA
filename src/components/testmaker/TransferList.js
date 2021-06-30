@@ -242,6 +242,7 @@ export default class TransferList extends React.Component {
                                 return(
                                 <div class={"left-item transfer-item".concat(this.props.usedIDs.includes(question['id'])? " active-transferlist-item" : '')} 
                                      key={question['id']} 
+                                     onClick={()=>{console.log(this.props.usedIDs)}}
                                 >
                                     <div class="transferlist-item-checkbox">
                                         <input type="checkbox" id={question['id']} onChange={this.handleChangeLeft}/>
