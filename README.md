@@ -11,10 +11,10 @@
 - [x] Redirect to a homepage after authentication.
 - [x] Creating more pages example
 - [x] Database requests etc.
-- [ ] Style, design..
-- [ ] If someone delete/save the news then make it responsive so modify the components without loading the whole page.
-- [ ] etc?
-- [ ] QuestionBaseDashboard - ability to add new questions, search from the questions, modify the questions. Create specific groups and assign them with people.
+- [x] Style, design..
+- [x] If someone delete/save the news then make it responsive so modify the components without loading the whole page.
+- [x] etc?
+- [x] QuestionBaseDashboard - ability to add new questions, search from the questions, modify the questions. Create specific groups and assign them with people.
 - [x] Static concept design of questionbase has started... (Tivi)
 	- [ ] "Keresés a kérdések között" keresőmezőbe írva folyamatosan filtereződik a témakörök a kérdésekhez lista.
 	- [ ] "Keresés a témakörök között" keresőmezőbe írva folyamatosan filtereződik a kérdések listája (Csak témakörökön belül, tehát dupla szűrés!)
@@ -24,15 +24,15 @@
 	- [ ] Kérdés létrehozásakor a válaszok megadásának száma legyen opcinális, aszerint jelenjenek meg a válaszadás lehetőség fieldek.
 	- [ ] Új hozzáadásának lehetősége
 	- [ ] "Kérdések a ... témában" egy adott kérdére kattintva, betölti az adatokat a "kérdés létrehozása (ennek kérdés kezelésnek kellene lennie akkor)" régióba, ahol lehetőség van szerkeszteni az adott kérdést, vagy akár törölni egy gombbal. Tehát törlés, hozzáadás gomb.
-- [ ] CreateTestDashboard - Compile tests (from questions) and add students (students in groups). 2 type of test: 1. In current firebase collection (necessary) 2. Exam tests - must have a new collection and you can add it to the groups.
-- [ ] Rules by Geri.
+- [x] CreateTestDashboard - Compile tests (from questions) and add students (students in groups). 2 type of test: 1. In current firebase collection (necessary) 2. Exam tests - must have a new collection and you can add it to the groups.
+- [-] Rules by Geri.
 
 #### Adamdev-rol:
-- [ ]  Authentication nem nezi a user title-t (PRIO I.)
-- [ ]  Dashboardokat lehet muvelni, lehetoleg hasonlo kiindulassal, material-ui/core-icons ready to use
-- [ ]  Elkell donteni hogy kell-e meg dashboard vagy megoldjuk popup dialoggal.
-- [ ]  Logout dialog error (still works, falura jo lesz)
-- [ ]  Refresh,routing -> Nem varja meg az authentication-t (felugrik a bejelentkezes,csunya de PRIO 10000)
+- [x]  Authentication nem nezi a user title-t (PRIO I.)
+- [x]  Dashboardokat lehet muvelni, lehetoleg hasonlo kiindulassal, material-ui/core-icons ready to use
+- [x]  Elkell donteni hogy kell-e meg dashboard vagy megoldjuk popup dialoggal.
+- [x]  Logout dialog error (still works, falura jo lesz)
+- [x]  Refresh,routing -> Nem varja meg az authentication-t (felugrik a bejelentkezes,csunya de PRIO 10000)
 
 
 
