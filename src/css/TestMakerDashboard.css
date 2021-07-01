@@ -329,3 +329,6 @@ var{
     align-content: stretch;
     justify-content: space-evenly;
 }
+.delete-button{
+    display: none;
+}

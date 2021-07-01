@@ -338,6 +338,7 @@ export default class TestMakerDashboard extends React.Component {
             document.getElementsByClassName('edit')[1].style.display = "none"
             document.getElementsByClassName('zh')[0].style.display = "block"
             document.getElementsByClassName('zh')[1].style.display = "block"
+            document.getElementsByClassName('delete-button')[0].style.display = 'none'
             let arr = document.getElementsByClassName('choose-testattr')
             for(let i = 0; i < arr.length; i++){
                 arr[i].style.display = 'flex'
@@ -352,7 +353,9 @@ export default class TestMakerDashboard extends React.Component {
                     this.handleUsedQuestionIDs()
             })
         }else{
+            
             /*Meglevo kerdessor modositasa*/
+            document.getElementsByClassName('delete-button')[0].style.display = 'flex'
             document.getElementsByClassName('new')[0].style.display = "block"
             document.getElementsByClassName('edit')[0].style.display = "block"
             document.getElementsByClassName('new')[1].style.display = "block"
@@ -561,6 +564,7 @@ export default class TestMakerDashboard extends React.Component {
                 
             document.getElementsByClassName('zh')[0].style.display = "none"
             document.getElementsByClassName('zh')[1].style.display = "none"
+            document.getElementsByClassName('delete-button')[0].style.display = 'flex'
                 var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === this.state.valueSelect)
                 if (pos > -1) {
                     var Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
@@ -571,6 +575,7 @@ export default class TestMakerDashboard extends React.Component {
             }else if(this.state.testType === 'TEMPLATE_TEST'){
                 document.getElementsByClassName('zh')[0].style.display = "block"
                 document.getElementsByClassName('zh')[1].style.display = "block"
+                document.getElementsByClassName('delete-button')[0].style.display = 'none'
                 this.setState({
                     theQuiz: {...this.state.theQuiz, 'DocDetails' : ["","",""], 'quizName' : ''}
                 })
@@ -706,7 +711,7 @@ export default class TestMakerDashboard extends React.Component {
                                 <label for="zh" class="zh" > Zárthelyi dolgozat</label><br/>
                             </div>
                             <div class="center-fullwidth">
-                                <DeleteQuizDialog action={this.setupBackend} folder={this.state.actTest['folder']} name={this.state.actTest['label']}/>
+                                <DeleteQuizDialog id="deleteQuizDialog" action={this.setupBackend} folder={this.state.actTest['folder']} name={this.state.actTest['label']}/>
                             </div>
                         </form>
                     </div>
