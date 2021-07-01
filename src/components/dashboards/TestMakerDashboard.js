@@ -190,7 +190,7 @@ export default class TestMakerDashboard extends React.Component {
             modul['questions'].map((question) =>{
                 quiz[modul['name']][0] = quiz[modul['name']][0] === "" ? quiz[modul['name']][0] + question['fb-id'] : quiz[modul['name']][0] + ":" + question['fb-id']
             })
-            quiz[modul['name']][1] = modul['name']
+            quiz[modul['name']][1] = (modul['name'][modul['name'].length-1] === '1')? 'none' : 'Module_' + (Number(modul['name'][modul['name'].length-1]) -1)
             quiz[modul['name']][2] = ""  //ide kell majd egy kép URL
             quiz[modul['name']][3] = "ide kellen valami leírás" //ide meg leírás
             quiz[modul['name']][4] = modul['name'].substr(0, modul['name'].indexOf('_')-1) + " " + modul['name'].substr(modul['name'].length-1)
