@@ -54,6 +54,7 @@ export default class TestMakerDashboard extends React.Component {
           allGroupsOfTests : [],
           open_ng_dialog : false,
           basic_group_infos : [],
+          save_ready : true,
       };
     }
     compare( a, b ) {
@@ -264,7 +265,6 @@ export default class TestMakerDashboard extends React.Component {
         this.countAll()
     }
     handleUsedQuestionIDs = () =>{
-        console.log(this.state.theQuiz['modules'].length)
         var allIDs = []
         this.state.theQuiz['modules'].map((modul, modul_index) =>{
             modul['questions'].map((question, question_index) =>{
@@ -303,6 +303,7 @@ export default class TestMakerDashboard extends React.Component {
     }
     
     setupBackend = (newValue, actionMeta) => {
+        console.log(actionMeta)
         /* ZH opcio megjelenitese*/
         this.setState({
             valueSelect : newValue['value']
@@ -499,9 +500,18 @@ export default class TestMakerDashboard extends React.Component {
         }
     };
     handleNameChange = (event) => {
-        this.setState({
-            theQuiz : {...this.state.theQuiz,'quizName' : event.target.value}
+
+        var names = this.state.everyDataTogetherOfQuizzes.map((quiz) =>{
+            return quiz['id']
         })
+        if(names.includes(event.target.value) && ['TEMPLATE_TEST','NEW_TEST'].includes(this.state.testType)){
+            document.getElementById(event.target.id).style.backgroundColor = 'red'
+        }else{
+            document.getElementById(event.target.id).style.backgroundColor = 'white'
+            this.setState({
+                theQuiz : {...this.state.theQuiz,'quizName' : event.target.value}
+            })
+        }
     };
     handleFolderNameChange = (event) => {
         var DocDetails = this.state.theQuiz['DocDetails']
@@ -521,11 +531,9 @@ export default class TestMakerDashboard extends React.Component {
         //pass
     };
     handleTypeChange = (event) => {
-        console.log("event: " + event.target.value)
         this.setState({
             testType : event.target.value
         }, () =>{
-            console.log(this.state.testType)
             if(this.state.actModul === 0){
                 this.handleAddModul()
             }
@@ -659,9 +667,9 @@ export default class TestMakerDashboard extends React.Component {
                                 </div>
                             </div>
                             <div class="test-attributes">
-                                <input type="radio" class="edit" id="edit" onChange={this.handleTypeChange} name="test-type" value="EDIT_TEST"/>
+                                <input type="radio" class="edit" id="edit" onClick={this.handleTypeChange} name="test-type" value="EDIT_TEST"/>
                                 <label for="edit" class="edit">Szerkesztés</label><br/>
-                                <input type="radio" onChange={this.handleTypeChange} class="new" id="new" name="test-type" value="TEMPLATE_TEST"/>
+                                <input type="radio" onClick={this.handleTypeChange} class="new" id="new" name="test-type" value="TEMPLATE_TEST"/>
                                 <label for="new" class="new">Felhasználás sablonként</label><br/>
                                 <input type="checkbox" id="zh" onChange={this.handleZHChange} class="zh" name="zh" value="zh"/>
                                 <label for="zh" class="zh" > Zárthelyi dolgozat</label><br/>
