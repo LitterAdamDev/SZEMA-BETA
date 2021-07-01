@@ -10,11 +10,6 @@ import TransferList from '../testmaker/TransferList'
 import Review from '../testmaker/Review'
 import 'firebase/firestore'
 import {db} from '../../config/base'
-import Dialog from '@material-ui/core/Dialog';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import AddGroupDialog
- from "../dialogs/AddGroupDialog"
  import DeleteQuizDialog from '../dialogs/DeleteQuizDialog';
 
 function uuidv4() {
@@ -125,31 +120,34 @@ export default class TestMakerDashboard extends React.Component {
         .catch( error => console.log(error))
     }
     getQuizzes = () => {
-        db.collection('QuizFolder')
-        .get()
-        .then( snapshot => {
-          const data_from_web = []
-          const data_for_tests = []
-          snapshot.forEach(doc => {
-            const data = doc.data()
-            data_from_web.push({...data,id:doc.id})
-            data_for_tests.push({'value' : doc.id, 'label' : doc.id, 'folder': 'QuizFolder'})
-          })
-          this.setState({
-              quizzesForFS : [...data_from_web],
-              tests : [...this.state.tests, ...data_for_tests],
-              
-          },() =>{this.getQuestions()})
+        ['QuizFolder','ZHQuizFolder'].map((folder)=>{
+            db.collection(folder)
+            .get()
+            .then( snapshot => {
+              const data_from_web = []
+              const data_for_tests = []
+              snapshot.forEach(doc => {
+                const data = doc.data()
+                data_from_web.push({...data,id:doc.id})
+                data_for_tests.push({'value' : doc.id, 'label' : doc.id, 'folder': folder})
+              })
+              this.setState({
+                  quizzesForFS : [...data_from_web],
+                  tests : [...this.state.tests, ...data_for_tests],
+                  
+              },() =>{this.getQuestions(folder)})
+            })
+            .catch( error => console.log(error))
         })
-        .catch( error => console.log(error))
+        
     }
-    getQuestions = () => {
+    getQuestions = (foldername) => {
         this.state.quizzesForFS.map((quiz,index_of_quiz) =>{
             var current_quiz = quiz
             current_quiz['modules'] = []
           quiz['ModuleIDs'].map((moduleName,index_of_module) =>{
             current_quiz['modules'][index_of_module] = { 'name' : moduleName, questions : []}
-            db.collection('QuizFolder')
+            db.collection(foldername)
             .doc(quiz['id'])
             .collection(moduleName)
             .get()
@@ -320,6 +318,8 @@ export default class TestMakerDashboard extends React.Component {
             document.getElementsByClassName('question-content')[0].style.display = "contents"
         }
         if(newValue.hasOwnProperty('id')){
+            
+            document.getElementsByClassName('member-content')[0].style.display = "none"
             var pos = this.state.tests.findIndex(obj => obj['label'] === newValue['id'])
             if (pos > -1) {
                 let allTests = this.state.tests
@@ -330,7 +330,7 @@ export default class TestMakerDashboard extends React.Component {
                 })
             }
         }
-        if(newValue['value'] === 'uj'){
+        if(newValue['value'] === 'uj' || newValue.hasOwnProperty('id')){
             /*Uj kerdessor letrehozasa*/
             document.getElementsByClassName('new')[0].style.display = "none"
             document.getElementsByClassName('edit')[0].style.display = "none"
@@ -373,9 +373,12 @@ export default class TestMakerDashboard extends React.Component {
                 Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
                 this.setState({
                     testType : 'EDIT_TEST',
-                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules']},
+                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules'],'groups' : Current_Quiz['groups']},
                     actModul : 1
                 }, () =>{
+                    if(this.state.theQuiz['IsZH']){
+                        document.getElementsByClassName('member-content')[0].style.display = "contents"
+                    }
                     if(this.state.actModul === 0){
                         this.handleAddModul()
                     }
@@ -858,7 +861,7 @@ export default class TestMakerDashboard extends React.Component {
                         <div class="finish-content-results">
                         <div class="result-question">Kérdések: <var id="result-question">{this.state.questionCounter}</var></div>
                             <div class="result-points">Elérhető pontszám: <var id="result-points">{this.state.availablePoints}</var></div>
-                            <div class="result-members">Hozzárendelt csoportok: <var id="result-members">{this.state.theQuiz['groups'].length}</var></div>
+                            <div class="result-members">Hozzárendelt csoportok: <var id="result-members">{this.state.theQuiz['groups']?this.state.theQuiz['groups'].length : "0"}</var></div>
                             <div class="result-type">
                                 Feladatsor jellege: 
                                 <var id="result-type">
