@@ -15,6 +15,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import AddGroupDialog
  from "../dialogs/AddGroupDialog"
+ import DeleteQuizDialog from '../dialogs/DeleteQuizDialog';
+
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -28,7 +30,7 @@ export default class TestMakerDashboard extends React.Component {
       super(props);
       this.childRef = React.createRef();
       this.state = { 
-          tests : [{label: 'Új teszt', value: 'uj'}],
+          tests : [{label: 'Új teszt', value: 'uj', folder: ''}],
           valueSelect: undefined,
           testType: undefined,
           theQuiz : {IsZH: false, quizName: "", groups: [], modules: [], DocDetails : ["","",""], Module_Fields : []},
@@ -54,7 +56,8 @@ export default class TestMakerDashboard extends React.Component {
           allGroupsOfTests : [],
           open_ng_dialog : false,
           basic_group_infos : [],
-          save_ready : true,
+          actTest : {label: '', folder: '', value: ''},
+          replaceTestValue : undefined,
       };
     }
     compare( a, b ) {
@@ -130,7 +133,7 @@ export default class TestMakerDashboard extends React.Component {
           snapshot.forEach(doc => {
             const data = doc.data()
             data_from_web.push({...data,id:doc.id})
-            data_for_tests.push({'value' : doc.id, 'label' : doc.id})
+            data_for_tests.push({'value' : doc.id, 'label' : doc.id, 'folder': 'QuizFolder'})
           })
           this.setState({
               quizzesForFS : [...data_from_web],
@@ -174,7 +177,8 @@ export default class TestMakerDashboard extends React.Component {
         document.getElementById('main-start').style.display = "grid"
         this.getUsers()
     };
-    handleFinish = () =>{
+    handleFinish = (event) =>{
+        event.preventDefault()
         let quiz = {
             'DocDetails' : [...this.state.theQuiz['DocDetails']],
             'ModuleIDs' : this.state.theQuiz['modules'].map((modul)=>{ return modul['name']}),
@@ -193,7 +197,8 @@ export default class TestMakerDashboard extends React.Component {
             quiz[modul['name']][3] = "ide kellen valami leírás" //ide meg leírás
             quiz[modul['name']][4] = modul['name'].substr(0, modul['name'].indexOf('_')-1) + " " + modul['name'].substr(modul['name'].length-1)
         })
-        db.collection('QuizFolder')
+        let name_of_collection = this.state.theQuiz['IsZH'] ? 'ZHQuizFolder' : 'QuizFolder'
+        db.collection(name_of_collection)
         .doc(this.state.theQuiz.quizName).set(quiz)
         .then(() => {
             var batch = db.batch()
@@ -202,13 +207,17 @@ export default class TestMakerDashboard extends React.Component {
                     let questionToPush = question
                     let id = questionToPush['fb-id']
                     delete questionToPush['fb-id']
-                    batch.set(db.collection('QuizFolder').doc(this.state.theQuiz['quizName']).collection(modul['name']).doc(id), questionToPush)
+                    batch.set(db.collection(name_of_collection).doc(this.state.theQuiz['quizName']).collection(modul['name']).doc(id), questionToPush)
                 })
             })
             batch.commit()
         })
         .catch((error) => {
             console.error("Error writing document: ", error);
+        })
+        .finally(()=>{
+            document.getElementById(event.target.id).parentElement.setAttribute("href", "createtest")
+            document.getElementById(event.target.id).parentElement.click()
         });
     };
     handlePrevModul = (event) =>{
@@ -239,7 +248,6 @@ export default class TestMakerDashboard extends React.Component {
                 actModul : this.state.actModul + 1
             })
         }
-      
         this.countAll()
     }
     handleDeleteModul = (event) =>{
@@ -303,23 +311,33 @@ export default class TestMakerDashboard extends React.Component {
     }
     
     setupBackend = (newValue, actionMeta) => {
-        console.log(actionMeta)
         /* ZH opcio megjelenitese*/
         this.setState({
-            valueSelect : newValue['value']
+            valueSelect : newValue['value'],
+            actTest : newValue,
         })
         if(newValue['value'] !== undefined){
             document.getElementsByClassName('question-content')[0].style.display = "contents"
-            document.getElementsByClassName('zh')[0].style.display = "block"
-            document.getElementsByClassName('zh')[1].style.display = "block"
         }
-        
+        if(newValue.hasOwnProperty('id')){
+            var pos = this.state.tests.findIndex(obj => obj['label'] === newValue['id'])
+            if (pos > -1) {
+                let allTests = this.state.tests
+                allTests.splice(pos,1)
+                this.setState({
+                    tests : allTests,
+                    replaceTestValue :{'label': 'Új teszt', 'value': 'uj', 'folder': ''}
+                })
+            }
+        }
         if(newValue['value'] === 'uj'){
             /*Uj kerdessor letrehozasa*/
             document.getElementsByClassName('new')[0].style.display = "none"
             document.getElementsByClassName('edit')[0].style.display = "none"
             document.getElementsByClassName('new')[1].style.display = "none"
             document.getElementsByClassName('edit')[1].style.display = "none"
+            document.getElementsByClassName('zh')[0].style.display = "block"
+            document.getElementsByClassName('zh')[1].style.display = "block"
             let arr = document.getElementsByClassName('choose-testattr')
             for(let i = 0; i < arr.length; i++){
                 arr[i].style.display = 'flex'
@@ -339,6 +357,8 @@ export default class TestMakerDashboard extends React.Component {
             document.getElementsByClassName('edit')[0].style.display = "block"
             document.getElementsByClassName('new')[1].style.display = "block"
             document.getElementsByClassName('edit')[1].style.display = "block"
+            document.getElementsByClassName('zh')[0].style.display = "none"
+            document.getElementsByClassName('zh')[1].style.display = "none"
             let arr = document.getElementsByClassName('choose-testattr')
             for(let i = 0; i < arr.length; i++){
                 arr[i].style.display = 'flex'
@@ -508,10 +528,10 @@ export default class TestMakerDashboard extends React.Component {
             document.getElementById(event.target.id).style.backgroundColor = 'red'
         }else{
             document.getElementById(event.target.id).style.backgroundColor = 'white'
-            this.setState({
-                theQuiz : {...this.state.theQuiz,'quizName' : event.target.value}
-            })
         }
+        this.setState({
+            theQuiz : {...this.state.theQuiz,'quizName' : event.target.value},
+        })
     };
     handleFolderNameChange = (event) => {
         var DocDetails = this.state.theQuiz['DocDetails']
@@ -538,14 +558,19 @@ export default class TestMakerDashboard extends React.Component {
                 this.handleAddModul()
             }
             if(this.state.testType === 'EDIT_TEST'){
+                
+            document.getElementsByClassName('zh')[0].style.display = "none"
+            document.getElementsByClassName('zh')[1].style.display = "none"
                 var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === this.state.valueSelect)
                 if (pos > -1) {
                     var Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
                     this.setState({
-                        theQuiz: {...this.state.theQuiz, 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails']},
+                        theQuiz: {...this.state.theQuiz,'IsZH' : false, 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails']},
                     })
                 }
             }else if(this.state.testType === 'TEMPLATE_TEST'){
+                document.getElementsByClassName('zh')[0].style.display = "block"
+                document.getElementsByClassName('zh')[1].style.display = "block"
                 this.setState({
                     theQuiz: {...this.state.theQuiz, 'DocDetails' : ["","",""], 'quizName' : ''}
                 })
@@ -602,6 +627,11 @@ export default class TestMakerDashboard extends React.Component {
             allGroupsOfTests : [...this.state.allGroupsOfTests,{'name' : group['name'], 'members' : []}]
         })
     }
+    handleQuizDelete = () =>{
+        this.setState({
+            actQuiz : {'label': '', 'folder': '', 'value' : ''}
+        })
+    }
     render(){
         return(
         <>
@@ -635,7 +665,7 @@ export default class TestMakerDashboard extends React.Component {
             <div id="main-start">
                 <div id="main-start-wrapper">
                     <div class="choose-content">
-                        <form>
+                        <form autoComplete="off">
                             <div class="center-fullwidth">
                                 <div id="select-top">
                                     <Select width="50%" 
@@ -643,6 +673,7 @@ export default class TestMakerDashboard extends React.Component {
                                     placeholder="Új teszt / Sablon kiválasztása..." 
                                     options={this.state.tests} 
                                     onChange={this.setupBackend}
+                                    value={this.state.replaceTestValue}
                                     />
                                 </div>
                             </div>
@@ -659,7 +690,7 @@ export default class TestMakerDashboard extends React.Component {
                             <div class="choose-testattr">
                                 <div id="select-top">
                                     <Select width="50%" 
-                                    id="test-select" 
+                                    id="icon-select" 
                                     placeholder="Mappa ikon..." 
                                     value={{'label':this.state.theQuiz['DocDetails'][2], 'value' : 'placeholder'}}
                                     onChange={this.handleFolderIconChange}
@@ -671,19 +702,22 @@ export default class TestMakerDashboard extends React.Component {
                                 <label for="edit" class="edit">Szerkesztés</label><br/>
                                 <input type="radio" onClick={this.handleTypeChange} class="new" id="new" name="test-type" value="TEMPLATE_TEST"/>
                                 <label for="new" class="new">Felhasználás sablonként</label><br/>
-                                <input type="checkbox" id="zh" onChange={this.handleZHChange} class="zh" name="zh" value="zh"/>
+                                <input type="checkbox" checked={this.state.theQuiz['IsZH']} id="zh" onChange={this.handleZHChange} class="zh" name="zh" value="zh"/>
                                 <label for="zh" class="zh" > Zárthelyi dolgozat</label><br/>
+                            </div>
+                            <div class="center-fullwidth">
+                                <DeleteQuizDialog action={this.setupBackend} folder={this.state.actTest['folder']} name={this.state.actTest['label']}/>
                             </div>
                         </form>
                     </div>
                     <br/>
                     <div class="question-content">
-                        <h1 onClick={() => { console.log('testtype'); console.log(this.state.testType)}}>Kérdések hozzáadása a feladatsorhoz</h1>
+                        <h1>Kérdések hozzáadása a feladatsorhoz</h1>
                         <form>
                             <div class="center-fullwidth">
                                 <div class="select-multy">
                                     <Select width="50%" 
-                                    id="test-select" 
+                                    id="search-test-select" 
                                     placeholder="Teszt keresése..." 
                                     options={this.state.tests} 
                                     onChange={this.handleTestAttributeChange}
@@ -693,7 +727,7 @@ export default class TestMakerDashboard extends React.Component {
                             <div class="center-fullwidth">
                                 <div class="select-multy">
                                     <Select width="50%" 
-                                    id="test-select" 
+                                    id="search-multiply-select" 
                                     placeholder="Modul keresése..." 
                                     options={this.state.modules} 
                                     onChange={this.handleModuleAttributeChange}
@@ -833,8 +867,8 @@ export default class TestMakerDashboard extends React.Component {
                                     Vissza
                                 </button>
                             </a>
-                            <a href="/createtest">
-                                <button onClick={this.handleFinish} class="finish-button">
+                            <a>
+                                <button onClick={this.handleFinish} id="SaveBtn" class="finish-button">
                                     Mentés
                                 </button>
                             </a>
