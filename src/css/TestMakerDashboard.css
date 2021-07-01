@@ -168,7 +168,7 @@ footer{
     justify-content: center;
     padding: 30px;
 }
-.new,.edit{
+.template,.edit{
     display: none;
 }
 .text-input{

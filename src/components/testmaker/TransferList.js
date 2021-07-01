@@ -35,6 +35,7 @@ export default class TransferList extends React.Component {
                     return obj.id === id
                 })
                 this.props.handleModul(result[0], false)
+                
             }
             else if(this.props.type === 'multygroup'){
                 var id = event.target.id
@@ -49,12 +50,11 @@ export default class TransferList extends React.Component {
                 })
                 this.props.handleGroup(result[0], false)
             }
-            
-            document.getElementById(id).parentElement.parentElement.classList.toggle('active-transferlist-item')
-            document.getElementById(id).parentElement.style.display = 'none'
-            document.getElementById(id).parentElement.parentElement.children[1].style.justifyContent = 'center'
-            document.getElementById(id).parentElement.parentElement.children[1].style.width = '100%'
         }
+        document.getElementById(id).parentElement.parentElement.classList.toggle('active-transferlist-item')
+        document.getElementById(id).parentElement.style.display = 'none'
+        document.getElementById(id).parentElement.parentElement.children[1].style.justifyContent = 'center'
+        document.getElementById(id).parentElement.parentElement.children[1].style.width = '100%'
         
     }
     handleModulGettingDeleted = () =>{
@@ -241,8 +241,7 @@ export default class TransferList extends React.Component {
                             this.props.questions.map((question,index) =>{
                                 return(
                                 <div class={"left-item transfer-item".concat(this.props.usedIDs.includes(question['id'])? " active-transferlist-item" : '')} 
-                                     key={question['id']} 
-                                     onClick={()=>{console.log(this.props.usedIDs)}}
+                                     key={question['id']}
                                 >
                                     <div class="transferlist-item-checkbox">
                                         <input type="checkbox" id={question['id']} onChange={this.handleChangeLeft}/>
@@ -333,7 +332,7 @@ TransferList.defaultProps = {
         questions : [],
         group: [],
         groupBase : [],
-        type: 'questions',
+        type: undefined,
         actModul : undefined,
         handleGroup : undefined,
         handleModul : undefined,

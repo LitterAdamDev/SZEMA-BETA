@@ -332,9 +332,9 @@ export default class TestMakerDashboard extends React.Component {
         }
         if(newValue['value'] === 'uj' || newValue.hasOwnProperty('id')){
             /*Uj kerdessor letrehozasa*/
-            document.getElementsByClassName('new')[0].style.display = "none"
+            document.getElementsByClassName('template')[0].style.display = "none"
             document.getElementsByClassName('edit')[0].style.display = "none"
-            document.getElementsByClassName('new')[1].style.display = "none"
+            document.getElementsByClassName('template')[1].style.display = "none"
             document.getElementsByClassName('edit')[1].style.display = "none"
             document.getElementsByClassName('zh')[0].style.display = "block"
             document.getElementsByClassName('zh')[1].style.display = "block"
@@ -356,9 +356,9 @@ export default class TestMakerDashboard extends React.Component {
             
             /*Meglevo kerdessor modositasa*/
             document.getElementsByClassName('delete-button')[0].style.display = 'flex'
-            document.getElementsByClassName('new')[0].style.display = "block"
+            document.getElementsByClassName('template')[0].style.display = "block"
             document.getElementsByClassName('edit')[0].style.display = "block"
-            document.getElementsByClassName('new')[1].style.display = "block"
+            document.getElementsByClassName('template')[1].style.display = "block"
             document.getElementsByClassName('edit')[1].style.display = "block"
             document.getElementsByClassName('zh')[0].style.display = "none"
             document.getElementsByClassName('zh')[1].style.display = "none"
@@ -371,9 +371,10 @@ export default class TestMakerDashboard extends React.Component {
             var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === newValue['value'])
             if (pos > -1) {
                 Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
+                let group = Current_Quiz['groups']? Current_Quiz['groups'] : []
                 this.setState({
                     testType : 'EDIT_TEST',
-                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules'],'groups' : Current_Quiz['groups']},
+                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules'],'groups' : group},
                     actModul : 1
                 }, () =>{
                     if(this.state.theQuiz['IsZH']){
@@ -498,11 +499,9 @@ export default class TestMakerDashboard extends React.Component {
             }
             
         }else{
-            var groups_of_quiz = this.state.theQuiz['groups']
-            groups_of_quiz.push(group)
             this.setState({
-                theQuiz : {...this.state.theQuiz, 'groups' : [...groups_of_quiz]}
-            })
+                theQuiz : {...this.state.theQuiz, 'groups' : [...this.state.theQuiz['groups'],group]}
+            },()=>{console.log(this.state.theQuiz['groups'])})
         }
     }
     handlePreview = () =>{
@@ -572,13 +571,14 @@ export default class TestMakerDashboard extends React.Component {
                 if (pos > -1) {
                     var Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
                     this.setState({
-                        theQuiz: {...this.state.theQuiz,'IsZH' : false, 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails']},
+                        theQuiz: {...this.state.theQuiz,'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails']},
                     })
                 }
             }else if(this.state.testType === 'TEMPLATE_TEST'){
                 document.getElementsByClassName('zh')[0].style.display = "block"
                 document.getElementsByClassName('zh')[1].style.display = "block"
                 document.getElementsByClassName('delete-button')[0].style.display = 'none'
+                document.getElementById('zh').clicked = this.state.theQuiz['IsZH']
                 this.setState({
                     theQuiz: {...this.state.theQuiz, 'DocDetails' : ["","",""], 'quizName' : ''}
                 })
@@ -594,7 +594,7 @@ export default class TestMakerDashboard extends React.Component {
             document.getElementsByClassName('member-content')[0].style.display = "contents"
         }else{
             this.setState({
-                theQuiz : {...this.state.theQuiz, 'IsZH' : false}
+                theQuiz : {...this.state.theQuiz, 'IsZH' : false, 'groups' : []}
             })
             document.getElementsByClassName('member-content')[0].style.display = "none"
         }
@@ -708,8 +708,8 @@ export default class TestMakerDashboard extends React.Component {
                             <div class="test-attributes">
                                 <input type="radio" class="edit" id="edit" onClick={this.handleTypeChange} name="test-type" value="EDIT_TEST"/>
                                 <label for="edit" class="edit">Szerkesztés</label><br/>
-                                <input type="radio" onClick={this.handleTypeChange} class="new" id="new" name="test-type" value="TEMPLATE_TEST"/>
-                                <label for="new" class="new">Felhasználás sablonként</label><br/>
+                                <input type="radio" onClick={this.handleTypeChange} class="template" id="template" name="test-type" value="TEMPLATE_TEST"/>
+                                <label for="template" class="template">Felhasználás sablonként</label><br/>
                                 <input type="checkbox" checked={this.state.theQuiz['IsZH']} id="zh" onChange={this.handleZHChange} class="zh" name="zh" value="zh"/>
                                 <label for="zh" class="zh" > Zárthelyi dolgozat</label><br/>
                             </div>
@@ -720,7 +720,7 @@ export default class TestMakerDashboard extends React.Component {
                     </div>
                     <br/>
                     <div class="question-content">
-                        <h1>Kérdések hozzáadása a feladatsorhoz</h1>
+                        <h1 onClick={()=>{console.log(this.state.theQuiz)}}>Kérdések hozzáadása a feladatsorhoz</h1>
                         <form>
                             <div class="center-fullwidth">
                                 <div class="select-multy">
@@ -842,7 +842,7 @@ export default class TestMakerDashboard extends React.Component {
                         <div class="finish-content-results">
                             <div class="result-question">Kérdések: <var id="result-question">{this.state.questionCounter}</var></div>
                             <div class="result-points">Elérhető pontszám: <var id="result-points">{this.state.availablePoints}</var></div>
-                            <div class="result-members">Hozzárendelt csoportok: <var id="result-members">{this.state.theQuiz['IsZH'] ? this.state.theQuiz['groups'].length : 0}</var></div>
+                            <div class="result-members">Hozzárendelt csoportok: <var id="result-members">{this.state.theQuiz['groups'] ? this.state.theQuiz['groups'].length : 0}</var></div>
                             <div class="result-type">Feladatsor jellege: 
                                 <var id="result-type">
                                     {this.state.theQuiz['IsZH'] ? (<var>Zárthelyi dolgozat</var>) : (<var>Nem zárthelyi dolgozat</var>)}
