@@ -10,7 +10,9 @@ import TransferList from '../testmaker/TransferList'
 import Review from '../testmaker/Review'
 import 'firebase/firestore'
 import {db} from '../../config/base'
- import DeleteQuizDialog from '../dialogs/DeleteQuizDialog';
+import DeleteQuizDialog from '../dialogs/DeleteQuizDialog'
+import AddModuleDialog from '../dialogs/AddModuleDialog'
+import ModifyModuleDialog from '../dialogs/ModifyModuleDialog'
 
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -183,7 +185,7 @@ export default class TestMakerDashboard extends React.Component {
             'ZH' : this.state.theQuiz['IsZH'],
             'groups' : this.state.theQuiz['groups']
         }
-        this.state.theQuiz['modules'].map((modul) =>{
+        this.state.theQuiz['modules'].map((modul,index) =>{
             
             quiz[modul['name']] = ["","","","",""]
             
@@ -191,8 +193,8 @@ export default class TestMakerDashboard extends React.Component {
                 quiz[modul['name']][0] = quiz[modul['name']][0] === "" ? quiz[modul['name']][0] + question['fb-id'] : quiz[modul['name']][0] + ":" + question['fb-id']
             })
             quiz[modul['name']][1] = (modul['name'][modul['name'].length-1] === '1')? 'none' : 'Module_' + (Number(modul['name'][modul['name'].length-1]) -1)
-            quiz[modul['name']][2] = ""  //ide kell majd egy kép URL
-            quiz[modul['name']][3] = "ide kellen valami leírás" //ide meg leírás
+            quiz[modul['name']][2] = this.state.theQuiz['Module_Fields'][index]['icon']['value']
+            quiz[modul['name']][3] = this.state.theQuiz['Module_Fields'][index]['description']
             quiz[modul['name']][4] = modul['name'].substr(0, modul['name'].indexOf('_')-1) + " " + modul['name'].substr(modul['name'].length-1)
         })
         let name_of_collection = this.state.theQuiz['IsZH'] ? 'ZHQuizFolder' : 'QuizFolder'
@@ -234,13 +236,26 @@ export default class TestMakerDashboard extends React.Component {
             })
         }
     }
-    handleAddModul = (event=undefined) =>{
+    handleAddModul = (event=undefined, data={'description' : '', 'icon' : ''},index=this.state.actModul) =>{
         if(event !== undefined){
             event.preventDefault()
         }
-        this.setState( prevState =>({
-            theQuiz : {...prevState['theQuiz'], 'modules' : [...prevState['theQuiz']['modules'],{name:"Module_" + (this.state.theQuiz['modules'].length+1), questions: [] }]}
-        }))
+        let modules = this.state.theQuiz['modules']
+        let new_module = {name:"Module_" + (this.state.theQuiz['modules'].length+1), questions: [] }
+        let module_dataset = this.state.theQuiz['Module_Fields']
+        modules.splice(index, 0, new_module)
+        module_dataset.splice(index, 0, data)
+        this.setState({
+            theQuiz : {...this.state.theQuiz, 'modules': modules, 'Module_Fields' : module_dataset}
+        },()=>{
+            let modules = this.state.theQuiz['modules']
+            modules.map((modul,index) =>{
+                modules[index]['name'] = modul['name'].split('_')[0] + '_'+(index+1)
+            })
+            this.setState({
+                theQuiz : {...this.state.theQuiz, 'modules' : modules}
+            })
+        })
         if(this.state.actModul == 0){
             this.setState({
                 actModul : this.state.actModul + 1
@@ -248,16 +263,36 @@ export default class TestMakerDashboard extends React.Component {
         }
         this.countAll()
     }
+    handleModifyModul = (event=undefined,data) =>{
+        if(event !== undefined){
+            event.preventDefault()
+        }
+        let fields = this.state.theQuiz['Module_Fields']
+        fields[this.state.actModul-1] = data
+        this.setState({
+            theQuiz : {...this.state.theQuiz, 'Module_Fields' : fields}
+        })
+    }
     handleDeleteModul = (event) =>{
         event.preventDefault()
         this.changeChildState()
         if(this.state.actModul > 0){
             var arr = [...this.state.theQuiz['modules']]
+            var arrdata = this.state.theQuiz['Module_Fields']
             var len = arr.length
             arr.splice(this.state.actModul-1,1)
+            arrdata.splice(this.state.actModul-1,1)
             this.setState( prevState =>({
-                theQuiz : {...prevState['theQuiz'], 'modules' : [...arr]}
-            }))
+                theQuiz : {...prevState['theQuiz'], 'modules' : [...arr], 'Module_Fields' : [...arrdata]}
+            }),()=>{
+                let modules = this.state.theQuiz['modules']
+                modules.map((modul,index) =>{
+                    modules[index]['name'] = modul['name'].split('_')[0] + '_' + (index+1)
+                })
+                this.setState({
+                    theQuiz : {...this.state.theQuiz, 'modules' : modules}
+                })
+            })
             if(this.state.actModul == len){
                 this.setState({
                     actModul : this.state.actModul - 1
@@ -268,6 +303,7 @@ export default class TestMakerDashboard extends React.Component {
                 })
             }
         }
+        
         this.countAll()
     }
     handleUsedQuestionIDs = () =>{
@@ -371,10 +407,14 @@ export default class TestMakerDashboard extends React.Component {
             var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === newValue['value'])
             if (pos > -1) {
                 Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
+                let tmp_desc = []
+                Current_Quiz['ModuleIDs'].map((modulName) =>{
+                    tmp_desc.push({'description' : Current_Quiz[modulName][3], 'icon' :  {'value' :Current_Quiz[modulName][2], 'label': Current_Quiz[modulName][2]}})
+                })
                 let group = Current_Quiz['groups']? Current_Quiz['groups'] : []
                 this.setState({
                     testType : 'EDIT_TEST',
-                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules'],'groups' : group},
+                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules'],'groups' : group, 'Module_Fields' : [...tmp_desc]},
                     actModul : 1
                 }, () =>{
                     if(this.state.theQuiz['IsZH']){
@@ -720,7 +760,7 @@ export default class TestMakerDashboard extends React.Component {
                     </div>
                     <br/>
                     <div class="question-content">
-                        <h1 onClick={()=>{console.log(this.state.theQuiz)}}>Kérdések hozzáadása a feladatsorhoz</h1>
+                        <h1 onClick={()=>{console.log(this.state.everyDataTogetherOfQuizzes)}}>Kérdések hozzáadása a feladatsorhoz</h1>
                         <form>
                             <div class="center-fullwidth">
                                 <div class="select-multy">
@@ -775,11 +815,8 @@ export default class TestMakerDashboard extends React.Component {
                                         Modul törlése
                                     </button>
                                 </a>
-                                <a>
-                                    <button onClick={this.handleAddModul} class="modul-button">
-                                        Új modul
-                                    </button>
-                                </a>
+                                <AddModuleDialog action={this.handleAddModul} maxidx={this.state.theQuiz['modules'].length+1}/>
+                                <ModifyModuleDialog action={this.handleModifyModul} index={this.state.actModul-1} dataset={this.state.theQuiz['Module_Fields']}/>
                             </div>
                         </form>
                         <div class="transferlist">
