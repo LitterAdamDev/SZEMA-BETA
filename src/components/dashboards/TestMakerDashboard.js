@@ -35,13 +35,17 @@ export default class TestMakerDashboard extends React.Component {
           actModul : 0,
           maxModul : 0,
           questionBase : [],
+          filtered_questionBaes : [],
+          filtered_questionBaes_for_more : [],
           usedQuestions : [],
           usedQuestionsIDs : [],
           memberBase : [],
-          searchedQuiz : undefined,
-          searchedModul : undefined,
-          searchedWord : undefined,
+          ModulesForSearch : [{'label' : 'Összes', 'value' : 'all'}],
+          TestsForSearch :  [{'label' : 'Összes', 'value' : 'all'}],
+          SearchedTest: undefined,
+          SearchedModul: undefined,
           searchedGroup : undefined,
+          searchedWord : '',
           questionCounter : 0,
           modulCounter : 0,
           availablePoints : 0,
@@ -55,6 +59,7 @@ export default class TestMakerDashboard extends React.Component {
           basic_group_infos : [],
           actTest : {label: '', folder: '', value: ''},
           replaceTestValue : undefined,
+          moduleSearchDisabled : true,
       };
     }
     compare( a, b ) {
@@ -136,6 +141,7 @@ export default class TestMakerDashboard extends React.Component {
               this.setState({
                   quizzesForFS : [...data_from_web],
                   tests : [...this.state.tests, ...data_for_tests],
+                  TestsForSearch :[...this.state.TestsForSearch, ...data_for_tests]
                   
               },() =>{this.getQuestions(folder)})
             })
@@ -159,6 +165,8 @@ export default class TestMakerDashboard extends React.Component {
                 current_quiz['modules'][index_of_module]['questions'] = [...current_quiz['modules'][index_of_module]['questions'],{...data, 'fb-id': doc.id}]
                 this.setState({
                     questionBase : [...this.state.questionBase,{...data, 'fb-id': doc.id}],
+                    filtered_questionBaes : [...this.state.filtered_questionBaes,{...data, 'fb-id': doc.id}],
+                    filtered_questionBaes_for_more : [...this.state.filtered_questionBaes_for_more,{...data, 'fb-id': doc.id}],
                 })
               })
             })
@@ -167,7 +175,7 @@ export default class TestMakerDashboard extends React.Component {
             let all_quiz = this.state.everyDataTogetherOfQuizzes
             all_quiz.push(current_quiz)
             this.setState({
-                everyDataTogetherOfQuizzes : all_quiz
+                everyDataTogetherOfQuizzes : all_quiz,
             })
         })
     }
@@ -360,9 +368,15 @@ export default class TestMakerDashboard extends React.Component {
             if (pos > -1) {
                 let allTests = this.state.tests
                 allTests.splice(pos,1)
+                let TestsForSearch = allTests.map((item) => {
+                    if(item['value'] !== 'uj'){
+                        return item
+                    }
+                })
                 this.setState({
                     tests : allTests,
-                    replaceTestValue :{'label': 'Új teszt', 'value': 'uj', 'folder': ''}
+                    replaceTestValue :{'label': 'Új teszt', 'value': 'uj', 'folder': ''},
+                    TestsForSearch : TestsForSearch,
                 })
             }
         }
@@ -640,15 +654,92 @@ export default class TestMakerDashboard extends React.Component {
         }
     }
     handleTestAttributeChange = (newValue, actionMeta) => {
-        this.setState({
-            searchedQuiz : newValue['value']
-        })
+        
+        if(newValue['value'] === 'all'){
+            this.setState({
+                filtered_questionBaes : [...this.state.questionBase],
+                filtered_questionBaes_for_more : [...this.state.questionBase],
+                SearchedTest : newValue['value'],
+                moduleSearchDisabled : true,
+                SearchedModul : undefined,
+                searchedWord : '',
+            })
+            this.handleUsedQuestionIDs()
+        }else{
+            var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === newValue['value'])
+            if (pos > -1) {
+                let tmp_array = []
+                this.state.everyDataTogetherOfQuizzes[pos]['modules'].map((module) =>{
+                    tmp_array.push(...module['questions'])
+                })
+                let searchable_modules =[]
+                this.state.everyDataTogetherOfQuizzes[pos]['ModuleIDs'].map((moduleName)=>{
+                    searchable_modules.push({'label': moduleName, 'value' : moduleName})
+                })
+                this.setState({
+                    filtered_questionBaes : [...tmp_array],
+                    filtered_questionBaes_for_more : [...tmp_array],
+                    SearchedTest : newValue['value'],
+                    moduleSearchDisabled : false,
+                    SearchedModul : undefined,
+                    ModulesForSearch : [...searchable_modules,{'label' : 'Összes', 'value' : 'all'}],
+                    searchedWord : '',
+                })
+                this.handleUsedQuestionIDs()
+             }
+        }
     };
     handleModuleAttributeChange = (newValue, actionMeta) => {
-        this.setState({
-            searchedModul : newValue['value']
-        })
+        var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === this.state.SearchedTest)
+        if(newValue['value'] === 'all'){
+            if (pos > -1) {
+                let tmp_array = []
+                this.state.everyDataTogetherOfQuizzes[pos]['modules'].map((module) => {
+                    tmp_array.push(...module['questions'])
+                })
+                this.setState({
+                    filtered_questionBaes : [...tmp_array],
+                    filtered_questionBaes_for_more : [...tmp_array],
+                    SearchedModul : {'label' : newValue['label'], 'value' : newValue['value']},
+                    searchedWord : '',
+                })
+                this.handleUsedQuestionIDs()
+             }
+        }else{
+            if (pos > -1) {
+                let tmp_array = []
+                this.state.everyDataTogetherOfQuizzes[pos]['modules'].map((module) => {
+                    if(module['name'] === newValue['value']){
+                        tmp_array.push(...module['questions'])
+                    }
+                })
+                this.setState({
+                    filtered_questionBaes : [...tmp_array],
+                    filtered_questionBaes_for_more : [...tmp_array],
+                    SearchedModul : {'label' : newValue['value'], 'value' : newValue['value']},
+                    searchedWord : '',
+                })
+                this.handleUsedQuestionIDs()
+             }
+        }
     };
+    handleSearchChange = (event) =>{
+        let tmp_array = []
+        this.state.filtered_questionBaes.map((question) =>{
+            if(question['question'].includes(event.target.value)){
+                var pos = tmp_array.findIndex(obj => obj['id'] === question['id'])
+                if(pos === -1){
+                    tmp_array.push(question) 
+                }
+            }
+        })
+        
+        this.setState({
+            filtered_questionBaes_for_more : [...tmp_array],
+            searchedWord : event.target.value
+        })
+        this.handleUsedQuestionIDs()
+    }
     handleGroupAttributeChange = (newValue, actionMeta) => {
         this.setState({
             searchedGroup : newValue['value']
@@ -661,11 +752,6 @@ export default class TestMakerDashboard extends React.Component {
             })
         }
     };
-    handleSearchChange = (event) =>{
-        this.setState({
-            searchedWord : event.target.value
-        })
-    }
     changeChildState = () => {
         this.childRef.current.handleModulGettingDeleted();
     }
@@ -760,14 +846,14 @@ export default class TestMakerDashboard extends React.Component {
                     </div>
                     <br/>
                     <div class="question-content">
-                        <h1 onClick={()=>{console.log(this.state.everyDataTogetherOfQuizzes)}}>Kérdések hozzáadása a feladatsorhoz</h1>
+                        <h1 onClick={()=>{console.log(this.state.filtered_questionBaes_for_more)}}>Kérdések hozzáadása a feladatsorhoz</h1>
                         <form>
                             <div class="center-fullwidth">
                                 <div class="select-multy">
                                     <Select width="50%" 
                                     id="search-test-select" 
                                     placeholder="Teszt keresése..." 
-                                    options={this.state.tests} 
+                                    options={this.state.TestsForSearch} 
                                     onChange={this.handleTestAttributeChange}
                                     />
                                 </div>
@@ -775,15 +861,17 @@ export default class TestMakerDashboard extends React.Component {
                             <div class="center-fullwidth">
                                 <div class="select-multy">
                                     <Select width="50%" 
-                                    id="search-multiply-select" 
+                                    id="search-module-select" 
+                                    value = {this.state.SearchedModul? this.state.SearchedModul : null}
+                                    isDisabled={this.state.moduleSearchDisabled}
                                     placeholder="Modul keresése..." 
-                                    options={this.state.modules} 
+                                    options={this.state.ModulesForSearch} 
                                     onChange={this.handleModuleAttributeChange}
                                     />
                                 </div>
                             </div>
                             <div class="center-fullwidth">
-                                <input type="text" onChange={this.handleSearchChange} class="text-input" placeholder="Kulcsszavak keresése..."></input>
+                                <input type="text" onChange={this.handleSearchChange} class="text-input" value={this.state.searchedWord} placeholder="Kulcsszavak keresése..."></input>
                             </div>
                             <br/>
                             <div class="center-fullwidth">
@@ -825,7 +913,7 @@ export default class TestMakerDashboard extends React.Component {
                                 type='questions' 
                                 containedQuestions={this.state.theQuiz['modules'][this.state.actModul-1] ? this.state.theQuiz['modules'][this.state.actModul-1]['questions'] : []} 
                                 handleModul={this.handleQuestionUpdate} 
-                                questions={this.state.questionBase}
+                                questions={this.state.filtered_questionBaes_for_more}
                                 ref={this.childRef}
                                 actModul={this.state.actModul}
                                 actQuiz={this.state.theQuiz}
