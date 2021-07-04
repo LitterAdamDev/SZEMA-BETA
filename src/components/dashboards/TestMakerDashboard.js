@@ -692,19 +692,17 @@ export default class TestMakerDashboard extends React.Component {
     handleModuleAttributeChange = (newValue, actionMeta) => {
         var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === this.state.SearchedTest)
         if(newValue['value'] === 'all'){
-            if (pos > -1) {
-                let tmp_array = []
-                this.state.everyDataTogetherOfQuizzes[pos]['modules'].map((module) => {
-                    tmp_array.push(...module['questions'])
-                })
-                this.setState({
-                    filtered_questionBaes : [...tmp_array],
-                    filtered_questionBaes_for_more : [...tmp_array],
-                    SearchedModul : {'label' : newValue['label'], 'value' : newValue['value']},
-                    searchedWord : '',
-                })
-                this.handleUsedQuestionIDs()
-             }
+            let tmp_array = []
+            this.state.everyDataTogetherOfQuizzes[pos]['modules'].map((module) => {
+                tmp_array.push(...module['questions'])
+            })
+            this.setState({
+                filtered_questionBaes : [...tmp_array],
+                filtered_questionBaes_for_more : [...tmp_array],
+                SearchedModul : {'label' : newValue['label'], 'value' : newValue['value']},
+                searchedWord : '',
+            })
+            this.handleUsedQuestionIDs()
         }else{
             if (pos > -1) {
                 let tmp_array = []
@@ -724,19 +722,23 @@ export default class TestMakerDashboard extends React.Component {
         }
     };
     handleSearchChange = (event) =>{
-        let tmp_array = []
-        this.state.filtered_questionBaes.map((question) =>{
-            if(question['question'].includes(event.target.value)){
-                var pos = tmp_array.findIndex(obj => obj['id'] === question['id'])
-                if(pos === -1){
-                    tmp_array.push(question) 
-                }
-            }
-        })
-        
         this.setState({
-            filtered_questionBaes_for_more : [...tmp_array],
+            filtered_questionBaes_for_more : [],
             searchedWord : event.target.value
+        },()=>{
+            let tmp_array = []
+            this.state.filtered_questionBaes.map((question) =>{
+                if(question['question'].toLowerCase().includes(event.target.value.toLowerCase())){
+                    var pos = tmp_array.findIndex(obj => obj['id'] === question['id'])
+                    if(pos === -1){
+                        tmp_array.push(question) 
+                    }
+                }
+            })
+            this.setState({
+                filtered_questionBaes_for_more : tmp_array,
+                searchedWord : event.target.value
+            })
         })
         this.handleUsedQuestionIDs()
     }
