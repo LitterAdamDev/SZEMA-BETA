@@ -1,0 +1,63 @@
+import React, { Component } from 'react'
+import ImagePicker from 'react-image-picker'
+import 'react-image-picker/dist/index.css'
+import firebase from 'firebase/app';
+import 'firebase/storage'; 
+import { actionTypes } from 'react-redux-firebase';
+ 
+export default class ImageSelector extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      image: null,
+      imageList : []
+    }
+    this.onPick = this.onPick.bind(this)
+  }
+  componentDidMount(){
+    var storage = firebase.storage();
+    var storageRef = storage.ref(this.props.path);
+    var temp = []
+    storageRef.listAll().then(function (result) {
+      
+      let path = storageRef.fullPath
+      path = path.replace(/\b\/\b(?!.*?\b\/\b)/, "%2F");
+      result.items.forEach(fileRef => {
+          temp.push({name:  fileRef.name})
+      });
+    }).then(()=>{
+      temp.map((file) =>{
+        storageRef.child(file['name']).getDownloadURL()
+        .then((url)=>{
+          this.setState({
+            imageList : [...this.state.imageList, url]
+          })
+        })
+      })
+    }).catch(error => {
+      console.log(error);
+    })
+    
+    var imageList = []
+  }
+  onPick(image) {
+    this.setState({image})
+  }
+  
+  render() {
+    return (
+      <div>
+        <ImagePicker 
+          images={this.state.imageList.map((image, i) => ({src: image, value: i}))}
+          onPick={this.onPick}
+        />
+        <button type="button" onClick={() => console.log(this.state.image)}>OK</button>
+      </div>
+    )
+  }
+}
+ 
+ImageSelector.defaultProps ={
+  path : '',
+  action : undefined,
+}

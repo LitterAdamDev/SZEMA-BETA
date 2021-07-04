@@ -8,11 +8,11 @@ import 'firebase/firestore'
 import '../../css/TestMakerDashboard.css'
 import TransferList from '../testmaker/TransferList'
 import Review from '../testmaker/Review'
-import 'firebase/firestore'
 import {db} from '../../config/base'
 import DeleteQuizDialog from '../dialogs/DeleteQuizDialog'
 import AddModuleDialog from '../dialogs/AddModuleDialog'
 import ModifyModuleDialog from '../dialogs/ModifyModuleDialog'
+import ChooseImageDialog from "../dialogs/ChooseImageDialog"
 
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -823,15 +823,8 @@ export default class TestMakerDashboard extends React.Component {
                             <div class="choose-testattr">
                                 <input type="text"  class="text-input" placeholder="Mappa leírás..." id="folder-desc" value={this.state.theQuiz['DocDetails'][1]} onChange={this.handleFolderDescChange} name="test-name"/>
                             </div>
-                            <div class="choose-testattr">
-                                <div id="select-top">
-                                    <Select width="50%" 
-                                    id="icon-select" 
-                                    placeholder="Mappa ikon..." 
-                                    value={{'label':this.state.theQuiz['DocDetails'][2], 'value' : 'placeholder'}}
-                                    onChange={this.handleFolderIconChange}
-                                    />
-                                </div>
+                            <div class="center-fullwidth">
+                                <ChooseImageDialog />
                             </div>
                             <div class="test-attributes">
                                 <input type="radio" class="edit" id="edit" onClick={this.handleTypeChange} name="test-type" value="EDIT_TEST"/>

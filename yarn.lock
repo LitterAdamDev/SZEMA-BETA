@@ -10255,6 +10255,11 @@ react-github-btn@1.2.0:
   dependencies:
     github-buttons "^2.8.0"
 
+react-image-picker@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-image-picker/-/react-image-picker-1.1.1.tgz#40315c85c3fd24e463902e177f116db5581531ae"
+  integrity sha1-QDFchcP9JORjkC4XfxFttVgVMa4=
+
 react-input-autosize@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-3.0.0.tgz#6b5898c790d4478d69420b55441fcc31d5c50a85"

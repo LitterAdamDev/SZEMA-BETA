@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/firestore';
 
-const app = firebase.initializeApp({
+firebase.initializeApp({
   apiKey: "AIzaSyAd3KZ66PnsaxND0hFbrPrClErl04d2irE",
   authDomain: "szema-ac882.firebaseapp.com",
   databaseURL: "https://szema-ac882.firebaseio.com",
@@ -13,5 +13,5 @@ const app = firebase.initializeApp({
   measurementId: "G-7FDCFR048G"
 });
 export const db = firebase.firestore()
-export default app;
+export default firebase;
 
