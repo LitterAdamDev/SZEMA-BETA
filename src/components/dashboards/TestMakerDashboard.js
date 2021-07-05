@@ -178,7 +178,7 @@ export default class TestMakerDashboard extends React.Component {
             all_quiz.push(current_quiz)
             this.setState({
                 everyDataTogetherOfQuizzes : all_quiz,
-            })
+            },()=>{console.log('Megjott az adat az osszes tesztrol')})
         })
     }
     handleStart = () =>{
@@ -319,16 +319,16 @@ export default class TestMakerDashboard extends React.Component {
         this.countAll()
     }
     handleUsedQuestionIDs = () =>{
+        console.log('Felhasznált kérdések keresése')
         var allIDs = []
         this.state.theQuiz['modules'].map((modul, modul_index) =>{
             modul['questions'].map((question, question_index) =>{
-                console.log(question)
                 allIDs.push(question['id'])
             })
         })
         this.setState({
             usedQuestionsIDs : [...allIDs]
-        })
+        },()=>{console.log('Felhasznált kérdések adatai a state-ban')})
     }
     componentDidMount(){
         this.countAll()
@@ -536,7 +536,7 @@ export default class TestMakerDashboard extends React.Component {
         }else{
             this.setState({
                 theQuiz : {...this.state.theQuiz, 'groups' : [...this.state.theQuiz['groups'],group]}
-            },()=>{console.log(this.state.theQuiz['groups'])})
+            })
         }
     }
     handlePreview = () =>{
@@ -870,7 +870,7 @@ export default class TestMakerDashboard extends React.Component {
                     </div>
                     <br/>
                     <div class="question-content">
-                        <h1 onClick={()=>{console.log(this.state.theQuiz['quizName'])}}>Kérdések hozzáadása a feladatsorhoz</h1>
+                        <h1 onClick={()=>{console.log(this.state.theQuiz)}}>Kérdések hozzáadása a feladatsorhoz</h1>
                         <form>
                             <div class="center-fullwidth">
                                 <div class="select-multy">
