@@ -13,6 +13,8 @@ import DeleteQuizDialog from '../dialogs/DeleteQuizDialog'
 import AddModuleDialog from '../dialogs/AddModuleDialog'
 import ModifyModuleDialog from '../dialogs/ModifyModuleDialog'
 import ChooseImageDialog from "../dialogs/ChooseImageDialog"
+import TextField from '@material-ui/core/TextField';
+import { ControlPointDuplicateOutlined, ThreeSixty } from "@material-ui/icons"
 
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -30,7 +32,7 @@ export default class TestMakerDashboard extends React.Component {
           tests : [{label: 'Új teszt', value: 'uj', folder: ''}],
           valueSelect: undefined,
           testType: undefined,
-          theQuiz : {IsZH: false, quizName: "", groups: [], modules: [], DocDetails : ["","",""], Module_Fields : []},
+          theQuiz : {IsZH: false, quizName: "", groups: [], modules: [], DocDetails : ["","",""], Module_Fields : [], 'terms': [null,null]},
           modules : [],
           actModul : 0,
           maxModul : 0,
@@ -191,7 +193,8 @@ export default class TestMakerDashboard extends React.Component {
             'DocDetails' : [...this.state.theQuiz['DocDetails']],
             'ModuleIDs' : this.state.theQuiz['modules'].map((modul)=>{ return modul['name']}),
             'ZH' : this.state.theQuiz['IsZH'],
-            'groups' : this.state.theQuiz['groups']
+            'groups' : this.state.theQuiz['groups'],
+            'terms' : this.state.theQuiz['terms'] ? this.state.theQuiz['terms'] : []
         }
         this.state.theQuiz['modules'].map((modul,index) =>{
             
@@ -201,13 +204,14 @@ export default class TestMakerDashboard extends React.Component {
                 quiz[modul['name']][0] = quiz[modul['name']][0] === "" ? quiz[modul['name']][0] + question['fb-id'] : quiz[modul['name']][0] + ":" + question['fb-id']
             })
             quiz[modul['name']][1] = (modul['name'][modul['name'].length-1] === '1')? 'none' : 'Module_' + (Number(modul['name'][modul['name'].length-1]) -1)
-            quiz[modul['name']][2] = this.state.theQuiz['Module_Fields'][index]['icon']['value']
+            quiz[modul['name']][2] = this.state.theQuiz['Module_Fields'][index]['icon']
             quiz[modul['name']][3] = this.state.theQuiz['Module_Fields'][index]['description']
             quiz[modul['name']][4] = modul['name'].substr(0, modul['name'].indexOf('_')-1) + " " + modul['name'].substr(modul['name'].length-1)
         })
         let name_of_collection = this.state.theQuiz['IsZH'] ? 'ZHQuizFolder' : 'QuizFolder'
         db.collection(name_of_collection)
-        .doc(this.state.theQuiz.quizName).set(quiz)
+        .doc(this.state.theQuiz['quizName'])
+        .set(quiz)
         .then(() => {
             var batch = db.batch()
             this.state.theQuiz['modules'].map((modul) =>{
@@ -318,6 +322,7 @@ export default class TestMakerDashboard extends React.Component {
         var allIDs = []
         this.state.theQuiz['modules'].map((modul, modul_index) =>{
             modul['questions'].map((question, question_index) =>{
+                console.log(question)
                 allIDs.push(question['id'])
             })
         })
@@ -380,7 +385,6 @@ export default class TestMakerDashboard extends React.Component {
                     this.handleUsedQuestionIDs()
             })
         }else{
-            
             /*Meglevo kerdessor modositasa*/
             document.getElementsByClassName('delete-button')[0].style.display = 'flex'
             document.getElementsByClassName('template')[0].style.display = "block"
@@ -400,12 +404,12 @@ export default class TestMakerDashboard extends React.Component {
                 Current_Quiz = this.state.everyDataTogetherOfQuizzes[pos]
                 let tmp_desc = []
                 Current_Quiz['ModuleIDs'].map((modulName) =>{
-                    tmp_desc.push({'description' : Current_Quiz[modulName][3], 'icon' :  {'value' :Current_Quiz[modulName][2], 'label': Current_Quiz[modulName][2]}})
+                    tmp_desc.push({'description' : Current_Quiz[modulName][3], 'icon' : Current_Quiz[modulName][2]})
                 })
                 let group = Current_Quiz['groups']? Current_Quiz['groups'] : []
                 this.setState({
                     testType : 'EDIT_TEST',
-                    theQuiz: {...this.state.theQuiz,'IsZH' : Current_Quiz['ZH'], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'], 'modules' : Current_Quiz['modules'],'groups' : group, 'Module_Fields' : [...tmp_desc]},
+                    theQuiz: {...this.state.theQuiz, 'modules' : Current_Quiz['modules'], 'IsZH' : Current_Quiz['ZH'], 'terms' : Current_Quiz['terms']? Current_Quiz['terms']: [null,null], 'quizName': Current_Quiz['id'], 'DocDetails': Current_Quiz['DocDetails'],'groups' : group, 'Module_Fields' : [...tmp_desc]},
                     actModul : 1
                 }, () =>{
                     if(this.state.theQuiz['IsZH']){
@@ -601,6 +605,7 @@ export default class TestMakerDashboard extends React.Component {
                 
             document.getElementsByClassName('zh')[0].style.display = "none"
             document.getElementsByClassName('zh')[1].style.display = "none"
+            document.getElementsByClassName('zh-dates')[0].style.display = "none"
             document.getElementsByClassName('delete-button')[0].style.display = 'flex'
                 var pos = this.state.everyDataTogetherOfQuizzes.findIndex(obj => obj['id'] === this.state.valueSelect)
                 if (pos > -1) {
@@ -612,6 +617,7 @@ export default class TestMakerDashboard extends React.Component {
             }else if(this.state.testType === 'TEMPLATE_TEST'){
                 document.getElementsByClassName('zh')[0].style.display = "block"
                 document.getElementsByClassName('zh')[1].style.display = "block"
+                document.getElementsByClassName('zh-dates')[0].style.display = this.state.theQuiz['IsZH']? "block" : 'none'
                 document.getElementsByClassName('delete-button')[0].style.display = 'none'
                 document.getElementById('zh').clicked = this.state.theQuiz['IsZH']
                 this.setState({
@@ -624,14 +630,16 @@ export default class TestMakerDashboard extends React.Component {
     handleZHChange = (event) => {
         if(event.target.checked){
             this.setState({
-                theQuiz : {...this.state.theQuiz, 'IsZH' : true}
+                theQuiz : {...this.state.theQuiz, 'IsZH' : true, 'terms': [null,null]}
             })
             document.getElementsByClassName('member-content')[0].style.display = "contents"
+            document.getElementsByClassName('zh-dates')[0].style.display = 'block'
         }else{
             this.setState({
-                theQuiz : {...this.state.theQuiz, 'IsZH' : false, 'groups' : []}
+                theQuiz : {...this.state.theQuiz, 'IsZH' : false, 'groups' : [], 'terms': [null,null]}
             })
             document.getElementsByClassName('member-content')[0].style.display = "none"
+            document.getElementsByClassName('zh-dates')[0].style.display = 'none'
         }
     }
     handleTestAttributeChange = (newValue, actionMeta) => {
@@ -749,6 +757,15 @@ export default class TestMakerDashboard extends React.Component {
             actQuiz : {'label': '', 'folder': '', 'value' : ''}
         })
     }
+    handleTimeChange = (event) =>{
+        event.preventDefault()
+        var idx = event.target.id === 'zh-start-timepicker'? 0 : 1
+        var actTerms = this.state.theQuiz['terms']
+        actTerms[idx] = event.target.value
+        this.setState({
+            theQuiz : {...this.state.theQuiz, 'terms' : actTerms}
+        })
+    }
     render(){
         return(
         <>
@@ -816,6 +833,36 @@ export default class TestMakerDashboard extends React.Component {
                                 <input type="checkbox" checked={this.state.theQuiz['IsZH']} id="zh" onChange={this.handleZHChange} class="zh" name="zh" value="zh"/>
                                 <label for="zh" class="zh" > Zárthelyi dolgozat</label><br/>
                             </div>
+                            <div class="zh-dates">
+                                <form noValidate>
+                                    <div class="datetime-picker">
+                                        <TextField
+                                            id="zh-start-timepicker"
+                                            label="Kezdés időpontja"
+                                            type="datetime-local"
+                                            defaultValue="2017-05-24T10:30"
+                                            InputLabelProps={{
+                                            shrink: true,
+                                            }}
+                                            value={this.state.theQuiz['terms'][0]? this.state.theQuiz['terms'][0] : null}
+                                            onChange={this.handleTimeChange}
+                                        />
+                                    </div>
+                                    <div class="datetime-picker">
+                                        <TextField
+                                            id="zh-finish-timepicker"
+                                            label="Végzés időpontja"
+                                            type="datetime-local"
+                                            defaultValue="2017-05-24T10:30"
+                                            InputLabelProps={{
+                                            shrink: true,
+                                            }}
+                                            value={this.state.theQuiz['terms'][1]? this.state.theQuiz['terms'][1] : null}
+                                            onChange={this.handleTimeChange}
+                                        />
+                                    </div>
+                                </form>
+                            </div>
                             <div class="center-fullwidth">
                                 <DeleteQuizDialog id="deleteQuizDialog" action={this.setupBackend} folder={this.state.actTest['folder']} name={this.state.actTest['label']}/>
                             </div>
@@ -823,7 +870,7 @@ export default class TestMakerDashboard extends React.Component {
                     </div>
                     <br/>
                     <div class="question-content">
-                        <h1 onClick={()=>{console.log(this.state.theQuiz['DocDetails'])}}>Kérdések hozzáadása a feladatsorhoz</h1>
+                        <h1 onClick={()=>{console.log(this.state.theQuiz['quizName'])}}>Kérdések hozzáadása a feladatsorhoz</h1>
                         <form>
                             <div class="center-fullwidth">
                                 <div class="select-multy">
@@ -910,7 +957,7 @@ export default class TestMakerDashboard extends React.Component {
                         usedIDs={this.state.theQuiz['groups']}
                         />
                         
-                        <h1>Felhasználók hozzárendelése a csoportokhoz</h1>
+                        {/*<h1>Felhasználók hozzárendelése a csoportokhoz</h1>
                         <form>
                             <div class="center-fullwidth">
                                 <div class="select-multy">
@@ -922,11 +969,11 @@ export default class TestMakerDashboard extends React.Component {
                                     />
                                 </div>
                             </div>
-                            {/*<a>
+                            {<a>
                                 <div class="center-fullwidth">
                                         <AddGroupDialog handleGroup={this.handleAddGroup}/>
                                 </div>
-                            </a>*/}
+                            </a>}
                         </form>
                         <TransferList 
                         headers={['Választható','Választott']} 
@@ -935,7 +982,7 @@ export default class TestMakerDashboard extends React.Component {
                         handleGroup={this.handleGroupUpdate} 
                         group={this.state.memberBase}
                         act_group={this.state.searchedGroup}
-                        />
+                        />*/}
                     </div>
                     <div class="preview-content">
                         <Review quiz={this.state.theQuiz}/>

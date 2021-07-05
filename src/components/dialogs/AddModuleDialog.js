@@ -35,7 +35,7 @@ const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [description, setDescription] = React.useState('');
   const [index, setIndex] = React.useState(1);
-  const [icon, setIcon] = React.useState({'label' : 'https://firebasestorage.googleapis.com/v0/b/szema-ac882.appspot.com/o/quizes%2Fquiz_type%2Fcube.png?alt=media&token=31e44214-3a23-4f31-bb3f-865772f47d11', 'value' : 'https://firebasestorage.googleapis.com/v0/b/szema-ac882.appspot.com/o/quizes%2Fquiz_type%2Fcube.png?alt=media&token=31e44214-3a23-4f31-bb3f-865772f47d11'});
+  const [icon, setIcon] = React.useState(null);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
