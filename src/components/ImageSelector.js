@@ -30,7 +30,7 @@ export default class ImageSelector extends Component {
         storageRef.child(file['name']).getDownloadURL()
         .then((url)=>{
           this.setState({
-            imageList : [...this.state.imageList, url]
+            imageList : [...this.state.imageList, {'url': url, 'name': file['name']}]
           })
         })
       })
@@ -41,17 +41,19 @@ export default class ImageSelector extends Component {
     var imageList = []
   }
   onPick(image) {
-    this.setState({image})
+    this.setState({
+      image : image
+    })
+    this.props.action(image)
   }
   
   render() {
     return (
       <div>
         <ImagePicker 
-          images={this.state.imageList.map((image, i) => ({src: image, value: i}))}
+          images={this.state.imageList.map((image, i) => ({src: image['url'], value: i, name : image['name']}))}
           onPick={this.onPick}
         />
-        <button type="button" onClick={() => console.log(this.state.image)}>OK</button>
       </div>
     )
   }

@@ -85,7 +85,7 @@ footer{
 #welcome-rest a button:hover, #welcome-rest button:hover{
     background-color: #2296f2;
 }
-#welcome-rest a, .center-fullwidth a{
+#welcome-rest a, .center-fullwidth a, .choose-testattr a, .dialog-form-field a{
     display: contents;
     overflow: hidden;
     box-sizing:content-box;
@@ -154,10 +154,12 @@ footer{
     width: 100%;
     display: none; /*none*/
     align-content: center;
-    flex-wrap: wrap;
     justify-content: center;
     padding-top: 2vh;
     padding-bottom: 2vh;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
 }
 #test-name:hover{
     border-color: rgba(255, 255, 255, 0.45);
@@ -211,7 +213,7 @@ footer{
 .delete-button:hover{
     background-color: rgba(39, 31, 31, 0.788);
 }
-.modul-button:hover, .finish-content-btns:hover, .finish-button:hover, .back-preview-button:hover, .preview-button:hover{
+.modul-button:hover, .finish-content-btns:hover, .finish-button:hover, .back-preview-button:hover, .preview-button:hover, .icon-picker-button:hover{
     background-color: #2296f2;
 }
 .modul-counter div{
@@ -331,4 +333,39 @@ var{
 }
 .delete-button{
     display: none;
+}
+.folder-icon{
+    width: 10vw;
+    text-align: center;
+}
+.dialog-form-field{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.dialog-form{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    width: 20vw;
+}
+.icon-picker-button{
+    width: 15vw;
+    height: 38px;
+    font-size: 1vw;
+    text-transform: none;
+    border: outset;
+    color: white;
+    border-radius: 4px;
+    background-color: #1970b7;
+    display: block;
+    margin: 2.5vh 0 2.5vh 0;
 }

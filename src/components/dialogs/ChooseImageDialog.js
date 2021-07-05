@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 export default function ChooseImageDialog({path,action}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [description, setDescription] = React.useState('');
   const [icon, setIcon] = React.useState({});
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -47,11 +46,19 @@ const classes = useStyles();
   const handleClose = () => {
     setOpen(false);
   };
+  const handleSave = (event) =>{
+    event.preventDefault()
+    action(icon)
+    setOpen(false);
+  }
+  const handlePickImage = (image) =>{
+    setIcon(image)
+  }
 
   return (
       <>
       <a>
-        <button class="modul-button" onClick={handleClickOpen}>
+        <button class="icon-picker-button" onClick={handleClickOpen}>
             Icon kiválasztása
         </button>
       </a>
@@ -69,7 +76,7 @@ const classes = useStyles();
         <DialogContentText></DialogContentText>
         <form autoComplete="off">
             <div class="center-fullwidth">
-                <ImageSelector path='quizes/quiz_type'/>
+                <ImageSelector path={path} action={handlePickImage}/>
             </div>
             <br/>
         </form>
@@ -78,8 +85,8 @@ const classes = useStyles();
           <Button autoFocus onClick={handleClose} color="inherit">
             Mégsem
           </Button>
-          <Button  onClick={handleClose} color="inherit" autoFocus>
-            Módosítás
+          <Button  onClick={handleSave} color="inherit" autoFocus>
+            Mentés
           </Button>
         </DialogActions>
       </Dialog>

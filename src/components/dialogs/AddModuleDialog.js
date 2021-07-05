@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Select from 'react-select'
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
+import ImageSelector from '../ImageSelector'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function AddModuleDialog({action,options,maxidx}) {
+export default function AddModuleDialog({path,action,options,maxidx}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [description, setDescription] = React.useState('');
@@ -60,11 +61,11 @@ const classes = useStyles();
       setIndex(event.target.value)
     }
   }
-  const handleIcon = (newValue, actionMeta) =>{
-    setIcon(newValue['value'])
+  const handleIcon = (image) =>{
+    setIcon(image['src'])
   }
   const handleAddModul = (event) => { 
-    action(event,{'description' : description, 'icon' : icon['value']},index-1)
+    action(event,{'description' : description, 'icon' : icon},index-1)
     setOpen(false);
   };
 
@@ -89,15 +90,7 @@ const classes = useStyles();
         <DialogContentText></DialogContentText>
         <form autoComplete="off">
             <div class="center-fullwidth">
-                <div id="select-top">
-                    <Select width="50%" 
-                    id="modul-icon-select" 
-                    placeholder="Icon kiválasztása..." 
-                    options={options} 
-                    onChange={handleIcon}
-                    value ={icon}
-                    />
-                </div>
+                <ImageSelector path={path} action={handleIcon}/>
             </div>
             <br/>
             <TextField

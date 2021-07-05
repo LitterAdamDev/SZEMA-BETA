@@ -319,29 +319,6 @@ export default class TestMakerDashboard extends React.Component {
         this.state.theQuiz['modules'].map((modul, modul_index) =>{
             modul['questions'].map((question, question_index) =>{
                 allIDs.push(question['id'])
-               /* var result = this.state.questionBase.filter(obj => {
-                    return obj.id === question['id']
-                })
-                    if(result[0]){
-                    for (const key in result[0]) {
-                        
-                        let must_update = false
-                        must_update = question.hasOwnProperty(key)
-                        if(!must_update){
-                            must_update = question[key] !== result[0][key]
-                        }
-                        if(must_update){
-                            
-                            var to_overwrite = this.state.theQuiz['modules']
-                            if(to_overwrite[modul_index].hasOwnProperty('questions')){
-                                to_overwrite[modul_index]['questions'][question_index] = result[0]
-                            }
-                            this.setState({
-                                theQuiz : {...this.state.theQuiz, 'modules' : to_overwrite} 
-                            })
-                        }
-                    }
-                }*/
             })
         })
         this.setState({
@@ -606,8 +583,12 @@ export default class TestMakerDashboard extends React.Component {
             theQuiz: {...this.state.theQuiz, 'DocDetails' : DocDetails}
         })
     };
-    handleFolderIconChange = (event) => {
-        //pass
+    handleFolderIconChange = (icon) => {
+        var DocDetails = this.state.theQuiz['DocDetails']
+        DocDetails[2] = icon['src']
+        this.setState({
+            theQuiz: {...this.state.theQuiz, 'DocDetails' : DocDetails}
+        })
     };
     handleTypeChange = (event) => {
         this.setState({
@@ -823,8 +804,9 @@ export default class TestMakerDashboard extends React.Component {
                             <div class="choose-testattr">
                                 <input type="text"  class="text-input" placeholder="Mappa leírás..." id="folder-desc" value={this.state.theQuiz['DocDetails'][1]} onChange={this.handleFolderDescChange} name="test-name"/>
                             </div>
-                            <div class="center-fullwidth">
-                                <ChooseImageDialog />
+                            <div class="choose-testattr">
+                                <img class="folder-icon" src={this.state.theQuiz['DocDetails'][2]} alt="Még nincsen hozzáadva icon a feladatsorhoz."></img>
+                                <ChooseImageDialog path='quizes/quiz_type' action={this.handleFolderIconChange}/>
                             </div>
                             <div class="test-attributes">
                                 <input type="radio" class="edit" id="edit" onClick={this.handleTypeChange} name="test-type" value="EDIT_TEST"/>
@@ -841,7 +823,7 @@ export default class TestMakerDashboard extends React.Component {
                     </div>
                     <br/>
                     <div class="question-content">
-                        <h1 onClick={()=>{console.log(this.state.filtered_questionBaes_for_more)}}>Kérdések hozzáadása a feladatsorhoz</h1>
+                        <h1 onClick={()=>{console.log(this.state.theQuiz['DocDetails'])}}>Kérdések hozzáadása a feladatsorhoz</h1>
                         <form>
                             <div class="center-fullwidth">
                                 <div class="select-multy">
@@ -898,8 +880,8 @@ export default class TestMakerDashboard extends React.Component {
                                         Modul törlése
                                     </button>
                                 </a>
-                                <AddModuleDialog action={this.handleAddModul} maxidx={this.state.theQuiz['modules'].length+1}/>
-                                <ModifyModuleDialog action={this.handleModifyModul} index={this.state.actModul-1} dataset={this.state.theQuiz['Module_Fields']}/>
+                                <AddModuleDialog path='quizes/quiz_type' action={this.handleAddModul} maxidx={this.state.theQuiz['modules'].length+1}/>
+                                <ModifyModuleDialog path='quizes/quiz_type' action={this.handleModifyModul} index={this.state.actModul-1} dataset={this.state.theQuiz['Module_Fields']}/>
                             </div>
                         </form>
                         <div class="transferlist">
