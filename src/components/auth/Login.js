@@ -59,7 +59,6 @@ const Login = ({ history }) => {
       } catch (error) {
         console.log(error)
       }
-      
     },
     [history]
   );

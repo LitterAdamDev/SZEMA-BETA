@@ -3,11 +3,6 @@ html{
     min-height:100vh;
     margin: 0;
 }
-body{
-    margin:0;
-    padding:0;
-    min-height: 100%;
-}
 footer,header{
     display: nonea;
 }
@@ -19,14 +14,15 @@ footer,header{
     display: flex; /*flex*/
     vertical-align: middle;
     justify-content: center;
-    position: relative;
+    position: absolute;
+    width: 100%;
+    left:0;
 }
 #main-start{
     width: 100%;
     padding-top: 20vh;
     padding-bottom: 20vh;
     display:none; /*none*/
-    bottom: 0;
     background-image: url(../SZEMA_WEB_background_3.svg);
     background-repeat: no-repeat;
     background-attachment: fixed;

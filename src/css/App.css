@@ -9,9 +9,11 @@
     width: 100%;
     overflow: hidden;
     flex-wrap: wrap;
+    top:0;
     align-items: center;
     flex-direction: row;
     align-content: flex-end;
+    left:0;
 }
 header{
     font-family: "Roboto";
@@ -20,15 +22,8 @@ header{
     position: fixed;
     width: 100%;
     z-index: 9999;
+    left:0;
 }
-body{
-    font-family: "Roboto";
-    bottom: 0px;
-    position: relative;
-    right: 0;
-    left: 0;
-}
-
 footer{
     bottom: 0px;
     font-family: "Roboto";
