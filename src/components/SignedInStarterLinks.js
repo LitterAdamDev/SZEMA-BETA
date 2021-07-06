@@ -16,16 +16,13 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
       flexGrow: 1,
-      fontFamily: 'Anton',
       position: 'realtive',
       display: 'flex',
       justifyContent: 'left',
     },
     buttonTitle: {
-      fontFamily: 'Anton'
     },
     mainButtonTitle: {
-      fontFamily: 'Anton',
       fontSize: '25px',
     }
   }));

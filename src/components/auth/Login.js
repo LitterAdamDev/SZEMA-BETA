@@ -45,7 +45,6 @@ const Login = ({ history }) => {
   useEffect(() => {
     var headerHeight = document.getElementsByTagName("header")[0].offsetHeight
     document.getElementsByClassName('main')[0].setAttribute("style","height: calc(100vh - "+ headerHeight +")");
-    console.log(headerHeight)
   }, []);
   const handleLogin = useCallback(
    
@@ -58,7 +57,7 @@ const Login = ({ history }) => {
           setCurrenUser(result)
         })
       } catch (error) {
-        alert(error);
+        console.log(error)
       }
       
     },

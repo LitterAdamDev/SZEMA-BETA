@@ -6,26 +6,27 @@ import "firebase/auth";
 import Tooltip from '@material-ui/core/Tooltip';
 import TemporaryDrawer from './TemporaryDrawer';
 import firebase from "firebase/app";
+import 'typeface-roboto'
 
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+      fontFamily: 'Roboto',
     },
     menuButton: {
       marginRight: theme.spacing(2),
     },
     title: {
       flexGrow: 1,
-      fontFamily: 'Anton',
       position: 'realtive',
       display: 'flex',
       justifyContent: 'left',
     },
     buttonTitle: {
-      fontFamily: 'Anton'
+      fontFamily: 'Roboto'
     },
     mainButtonTitle: {
-      fontFamily: 'Anton',
+      fontFamily: 'Roboto',
       fontSize: '25px',
     }
   }));

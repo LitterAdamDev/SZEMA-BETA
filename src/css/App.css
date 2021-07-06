@@ -1,9 +1,9 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+@import 'typeface-roboto';
 .App {
     text-align: center;
     display: flex;
     justify-content: center;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Roboto";
     position: absolute;
     height: 100%;
     width: 100%;
@@ -14,24 +14,47 @@
     align-content: flex-end;
 }
 header{
+    font-family: "Roboto";
     background: '#2196f3';
     top:0;
     position: fixed;
     width: 100%;
     z-index: 9999;
 }
+body{
+    font-family: "Roboto";
+    bottom: 0px;
+    position: relative;
+    right: 0;
+    left: 0;
+}
+
+footer{
+    bottom: 0px;
+    font-family: "Roboto";
+    position: relative;
+    right: 0;
+    left: 0;
+    display: 'flex';
+    flex-direction: 'column';
+    background-color : '#353535';
+    color : 'white';
+}
 .login {
     width: 40em;
+    font-family: "Roboto";
     height: 40em;
     margin-top: 15%
 }
 .login-trouble{
+    font-family: "Roboto";
     width: 40em;
     height: 40em;
-    margin-top: 5%
+    margin-top: 15%
 }
 .title-container{
     width: 100%;
+    font-family: "Roboto";
     height: 20%;
     font-size: 8em;
     display: flex;
@@ -44,6 +67,7 @@ header{
 .login-title-container{
     width: 100%;
     height: 10%;
+    font-family: "Roboto";
     font-size: 2em;
     font-weight: bold;
     display: flex;
@@ -52,6 +76,7 @@ header{
     justify-content: center;
 }
 .rest-container{
+    font-family: "Roboto";
     height: 50%;
     display: flex;
     flex-wrap: wrap;
@@ -60,6 +85,7 @@ header{
     justify-content: center;
 }
 .button-container{
+    font-family: "Roboto";
     width: 100%;
     height: 20%;
     display: flex;
@@ -68,6 +94,7 @@ header{
     flex-wrap: wrap;
 }
 .button-container button{
+    font-family: "Roboto";
     background-color: white;
     border-radius: 10px;
     width: 15em;
@@ -92,6 +119,7 @@ header{
     justify-content: space-around;
 }
 .google-title{
+    font-family: "Roboto";
     height: 100%;
     display: flex;
     width: 60%;
@@ -101,27 +129,17 @@ header{
     justify-content: space-around;
 }
 .rest-google-title{
+    font-family: "Roboto";
     height: 100%;
     display: flex;
     width: 20%;
 }
 .btnL {
-    /*
-	 font-size: 21px;
-	 padding: 5px 20px;
-	 border: 0;
-	 background-color: #3498db;
-	 color: #fff;
-	 border-radius: 3px;
-	 transition: all 250ms ease-in-out;
-	 cursor: pointer;
-*/
-
+    font-family: "Roboto";
     border-radius: 5px;
     width: 180px;
     height: 60px;
     cursor: pointer;
-   /* background: transparent;*/
     background-color: #3498db;
     border: 3px solid #91C9FF;
     outline: none;
@@ -130,20 +148,8 @@ header{
 
 .btnL:hover {
     background-color: #2e23c8;
-    /*new*/
     transition: 200ms ease-in-out;
 }
-
-
-/*
- .btn:focus {
-	 outline: none;
-}
-*/
-
-
-/*new button animations*/
-
 .login svg {
     position: absolute;
     left: 0;
@@ -166,6 +172,7 @@ header{
 }
 
 .container {
+    font-family: "Roboto";
     width: 400px;
     height: 400px;
     position: absolute;
@@ -183,8 +190,10 @@ header{
 }
 .dropdownNavs{
     display: contents;
+    font-family: "Roboto";
 }
 .listNavs{
+    font-family: "Roboto";
     display: none;
 }
 @media screen and (min-width: 700px) {
@@ -214,14 +223,12 @@ header{
 .MuiStepIcon-root.MuiStepIcon-completed {
     color: #2196f3 !important;
 }
-footer{
-    bottom: 0;
-}
 .MuiAppBar-colorPrimary {
     color: #fff;
     background-color:#2196f3 !important;
 }
 .main{
+    font-family: "Roboto";
     display: flex;
     width: 100%;
     position: relative;
@@ -230,6 +237,7 @@ footer{
     align-content: center;
     justify-content: center;
     overflow: hidden;
+    bottom: 0;
 }
 .bad-login-message{
     background-color: rgba(255, 0, 0, 0.452);
@@ -237,8 +245,5 @@ footer{
     padding: .5em .25em .5em .25em;
     font-weight: 700;
     border-radius: 4px;
-}
-#admin-contact{
-    color: #2e23c8;
-    font-weight: bold;
+    font-family: "Roboto";
 }

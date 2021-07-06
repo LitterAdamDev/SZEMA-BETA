@@ -15,6 +15,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import 'firebase/firestore'
 import {db} from '../../config/base'
 import backgroundIMG from '../../SZEMA_WEB_background_2.svg'
+import { PlayCircleFilledWhite } from "@material-ui/icons";
 
 const useStyles = (theme) => ({
   icon: {
@@ -27,7 +28,8 @@ const useStyles = (theme) => ({
     backgroundRepeat: 'no-repeat',
     background: '100%',
     padding: theme.spacing(8, 0, 6),
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
+    height : "100vh",
   },
   heroButtons: {
     marginTop: theme.spacing(4),
@@ -48,19 +50,20 @@ const useStyles = (theme) => ({
   mainTitle:{
     paddingTop: '10%',
     fontWeight: 'bold',
-    paddingBottom: '0%',
   },
   root:{
     flexGrow: 1,
     textAlign: 'center',
-    textTransform: "none"
+    textTransform: "none",
+    height: "100"
   },
   simpleButton:{
     width: "100%",
-    height: "8vh",
     marginTop:"6.5vh",
+    height: "3vw",
     textTransform: "none",
     fontWeight: 'bold',
+    fontSize : "0.75vw",
   }, 
   cardGrid: {
     marginTop:"10vh"
@@ -91,7 +94,9 @@ class CreateTestDashboard extends React.Component {
           const data = doc.data()
           data_from_web.push({...data,id:doc.id})
         })
-        this.setState({cards_array : data_from_web})
+        this.setState({
+          cards_array : data_from_web
+        })
       })
       .catch( error => console.log(error))
   } 
@@ -104,6 +109,18 @@ class CreateTestDashboard extends React.Component {
   componentDidMount(){
     this.getCards();
     this.state.cards_array.sort()
+  }
+  handleClickOnText = (event) =>{
+    var id = event.target.id
+    var pos = this.state.cards_array.findIndex(obj => obj['id'] === id)
+    if(document.getElementById(id).innerText.length === 38){
+      if (pos > -1) {
+          document.getElementById(id).innerText = this.state.cards_array[pos]['message']
+      }
+    }else{
+          document.getElementById(id).innerText = this.state.cards_array[pos]['message'].substring(0,35) + '...'
+    }
+    
   }
   render(){
     const { classes } = this.props;
@@ -153,8 +170,8 @@ class CreateTestDashboard extends React.Component {
                       <Typography gutterBottom variant="h5" component="h2">
                         {card["user"]+ " " + card["date"]}
                       </Typography>
-                      <Typography>
-                        {card["message"]}
+                      <Typography id={card["id"]} onClick={this.handleClickOnText}>
+                        {card["message"].substring(0,35) + '...'}
                       </Typography>
                     </CardContent>
                     <CardActions style={{ justifyContent:"centers", display:"table",textTransform: "capitalize"}}> 
@@ -169,16 +186,14 @@ class CreateTestDashboard extends React.Component {
           </Container>
           </div>
         </main>
-        {/* Footer */}
-        <footer className={classes.footer}>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+        {/*<footer>
+        <Typography variant="subtitle1" align="center" color="white" component="p">
               <strong>SZEMA - </strong>Széchenyi István Egyetem
           </Typography>
-          <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+          <Typography variant="subtitle1" align="center" color="white" component="p">
               Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089 
           </Typography>
-        </footer>
-        {/* End footer */}
+        </footer>*/}
       </React.Fragment>
     );
   }

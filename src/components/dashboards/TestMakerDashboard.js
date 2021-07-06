@@ -90,6 +90,21 @@ export default class TestMakerDashboard extends React.Component {
           })
           .catch( error => console.log(error))
     }
+    getQuestions2 = () => {
+        db.collection('Questions')
+          .get()
+          .then( snapshot => {
+            const data_from_web = []
+            snapshot.forEach(doc => {
+              const data = doc.data()
+              data_from_web.push({...data,guid:doc.id})
+            })
+            this.setState({
+                secondaryquestionBase : data_from_web
+            })
+          })
+          .catch( error => console.log(error))
+    }
     getGroups = () => {
         db.collection('groups')
         .get()
@@ -129,7 +144,7 @@ export default class TestMakerDashboard extends React.Component {
         .catch( error => console.log(error))
     }
     getQuizzes = () => {
-        ['QuizFolder','ZHQuizFolder'].map((folder)=>{
+    ['QuizFolder','ZHQuizFolder'].map((folder)=>{
             db.collection(folder)
             .get()
             .then( snapshot => {
@@ -164,12 +179,18 @@ export default class TestMakerDashboard extends React.Component {
             .then((snapshot) => {
               snapshot.forEach(doc => {
                 const data = doc.data()
-                current_quiz['modules'][index_of_module]['questions'] = [...current_quiz['modules'][index_of_module]['questions'],{...data, 'fb-id': doc.id}]
-                this.setState({
-                    questionBase : [...this.state.questionBase,{...data, 'fb-id': doc.id}],
-                    filtered_questionBaes : [...this.state.filtered_questionBaes,{...data, 'fb-id': doc.id}],
-                    filtered_questionBaes_for_more : [...this.state.filtered_questionBaes_for_more,{...data, 'fb-id': doc.id}],
-                })
+                var pos = this.state.questionBase.findIndex(obj => obj['id'] === data['id'])
+                if(true){
+                    if(pos !== -1){
+                        console.log("duplicated id")
+                    }
+                    current_quiz['modules'][index_of_module]['questions'] = [...current_quiz['modules'][index_of_module]['questions'],{...data, 'fb-id': doc.id}]
+                    this.setState({
+                        questionBase : [...this.state.questionBase,{...data, 'fb-id': doc.id}],
+                        filtered_questionBaes : [...this.state.filtered_questionBaes,{...data, 'fb-id': doc.id}],
+                        filtered_questionBaes_for_more : [...this.state.filtered_questionBaes_for_more,{...data, 'fb-id': doc.id}],
+                    })
+                }
               })
             })
             .catch(error => alert(error))
@@ -178,7 +199,7 @@ export default class TestMakerDashboard extends React.Component {
             all_quiz.push(current_quiz)
             this.setState({
                 everyDataTogetherOfQuizzes : all_quiz,
-            },()=>{console.log('Megjott az adat az osszes tesztrol')})
+            }/*,()=>{console.log('Megjott az adat az osszes tesztrol')}*/)
         })
     }
     handleStart = () =>{
@@ -186,6 +207,7 @@ export default class TestMakerDashboard extends React.Component {
         document.getElementById('main-welcome').style.display = "none"
         document.getElementById('main-start').style.display = "grid"
         this.getUsers()
+        this.getQuestions2()
     };
     handleFinish = (event) =>{
         event.preventDefault()
@@ -247,6 +269,7 @@ export default class TestMakerDashboard extends React.Component {
                 actModul : this.state.actModul + 1
             })
         }
+        
     }
     handleAddModul = (event=undefined, data={'description' : '', 'icon' : ''},index=this.state.actModul) =>{
         if(event !== undefined){
@@ -319,7 +342,7 @@ export default class TestMakerDashboard extends React.Component {
         this.countAll()
     }
     handleUsedQuestionIDs = () =>{
-        console.log('Felhasznált kérdések keresése')
+        /*console.log('Felhasznált kérdések keresése')*/
         var allIDs = []
         this.state.theQuiz['modules'].map((modul, modul_index) =>{
             modul['questions'].map((question, question_index) =>{
@@ -328,7 +351,7 @@ export default class TestMakerDashboard extends React.Component {
         })
         this.setState({
             usedQuestionsIDs : [...allIDs]
-        },()=>{console.log('Felhasznált kérdések adatai a state-ban')})
+        }/*,()=>{console.log('Felhasznált kérdések adatai a state-ban')}*/)
     }
     componentDidMount(){
         this.countAll()
@@ -342,6 +365,7 @@ export default class TestMakerDashboard extends React.Component {
         })
         if(newValue['value'] !== undefined){
             document.getElementsByClassName('question-content')[0].style.display = "contents"
+            document.getElementsByClassName('test-attributes')[0].style.display = "flex"
         }
         if(newValue.hasOwnProperty('id')){
             
@@ -406,6 +430,7 @@ export default class TestMakerDashboard extends React.Component {
                 Current_Quiz['ModuleIDs'].map((modulName) =>{
                     tmp_desc.push({'description' : Current_Quiz[modulName][3], 'icon' : Current_Quiz[modulName][2]})
                 })
+                document.getElementsByClassName('zh-dates')[0].style.display = Current_Quiz['ZH']? "block" : 'none'
                 let group = Current_Quiz['groups']? Current_Quiz['groups'] : []
                 this.setState({
                     testType : 'EDIT_TEST',
@@ -1033,14 +1058,14 @@ export default class TestMakerDashboard extends React.Component {
                     </div>
                 </div>
             </div>
-            <footer>
+            {/*<footer>
             <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
               <strong>SZEMA - </strong>Széchenyi István Egyetem
           </Typography>
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
               Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089 
           </Typography>
-            </footer>
+            </footer>*/}
         </>
         )
     }

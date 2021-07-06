@@ -57,15 +57,12 @@ const Login = ({ history }) => {
           setCurrenUser(result)
         })
       } catch (error) {
-        alert(error);
+        console.log(error);
       }
       
     },
     [history]
   );
-  const handleContact = () =>{
-      console.log(currentUser)
-  }
   return (
     <div className="App" style={{backgroundImage: `url(${backgroundIMG})`,backgroundRepeat: 'no-repeat',backgroundSize: 'cover', backgroundColor:'white'}}>
       <header>
