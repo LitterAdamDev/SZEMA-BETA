@@ -45,7 +45,6 @@ const Login = ({ history }) => {
   useEffect(() => {
     var headerHeight = document.getElementsByTagName("header")[0].offsetHeight
     document.getElementsByClassName('main')[0].setAttribute("style","height: calc(100vh - "+ headerHeight +")");
-    console.log(headerHeight)
   }, []);
   const handleLogin = useCallback(
    
@@ -64,7 +63,9 @@ const Login = ({ history }) => {
     },
     [history]
   );
-  
+  const handleContact = () =>{
+      console.log(currentUser)
+  }
   return (
     <div className="App" style={{backgroundImage: `url(${backgroundIMG})`,backgroundRepeat: 'no-repeat',backgroundSize: 'cover', backgroundColor:'white'}}>
       <header>
@@ -75,12 +76,12 @@ const Login = ({ history }) => {
         </AppBar>
       </header>
       <div class="main">
-        <div className="login">
+        <div className="login-trouble">
           <div class="title-container">
             SZEMA
           </div>
           <div class="login-title-container">
-            Bejelentkezés
+            Sikertelen bejelentkezés
           </div>
           <div class="button-container">
               <button onClick={handleLogin}>
@@ -94,12 +95,15 @@ const Login = ({ history }) => {
                   Google
                 </div>
                 <div class="rest-google-title">
-
                 </div>
-                
               </button>
           </div>
-          <div class="rest-container"></div>
+          <div class="rest-container">
+              <div class="bad-login-message">
+                  Nem rendelkezik az adatbázisban rögzített felhasználói fiókkal és/vagy megfelelő jogosultsággal.
+                  Próbálkozzon másik email címmel, vagy lépjen kapcsolatba az adminisztrátorral.
+              </div>
+          </div>
         </div>
       </div>
     </div>
