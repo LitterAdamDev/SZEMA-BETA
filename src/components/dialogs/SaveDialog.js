@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
+import firebase from "../../config/base.js";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -9,7 +10,7 @@ import { useTheme } from '@material-ui/core/styles';
 import "firebase/auth";
 import { makeStyles } from '@material-ui/core/styles';
 import 'firebase/firestore';
-import {db} from '../../config/base'
+import {db} from '../../config/base.js'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -42,26 +43,25 @@ const classes = useStyles();
 
   const handleClickOpen = () => {
     setOpen(true);
-    console.log(id);
-    console.log(toSave);
-    console.log(Type);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSave = () => { 
+  const handleSave = (event) => { 
     db.collection("news")
-        .add({
-            date: getCurrentDate(),
-            message: toSave,
-            profileImage:`https://firebasestorage.googleapis.com/v0/b/szema-ac882.
-                      appspot.com/o/management.png?alt=media&token=1ded933d-08
-                      ca-40f2-8180-bbcd7dffb767`,
-            user: "Admin"
-        })
-        .catch( error => console.log(error));
-    setOpen(false);
+    .add({
+        date: getCurrentDate(),
+        message: toSave['message'],
+        profileImage: toSave['icon'],
+        user: toSave['title']
+    })
+    .catch( error => console.log(error))
+    .finally(()=>{
+     /* console.log(event.target)
+      event.target.setAttribute("href", "news")
+      event.target.click()*/
+    })
   };
   const handleUpdate = () => { 
     db.collection("news")
@@ -89,7 +89,7 @@ const classes = useStyles();
           <Button autoFocus onClick={handleClose} color="inherit">
             Mégsem
           </Button>
-          <Button onClick={Type == "save"? handleSave : handleUpdate} color="inherit" autoFocus>
+          <Button  id="save-btn" onClick={Type == "save"? handleSave : handleUpdate} color="inherit" autoFocus>
             Mentés
           </Button>
         </DialogActions>

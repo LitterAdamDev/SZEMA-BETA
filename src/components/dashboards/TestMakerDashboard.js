@@ -14,7 +14,6 @@ import AddModuleDialog from '../dialogs/AddModuleDialog'
 import ModifyModuleDialog from '../dialogs/ModifyModuleDialog'
 import ChooseImageDialog from "../dialogs/ChooseImageDialog"
 import TextField from '@material-ui/core/TextField';
-import { ControlPointDuplicateOutlined, ThreeSixty } from "@material-ui/icons"
 
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -86,21 +85,6 @@ export default class TestMakerDashboard extends React.Component {
                 memberBase : data_from_web.sort(this.compare)
             },() =>{
                 this.getGroups()
-            })
-          })
-          .catch( error => console.log(error))
-    }
-    getQuestions2 = () => {
-        db.collection('Questions')
-          .get()
-          .then( snapshot => {
-            const data_from_web = []
-            snapshot.forEach(doc => {
-              const data = doc.data()
-              data_from_web.push({...data,guid:doc.id})
-            })
-            this.setState({
-                secondaryquestionBase : data_from_web
             })
           })
           .catch( error => console.log(error))

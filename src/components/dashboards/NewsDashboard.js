@@ -18,7 +18,9 @@ import { withStyles } from "@material-ui/core/styles";
 import UpdateNewsDialog from "../dialogs/UpdateNewsDialog";
 import DeleteNewsDialog from '../dialogs/DeleteNewsDialog';
 import backgroundIMG from '../../SZEMA_WEB_background_3.svg'
-import Tooltip from '@material-ui/core/Tooltip';
+import '../../css/NewsDashboard.css'
+import "firebase/auth";
+import firebase from "../../config/base.js";
 
 const useStyles = (theme) => ({
   icon: {
@@ -58,7 +60,30 @@ const useStyles = (theme) => ({
 });
 
 class NewsDashboard extends React.Component {
-
+  getUsers = () => {
+    db.collection('users')
+      .get()
+      .then( snapshot => {
+        const data_from_web = []
+        snapshot.forEach(doc => {
+          const data = doc.data()
+          data_from_web.push({...data,id:doc.id})
+        })
+        this.setState({
+            memberBase : data_from_web.sort(this.compare)
+        },() =>{
+          firebase.auth().onAuthStateChanged((user) => {
+            var pos = this.state.memberBase.findIndex(obj => obj['id'] === user['uid'])
+            if(pos != -1){
+              this.setState({
+                selfTitle : this.state.memberBase[pos]['title']
+              })
+            }
+          });
+        })
+      })
+      .catch( error => console.log(error))
+  }
   getCards = () => {
     db.collection('news')
       .get()
@@ -76,10 +101,13 @@ class NewsDashboard extends React.Component {
     super(props);
     this.state = {
       cards_array : [],
+      memberBase : [],
+      selfTitle: '',
     };
   }
   componentDidMount(){
-    this.getCards();
+    this.getCards()
+    this.getUsers()
   }
   render(){
     const { classes } = this.props;
@@ -101,7 +129,7 @@ class NewsDashboard extends React.Component {
               <div className={classes.heroButtons}>
                 <Grid container spacing={1} justify="center">
                   <Grid item>
-                   <AddNewsDialog /> 
+                   <AddNewsDialog title={this.state.selfTitle}/> 
                   </Grid>
                 </Grid>
               </div>

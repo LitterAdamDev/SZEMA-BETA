@@ -1,0 +1,27 @@
+
+.news-dialog-fullwidth{
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: space-around;
+    padding: 2vw;
+    box-sizing: border-box;
+    height: 50%;
+}
+.news-dialog-iconpicker{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: space-around;
+}
+.news-dialog-textarea{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    font-size: 1.5vw;
+}
