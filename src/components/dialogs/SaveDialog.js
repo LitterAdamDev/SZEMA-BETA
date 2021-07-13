@@ -35,7 +35,7 @@ const getCurrentDate = (separator='-') =>{
     return `${year}${separator}${month<10?`0${month}`:`${month}`}${separator}${date<10?`0${date}`:`${date}`}`
   };
 
-export default function SaveDialog({toSave, Type, id}) {
+export default function SaveDialog({closeParentDialog,action, toSave, Type, id}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -58,17 +58,26 @@ const classes = useStyles();
     })
     .catch( error => console.log(error))
     .finally(()=>{
-     /* console.log(event.target)
-      event.target.setAttribute("href", "news")
-      event.target.click()*/
+     action()
+     closeParentDialog()
+     setOpen(false);
     })
   };
   const handleUpdate = () => { 
     db.collection("news")
         .doc(id)
-        .update({message:toSave})
-        .catch( error => console.log(error));
-    setOpen(false);
+        .update({
+          date: getCurrentDate(),
+          message: toSave['message'],
+          profileImage: toSave['icon'],
+          user: toSave['title']
+        })
+        .catch( error => console.log(error))
+      .finally(()=>{
+        action()
+        closeParentDialog()
+        setOpen(false);
+      })
   };
 
   return (

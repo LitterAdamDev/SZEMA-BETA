@@ -31,7 +31,7 @@ function useForceUpdate(){
   return () => setValue(value => value + 1); 
 }
 
-export default function AddNewsDialog({title}) {
+export default function AddNewsDialog({action,title}) {
 
   const forceUpdate = useForceUpdate();
 
@@ -71,7 +71,9 @@ export default function AddNewsDialog({title}) {
             <Typography variant="h6" className={classes.title}>
               Új hír létrehozása
             </Typography>
-            <SaveDialog 
+            <SaveDialog
+              closeParentDialog = {handleClose} 
+              action={action}
               toSave={
                 {
                   'message' : message,

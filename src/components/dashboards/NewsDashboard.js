@@ -84,6 +84,9 @@ class NewsDashboard extends React.Component {
       })
       .catch( error => console.log(error))
   }
+  handleCardChanges = () => {
+    this.getCards()
+  }
   getCards = () => {
     db.collection('news')
       .get()
@@ -129,7 +132,7 @@ class NewsDashboard extends React.Component {
               <div className={classes.heroButtons}>
                 <Grid container spacing={1} justify="center">
                   <Grid item>
-                   <AddNewsDialog title={this.state.selfTitle}/> 
+                   <AddNewsDialog action={this.handleCardChanges} title={this.state.selfTitle}/> 
                   </Grid>
                 </Grid>
               </div>
@@ -155,8 +158,8 @@ class NewsDashboard extends React.Component {
                     </CardContent>
                     <CardActions style={{ justifyContent:"centers", display:"table"}}> 
                     <Grid container spacing={2} justify="center"> 
-                      <UpdateNewsDialog toUpdate={card} />
-                      <DeleteNewsDialog toUpdate={card}/>
+                      <UpdateNewsDialog toUpdate={card} action={this.handleCardChanges} title={this.state.selfTitle}/>
+                      <DeleteNewsDialog toUpdate={card} action={this.handleCardChanges}/>
                     </Grid>
                     </CardActions>
                   </Card>

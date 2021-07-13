@@ -35,7 +35,7 @@ const getCurrentDate = (separator='-') =>{
     return `${year}${separator}${month<10?`0${month}`:`${month}`}${separator}${date<10?`0${date}`:`${date}`}`
   };
 
-export default function SaveDialog({toUpdate}) {
+export default function SaveDialog({action, toUpdate}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -50,10 +50,13 @@ const classes = useStyles();
   };
   const handleDelete = () => { 
     db.collection("news")
-        .doc(toUpdate["id"])
-        .delete()
-        .catch( error => console.log(error));
-    setOpen(false);
+      .doc(toUpdate["id"])
+      .delete()
+      .catch( error => console.log(error))
+      .finally(()=>{
+        action()
+        setOpen(false);
+      })
   };
 
   return (

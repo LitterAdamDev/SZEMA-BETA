@@ -11,8 +11,10 @@ import Slide from '@material-ui/core/Slide';
 import 'firebase/firestore';
 import SaveDialog from './SaveDialog';
 import EditIcon from '@material-ui/icons/Edit';
-
+import ImageSelector from '../ImageSelector';
 import Tooltip from '@material-ui/core/Tooltip';
+import ChooseImageDialog from './ChooseImageDialog';
+
 const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'inherited',
@@ -31,16 +33,19 @@ function useForceUpdate(){
   return () => setValue(value => value + 1); 
 }
 var content = ""
-export default function UpdateNewsDialog({toUpdate}) {
+export default function UpdateNewsDialog({action, toUpdate, title}) {
 
   const forceUpdate = useForceUpdate();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState();
+  const [message, setMessage] = React.useState();
+  const [icon, setIcon] = React.useState();
 
   const handleClickOpen = () => {
+    setMessage(toUpdate['message'])
+    setIcon(toUpdate['profileImage'])
     setOpen(true);
-    content = toUpdate["message"];
   };
   const handleClose = () => {
     setOpen(false);
@@ -51,6 +56,13 @@ export default function UpdateNewsDialog({toUpdate}) {
     setValue(event.target.value);
     
     console.log(event.target.value);
+  };
+
+  const handleMessageChange = (event) =>{
+    setMessage(event.target.value);
+  };
+  const handleIconChange = (icon) =>{
+    setIcon(icon['src']);
   };
 
   return (
@@ -69,27 +81,35 @@ export default function UpdateNewsDialog({toUpdate}) {
             <Typography variant="h6" className={classes.title}>
               Hír szerkesztése
             </Typography>
-            <SaveDialog toSave={value} Type="update" id={toUpdate["id"]}/>
+            <SaveDialog 
+              action={action} 
+              closeParentDialog={handleClose}
+              toSave={
+                {
+                  'message' : message,
+                  'icon': icon,
+                  'title' : title,
+                }
+              } 
+              Type="update" 
+              id={toUpdate["id"]}
+            />
           </Toolbar>
         </AppBar>
-            <div style={{display: "inline-flex", justifyContent: "center",alignContent:"center", margin:"auto", width:"80%", height:"400px", paddingTop:"20px"}}>
-                <textarea 
-                    placeholder="Tartalom"
-                    value={content}
-                    style={{
-                        margin:"auto",
-                        width:"100%",
-                        height:"100%",
-                        padding:"12px,20px", 
-                        boxSizing:"border-box",
-                        borderRadius:"4px",
-                        backgroundColor:"azure",
-                        fontSize:"32px",
-                        resize:"none",
-                    }}
-                    onChange={handleChange}
-                />
+          <div class="news-dialog-fullwidth">
+            <div class="news-dialog-icon-modifier">
+              <img class="news-icon-to-modify" src={icon} alt="Még nincsen hozzáadva icon a poszthoz."></img>
+              <ChooseImageDialog path="post_icons" action={handleIconChange}/>
             </div>
+          </div>
+          <div class="news-dialog-fullwidth">
+                <textarea 
+                  class="news-dialog-textarea"
+                  placeholder="Tartalom"
+                  onChange={handleMessageChange}
+                  value={message}
+                />
+          </div>
       </Dialog>
     </div>
   );
