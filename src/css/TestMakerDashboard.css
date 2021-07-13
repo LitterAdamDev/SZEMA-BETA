@@ -3,9 +3,6 @@ html{
     min-height:100vh;
     margin: 0;
 }
-footer,header{
-    display: nonea;
-}
 #main-welcome{
     height: 100vh;
     bottom: 0;

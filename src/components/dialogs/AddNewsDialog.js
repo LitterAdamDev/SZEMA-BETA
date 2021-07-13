@@ -62,7 +62,7 @@ export default function AddNewsDialog({action,title}) {
         Új hír létrehozása
       </Button>
       </Tooltip>
-      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+      <Dialog fullScreen open={open} onClose={handleClose} style={{zIndex: "10000"}} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">

@@ -72,7 +72,7 @@ export default function UpdateNewsDialog({action, toUpdate, title}) {
         <EditIcon style={{ color: '#2196f3'}}/>
       </Button>
       </Tooltip>
-      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+      <Dialog fullScreen open={open} style={{zIndex: "10000"}} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">

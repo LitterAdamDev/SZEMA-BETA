@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -26,17 +25,20 @@ const useStyles = (theme) => ({
   icon: {
     marginRight: theme.spacing(2),
   },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
   heroContent: {
     backgroundColor: 'white',
     backgroundImage: `url(${backgroundIMG})`,
-    backgroundAttachement: 'fixed',
+    backgroundAttachment: 'fixed',
     backgroundRepeat: 'no-repeat',
     background: '100%',
     padding: theme.spacing(8, 0, 6),
-    backgroundSize: 'cover'
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
+    backgroundSize: 'cover',
+    height : "100vh",
+    paddingBottom: "20vh",
+    paddingTop: "20vh",
   },
   cardGrid: {
     paddingTop: theme.spacing(8),
@@ -116,14 +118,14 @@ class NewsDashboard extends React.Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <CssBaseline />
-        <AppBar style={{ background: '#2196f3'}} position="relative">
-          <Toolbar>
-            <SignedInStarterLinks />
-          </Toolbar>
-        </AppBar>
+        <header>  
+          <AppBar style={{ background: '#2196f3'}} position="relative">
+            <Toolbar>
+              <SignedInStarterLinks />
+            </Toolbar>
+          </AppBar>
+        </header>
         <main>
-          {/* Hero unit */}
           <div className={classes.heroContent}>
             <Container maxWidth="sm">
               <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
@@ -137,9 +139,7 @@ class NewsDashboard extends React.Component {
                 </Grid>
               </div>
             </Container>
-          </div>
           <Container className={classes.cardGrid} maxWidth="md">
-            {/* End hero unit */}
             <Grid container spacing={4}>
               {this.state.cards_array.map((card) => (
                 <Grid item key={card["id"]} xs={12} sm={6} md={4}>
@@ -167,8 +167,9 @@ class NewsDashboard extends React.Component {
               ))}
             </Grid>
           </Container>
+          </div>
         </main>
-        {/* Footer */}
+        {/*
         <footer className={classes.footer}>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
               <strong>SZEMA - </strong>Széchenyi István Egyetem
@@ -177,7 +178,7 @@ class NewsDashboard extends React.Component {
               Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089 
           </Typography>
         </footer>
-        {/* End footer */}
+        */}
       </React.Fragment>
     );
   }

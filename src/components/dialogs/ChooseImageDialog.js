@@ -63,6 +63,7 @@ const classes = useStyles();
         </button>
       </a>
       <Dialog
+        style={{zIndex: "100011"}}
         fullScreen={fullScreen}
         open={open}
         onClose={handleClose}

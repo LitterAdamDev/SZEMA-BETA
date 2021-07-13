@@ -191,7 +191,6 @@ export default class TestMakerDashboard extends React.Component {
         document.getElementById('main-welcome').style.display = "none"
         document.getElementById('main-start').style.display = "grid"
         this.getUsers()
-        this.getQuestions2()
     };
     handleFinish = (event) =>{
         event.preventDefault()
