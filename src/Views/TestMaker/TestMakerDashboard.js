@@ -2,7 +2,6 @@ import React from "react"
 import Select from 'react-select'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import SignedInStarterLinks from '../Components/SignedInStarterLinks'
 import 'firebase/firestore'
 import '../../css/TestMakerDashboard.css'
 import TransferList from '../Components/TransferList'
@@ -13,6 +12,7 @@ import ModifyModuleDialog from '../Components/dialogs/ModifyModuleDialog'
 import ChooseImageDialog from "../Components/dialogs/ChooseImageDialog"
 import TextField from '@material-ui/core/TextField';
 import Review from '../Components/Review'
+import ResHeader from '../Components/ResHeader'
 
 export default class TestMakerDashboard extends React.Component {
 
@@ -769,13 +769,7 @@ export default class TestMakerDashboard extends React.Component {
     render(){
         return(
         <>
-            <header>  
-                <AppBar position="relative" style={{background: '#2196f3'}}>
-                    <Toolbar>
-                        <SignedInStarterLinks />
-                    </Toolbar>
-                </AppBar>
-            </header>
+            <ResHeader />
             <div id="main-welcome">
                 <div id="welcome-content">
                     <div id="welcome-text">

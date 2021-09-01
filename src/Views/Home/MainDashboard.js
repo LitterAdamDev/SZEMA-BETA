@@ -14,6 +14,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import 'firebase/firestore'
 import {db} from '../../config/base'
+import ResHeader from '../Components/ResHeader'
 
 const useStyles = (theme) => ({
   icon: {
@@ -120,11 +121,7 @@ class CreateTestDashboard extends React.Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        <AppBar position="fixed" style={{background: '#2196f3'}}>
-          <Toolbar>
-            <SignedInStarterLinks />
-          </Toolbar>
-        </AppBar>
+        <ResHeader />
         <main>
           {/* Hero unit */}
           <div className={classes.heroContent}>

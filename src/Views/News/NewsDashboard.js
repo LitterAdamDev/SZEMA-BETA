@@ -8,17 +8,16 @@ import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import SignedInStarterLinks from '../Components/SignedInStarterLinks'
 import AddNewsDialog from '../Components/dialogs/AddNewsDialog'
 import 'firebase/firestore'
 import {db} from '../../config/base'
 import { withStyles } from "@material-ui/core/styles";
 import UpdateNewsDialog from "../Components/dialogs/UpdateNewsDialog";
 import DeleteNewsDialog from '../Components/dialogs/DeleteNewsDialog';
-import backgroundIMG from '../../SZEMA_WEB_background_3.svg'
 import '../../css/NewsDashboard.css'
 import "firebase/auth";
 import firebase from "../../config/base.js";
+import ResHeader from '../Components/ResHeader'
 
 const useStyles = (theme) => ({
   icon: {
@@ -29,15 +28,8 @@ const useStyles = (theme) => ({
   },
   heroContent: {
     backgroundColor: 'white',
-    backgroundImage: `url(${backgroundIMG})`,
-    backgroundAttachment: 'fixed',
-    backgroundRepeat: 'no-repeat',
-    background: '100%',
     padding: theme.spacing(8, 0, 6),
-    backgroundSize: 'cover',
     height : "100vh",
-    paddingBottom: "20vh",
-    paddingTop: "20vh",
   },
   cardGrid: {
     paddingTop: theme.spacing(8),
@@ -117,13 +109,7 @@ class NewsDashboard extends React.Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <header>  
-          <AppBar style={{ background: '#2196f3'}} position="relative">
-            <Toolbar>
-              <SignedInStarterLinks />
-            </Toolbar>
-          </AppBar>
-        </header>
+        <ResHeader />
         <main>
           <div className={classes.heroContent}>
             <Container maxWidth="sm">

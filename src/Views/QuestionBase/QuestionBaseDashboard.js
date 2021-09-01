@@ -4,7 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import SignedInStarterLinks from '../../Views/Components/SignedInStarterLinks'
 import 'firebase/firestore'
 import { withStyles } from "@material-ui/core/styles";
 import List from '@material-ui/core/List';
@@ -28,6 +27,7 @@ import QuestionAddAnswer from '../Components/QuestionAddAnswer';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from "@material-ui/icons/Search";
 import backgroundIMG from '../../SZEMA_WEB_background_3.svg'
+import ResHeader from '../Components/ResHeader'
 
 //for lists
 function ListItemLink(props) {
@@ -164,11 +164,7 @@ class QuestionBaseDashboard extends React.Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        <AppBar position="relative">
-          <Toolbar>
-            <SignedInStarterLinks />
-          </Toolbar>
-        </AppBar>
+        <ResHeader />
         <main>
           {/* Hero unit */}
           <div className={classes.heroContent}>
