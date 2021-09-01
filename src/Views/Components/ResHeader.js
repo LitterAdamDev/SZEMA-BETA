@@ -48,8 +48,10 @@ import {
     logo: {
       fontFamily: "Work Sans, sans-serif",
       fontWeight: 600,
-      color: "#a9acb8",
+      color:  document.location.pathname === "/"? "#ffffff" : "#a9acb8",
       textAlign: "left",
+      textDecoration: "none",
+      cursor: "pointer"
     },
     menuButton: {
       fontFamily: "Open Sans, sans-serif",
@@ -91,7 +93,7 @@ import {
   
     useEffect(() => {
       const setResponsiveness = () => {
-        return window.innerWidth < 900
+        return window.innerWidth < 1000
           ? setState((prevState) => ({ ...prevState, mobileView: true }))
           : setState((prevState) => ({ ...prevState, mobileView: false }));
       };
@@ -170,8 +172,14 @@ import {
     };
   
     const siteName = (
-      <Typography variant="h6" component="h1" className={logo}>
-        SZEMA-BETA
+      <Typography variant="h6" component="h1" >
+        <Link 
+        href="/"
+        className={logo}
+        style = {{color:  document.location.pathname === "/"? "#ffffff" : "#a9acb8"}}
+        > 
+          SZEMA-BETA
+        </Link>
       </Typography>
     );
   

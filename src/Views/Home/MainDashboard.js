@@ -1,10 +1,7 @@
 import React from "react";
-import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import SignedInStarterLinks from '../Components/SignedInStarterLinks'
 import 'firebase/firestore'
 import { withStyles } from "@material-ui/core/styles";
 import { Button, Grid } from "@material-ui/core";
@@ -15,15 +12,11 @@ import CardMedia from '@material-ui/core/CardMedia';
 import 'firebase/firestore'
 import {db} from '../../config/base'
 import ResHeader from '../Components/ResHeader'
+import '../../css/Home.css'
 
 const useStyles = (theme) => ({
   icon: {
     marginRight: theme.spacing(2),
-  },
-  heroContent: {
-    backgroundColor: 'white',
-    padding: theme.spacing(8, 0, 6),
-    height : "100vh",
   },
   heroButtons: {
     marginTop: theme.spacing(4),
@@ -41,24 +34,12 @@ const useStyles = (theme) => ({
   cardContent: {
     flexGrow: 1,
   },
-  mainTitle:{
-    paddingTop: '10%',
-    fontWeight: 'bold',
-  },
   root:{
     flexGrow: 1,
     textAlign: 'center',
     textTransform: "none",
     height: "100"
   },
-  simpleButton:{
-    width: "100%",
-    marginTop:"6.5vh",
-    height: "3vw",
-    textTransform: "none",
-    fontWeight: 'bold',
-    fontSize : "0.75vw",
-  }, 
   cardGrid: {
     marginTop:"10vh"
   },
@@ -124,24 +105,24 @@ class CreateTestDashboard extends React.Component {
         <ResHeader />
         <main>
           {/* Hero unit */}
-          <div className={classes.heroContent}>
+          <div className="home-main">
             <Container maxWidth="sm">
-              <Typography className={classes.mainTitle} component="h1" variant="h3" align="center" color="textPrimary" gutterBottom>
+              <Typography component="h1" variant="h3" align="center" color="textPrimary" gutterBottom className="main-title"> 
                  Üdvözlünk a SZEMA honlapján!
               </Typography>
               <Grid className={classes.root} container spacing={3}>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Button variant="contained" size="large" href="/questionbase" className={classes.simpleButton}>
+                  <Button variant="contained" size="large" href="/questionbase" className="main-button">
                     Kérdésbázis megtekintése
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} >
-                  <Button variant="contained" size="large" href="/createtest" className={classes.simpleButton}>
+                  <Button variant="contained" size="large" href="/createtest" className="main-button">
                     Feladatsorok kezelése
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4}>
-                  <Button variant="contained" size="large" href="/news" className={classes.simpleButton}>
+                  <Button variant="contained" size="large" href="/news" className="main-button">
                     Hírek létrehozása
                   </Button>
                 </Grid>

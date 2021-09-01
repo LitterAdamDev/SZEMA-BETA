@@ -1,13 +1,3 @@
-.main-content{
-    width: 100%;
-    padding-top: 20vh;
-    padding-bottom: 20vh;
-    display:block; /*none*/
-    background-image: url(../SZEMA_WEB_background_3.svg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-}
 .news-dialog-fullwidth{
     display: flex;
     width: 100%;

@@ -1,0 +1,51 @@
+.home-main{
+    padding-top: 5%;
+    min-height: 100vh;
+    background-color: #00abc9;
+    position: relative;
+    width: 100%;
+}
+.main-title{
+    font-weight: 700 !important;
+    color:white !important;
+    background-color: #1c2442;
+    box-sizing: border-box;
+    padding: 0.5vw
+}
+.main-button{
+    background-color: #1c2442 !important;
+    color: #a9acb8 !important;
+    font-weight: 700 !important;
+}
+.main-button:hover{
+    background-color: #00abc9 !important;
+    color: white !important;
+}
+header{
+    position: sticky !important;
+}
+@media screen and (min-width: 481px) {
+
+}
+@media screen and (min-width: 769px) {
+    .spacer{
+        aspect-ratio: 720/100;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        position: absolute;
+        z-index: 1;
+    }
+    .layer{
+        background-image: url('../img/curves/curve1.svg')
+    }
+}
+@media screen and (min-width: 1025px) {
+    .home-main{
+        background-image: url('../img/mainbackground/mainbgr.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+}

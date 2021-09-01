@@ -19,11 +19,8 @@ html{
     width: 100%;
     padding-top: 20vh;
     padding-bottom: 20vh;
-    display:none; /*none*/
-    background-image: url(../SZEMA_WEB_background_3.svg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
+    display:none; 
+    background-color: #00abc9;
 }
 #welcome-content{
     margin: 0;
@@ -65,7 +62,7 @@ html{
     border: outset;
     color: white;
     border-radius: 5%;
-    background-color: #1970b7;
+    background-color: #1c2442;
     display: block;
 }
 #welcome-rest a button:hover, #welcome-rest button:hover{
@@ -227,7 +224,7 @@ html{
     display: none;
 }
 .finish-content{
-    background-color: #2296f2;
+    background-color: #1c2442;
     box-sizing: border-box;
     position: relative;
     width: 100%;
