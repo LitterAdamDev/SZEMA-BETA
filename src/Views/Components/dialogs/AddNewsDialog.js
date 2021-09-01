@@ -16,6 +16,7 @@ import ImageSelector from '../ImageSelector';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'relative',
+    backgroundColor : "#1c2442"
   },
   title: {
     marginLeft: theme.spacing(2),
@@ -58,7 +59,7 @@ export default function AddNewsDialog({action,title}) {
   return (
     <>
       <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Ezzel a gombbal hozzáadható egy új hír.</h1>}>
-      <Button variant="contained" color="primary" style={{ background: '#2196f3'}} onClick={handleClickOpen}>
+      <Button variant="contained" color="primary" className="news-button" onClick={handleClickOpen}>
         Új hír létrehozása
       </Button>
       </Tooltip>

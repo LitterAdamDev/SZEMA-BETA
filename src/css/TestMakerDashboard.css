@@ -196,7 +196,8 @@ html{
     background-color: rgba(39, 31, 31, 0.788);
 }
 .modul-button:hover, .finish-content-btns:hover, .finish-button:hover, .back-preview-button:hover, .preview-button:hover, .icon-picker-button:hover{
-    background-color: #2296f2;
+    background-color: #00abc9;
+    color: #ffffff;
 }
 .modul-counter div{
     float: left;
@@ -344,10 +345,10 @@ var{
     height: 38px;
     font-size: 1vw;
     text-transform: none;
-    border: outset;
     color: white;
     border-radius: 4px;
-    background-color: #1970b7;
+    background-color:#1c2442;
+    color: #a9acb8;
     display: block;
     margin: 2.5vh 0 2.5vh 0;
 }

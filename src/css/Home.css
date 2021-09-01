@@ -1,7 +1,7 @@
 .home-main{
     padding-top: 5%;
     min-height: 100vh;
-    background-color: #00abc9;
+    background-color: #a9acb8;
     position: relative;
     width: 100%;
 }
@@ -16,6 +16,7 @@
     background-color: #1c2442 !important;
     color: #a9acb8 !important;
     font-weight: 700 !important;
+    min-height: 10vw;
 }
 .main-button:hover{
     background-color: #00abc9 !important;
@@ -25,9 +26,14 @@ header{
     position: sticky !important;
 }
 @media screen and (min-width: 481px) {
-
+    .main-button{
+        min-height: 12vw;
+    }
 }
 @media screen and (min-width: 769px) {
+    .main-button{
+        min-height: 10vw;
+    }
     .spacer{
         aspect-ratio: 720/100;
         width: 100%;
@@ -42,6 +48,9 @@ header{
     }
 }
 @media screen and (min-width: 1025px) {
+    .main-button{
+        min-height: 2vw;
+    }
     .home-main{
         background-image: url('../img/mainbackground/mainbgr.jpg');
         background-repeat: no-repeat;

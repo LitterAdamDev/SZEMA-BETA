@@ -146,7 +146,7 @@ class CreateTestDashboard extends React.Component {
                       </Typography>
                     </CardContent>
                     <CardActions style={{ justifyContent:"centers", display:"table",textTransform: "capitalize"}}> 
-                    <Button size="small" href="/news" color="primary" style={{textTransform: "none", color: "#2196f3"}}>
+                    <Button size="small" href="/news" color="primary" style={{textTransform: "none", color: "#1c2442"}}>
                       További hírek
                     </Button>
                     </CardActions>

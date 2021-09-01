@@ -63,7 +63,7 @@ const classes = useStyles();
     <div>
       <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Hír törlése.</h1>}>
       <Button size="small" color ="primary" style={{justify:"center"}} onClick={handleClickOpen}>
-        <DeleteForeverIcon style={{ color: '#2196f3'}} />
+        <DeleteForeverIcon style={{ color: '#1c2442'}} />
       </Button></Tooltip>
       <Dialog
         fullScreen={fullScreen}

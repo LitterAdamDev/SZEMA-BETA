@@ -82,7 +82,7 @@ const classes = useStyles();
 
   return (
     <div>
-      <Button className={classes.buttonTitle} color="inherit" onClick={handleClickOpen}>
+      <Button className={classes.buttonTitle} style={{color: "#ffffff"}} onClick={handleClickOpen}>
         Mentés
       </Button>
       <Dialog

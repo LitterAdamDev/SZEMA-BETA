@@ -109,12 +109,12 @@ class NewsDashboard extends React.Component {
       <React.Fragment>
         <ResHeader />
         <main>
-          <div className={classes.heroContent}>
+          <div className="news-main">
             <Container maxWidth="sm">
-              <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+              <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom className="news-title">
                   Hírek és újdonságok
               </Typography>
-              <div className={classes.heroButtons}>
+              <div>
                 <Grid container spacing={1} justify="center">
                   <Grid item>
                    <AddNewsDialog action={this.handleCardChanges} title={this.state.selfTitle}/> 
@@ -139,7 +139,7 @@ class NewsDashboard extends React.Component {
                         {card["message"]}
                       </Typography>
                     </CardContent>
-                    <CardActions style={{ justifyContent:"centers", display:"table"}}> 
+                    <CardActions style={{ justifyContent:"centers", display:"table", color: "#1c2442"}}> 
                     <Grid container spacing={2} justify="center"> 
                       <UpdateNewsDialog toUpdate={card} action={this.handleCardChanges} title={this.state.selfTitle}/>
                       <DeleteNewsDialog toUpdate={card} action={this.handleCardChanges}/>
@@ -152,16 +152,6 @@ class NewsDashboard extends React.Component {
           </Container>
           </div>
         </main>
-        {/*
-        <footer className={classes.footer}>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-              <strong>SZEMA - </strong>Széchenyi István Egyetem
-          </Typography>
-          <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-              Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089 
-          </Typography>
-        </footer>
-        */}
       </React.Fragment>
     );
   }

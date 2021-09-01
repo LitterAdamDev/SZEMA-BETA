@@ -17,10 +17,12 @@ import ChooseImageDialog from './ChooseImageDialog';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'inherited',
+    backgroundColor : "#1c2442"
   },
   title: {
     marginLeft: theme.spacing(2),
     flex: 1,
+    color: "#ffffff",
   },
 }));
 
@@ -51,7 +53,6 @@ export default function UpdateNewsDialog({action, toUpdate, title}) {
   };
 
   const handleChange = (event) =>{
-    content = event.target.value;
     setValue(event.target.value);
     
     console.log(event.target.value);
@@ -68,13 +69,13 @@ export default function UpdateNewsDialog({action, toUpdate, title}) {
     <div>
       <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Hír szerkesztése.</h1>}>
       <Button size="small" color ="primary" onClick={handleClickOpen}>
-        <EditIcon style={{ color: '#2196f3'}}/>
+        <EditIcon style={{ color: '#1c2442'}}/>
       </Button>
       </Tooltip>
       <Dialog fullScreen open={open} style={{zIndex: "10000"}} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+            <IconButton edge="start" style={{color: "#ffffff"}} onClick={handleClose} aria-label="close">
               <CloseIcon/>
             </IconButton>
             <Typography variant="h6" className={classes.title}>
