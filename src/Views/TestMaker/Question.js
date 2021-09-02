@@ -6,10 +6,17 @@ export default class Question extends React.Component {
         this.state = {
         };
     }
+    componentDidMount(){
+        console.log(this.props.data)
+    }
     render() {
       return (
           <>
+            <div>{this.props.data? this.props.data["id"]: null}</div>
           </>
       )
     }
+}
+Question.defaultProps ={
+    data : undefined
 }

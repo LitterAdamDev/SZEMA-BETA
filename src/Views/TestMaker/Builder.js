@@ -65,16 +65,16 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['Típus','Beállítások', 'Csoport', 'Feladatsor'];
 
-function getStepContent(step,handleTypeChange,handleDetailsChange,details,handleGroups,groups,handleSetup) {
+function getStepContent(step,handleTypeChange,handleDetailsChange,details,handleGroups,groups,groupOfTest,handleSetup,modules,handleModules,questions,handleQuestions) {
   switch (step) {
     case 0:
         return <Options action={handleTypeChange}/>;
     case 1:
       return <Settings action={handleDetailsChange} data={details} handleSetup={handleSetup} />;
     case 2:
-      return <GroupManager action={handleGroups} data={groups} isZH={details["isZH"]}/>;
+      return <GroupManager action={handleGroups} data={groups} isZH={details["isZH"]} actGroup={groupOfTest}/>;
     case 3 :
-      return <TestManager />;
+      return <TestManager modules={modules} questions={questions} handleModules={handleModules} handleQuestions={handleQuestions}/>;
     default:
       throw new Error('Unknown step');
   }
@@ -92,7 +92,7 @@ export default function Builder() {
   const [FirestoreQuestions, setFirestoreQuestions] = React.useState([])
   const [groupOfTest, setGroupOfTest] = React.useState("")
   const [moduleIDs, setModuleIDs] = React.useState([])
-  const [modules, setModules] = React.useState([])
+  const [modules, setModules] = React.useState([{title:"random", data : []}])
 
   const handleSetup = (newValue, actionMeta) =>{
     var pos = FirestoreTests.findIndex(obj => obj['title'] === newValue["value"])
@@ -101,14 +101,22 @@ export default function Builder() {
         setIsZH(tmp["zh"])
         setTestDetails({title: tmp["title"], description: tmp["description"], icon: tmp["icon"]})
         setModuleIDs([...tmp["moduleIDs"]])
+        let allModule = []
         tmp["moduleIDs"].map((moduleName) =>{
-            setModules([...modules, tmp[moduleName]])
+          allModule.push({ data: [...tmp[moduleName]], title: moduleName})
         })
+        setModules(allModule)
         if(tmp["zh"]){
             setTimeOfZH({start: tmp["time"][0], end: tmp["time"][1]})
             setGroupOfTest(tmp["group"])
         }
     }
+  }
+  const handleModuleChange = () =>{
+
+  }
+  const handleQuestionChange = () =>{
+    
   }
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -138,7 +146,7 @@ export default function Builder() {
     .catch( error => console.log(error))
     }
     const getGroups = () =>{
-        db.collection('questions').get()
+        db.collection('groups').get()
         .then( snapshot => {
         const data_from_web = []
         snapshot.forEach(doc => {
@@ -150,23 +158,23 @@ export default function Builder() {
         .catch( error => console.log(error))
     }
     useEffect(() => {
-    getGroups()
-    getTests()
-    getQuestions()
+      getGroups()
+      getTests()
+      getQuestions()
     },[]);
     const handleBack = () => {
-    setActiveStep(activeStep - 1);
+      setActiveStep(activeStep - 1);
     };
   
     const handleTypeChange = (value) =>{
-    setTestType(value)
-    setIsZH(false)
-    setTestDetails({title: "", description: "", icon:""})
-    setTimeOfZH({start: "", end: ""})
-    setGroupOfTest("")
-    setModules([])
-    setModuleIDs([])
-    handleNext()
+      setTestType(value)
+      setIsZH(false)
+      setTestDetails({title: "", description: "", icon:""})
+      setTimeOfZH({start: "", end: ""})
+      setGroupOfTest("")
+      setModules([])
+      setModuleIDs([])
+      handleNext()
     }
 
   const handleDetailChange = (attr,value) =>{
@@ -229,7 +237,7 @@ export default function Builder() {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep, handleTypeChange, handleDetailChange, {isZH: isZH, testDetails: testDetails,timeOfZH: timeOfZH, type: testType, tests : FirestoreTests},handleGroupChange,groupOfTest,handleSetup)}
+                {getStepContent(activeStep, handleTypeChange, handleDetailChange, {isZH: isZH, testDetails: testDetails,timeOfZH: timeOfZH, type: testType, tests : FirestoreTests},handleGroupChange,FirestoreGroups,groupOfTest,handleSetup,modules,handleModuleChange,FirestoreQuestions,handleQuestionChange)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} className={classes.button}>

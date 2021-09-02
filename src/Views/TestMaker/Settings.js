@@ -63,7 +63,7 @@ export default function AddressForm({action,data,handleSetup}) {
             fullWidth
             id="description"
             name="description"
-            label="Feladatsor Leírása"
+            label="Feladatsor leírása"
             value={data["testDetails"]["description"]}
             onChange={handleChange}
           />
