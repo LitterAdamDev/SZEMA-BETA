@@ -1,0 +1,41 @@
+.quiz-types{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    width:100%
+}
+.qtype{
+    width: 100%;
+    background-color: #1c2242;
+    color: #a9acb8;
+    box-sizing: border-box;
+    padding: 5vh 0 5vh 0;
+    text-align: center;
+    font-weight: 900;
+    font-size: 5vw;
+}
+.qtype:nth-child(2n){
+    background-color: #1c2242dc;
+}
+.qtype:hover{
+    background-color: #00abc9;
+    color: white;
+}
+@media screen and (min-width: 481px) {
+    .qtype{
+        font-size: 3vw;
+    }
+}
+@media screen and (min-width: 769px) {
+    .qtype{
+        font-size: 2vw;
+    }
+}
+@media screen and (min-width: 1025px) {
+    .qtype{
+        font-size: 1vw;
+    }
+}

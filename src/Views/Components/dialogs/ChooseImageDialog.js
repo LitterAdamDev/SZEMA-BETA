@@ -46,7 +46,7 @@ const classes = useStyles();
   };
   const handleSave = (event) =>{
     event.preventDefault()
-    action(icon)
+    action(icon["src"])
     setOpen(false);
   }
   const handlePickImage = (image) =>{

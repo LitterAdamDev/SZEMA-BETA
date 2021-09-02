@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
@@ -11,7 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import GroupManager from './GroupManager'
 import Settings from './Settings'
 import TestManager from './TestManager'
-import '../../css/Builder.css'
+import Options from './Options'
+import {db} from '../../config/base'
+import 'firebase/firestore'
 
 function Copyright() {
   return (
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
+      width: 800,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -61,15 +63,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ['Beállítások', 'Csoportok megadása', 'Feladatsor összeállítása'];
+const steps = ['Típus','Beállítások', 'Csoport', 'Feladatsor'];
 
-function getStepContent(step) {
+function getStepContent(step,handleTypeChange,handleDetailsChange,details,handleGroups,groups,handleSetup) {
   switch (step) {
     case 0:
-      return <Settings />;
+        return <Options action={handleTypeChange}/>;
     case 1:
-      return <GroupManager />;
+      return <Settings action={handleDetailsChange} data={details} handleSetup={handleSetup} />;
     case 2:
+      return <GroupManager action={handleGroups} data={groups} isZH={details["isZH"]}/>;
+    case 3 :
       return <TestManager />;
     default:
       throw new Error('Unknown step');
@@ -79,14 +83,119 @@ function getStepContent(step) {
 export default function Builder() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
+  const [testType, setTestType] = React.useState('NEW_TEST');
+  const [isZH, setIsZH] = React.useState(false);
+  const [testDetails, setTestDetails] = React.useState({title: "", description: "", icon:""});
+  const [timeOfZH, setTimeOfZH] = React.useState({start: "", end: ""})
+  const [FirestoreGroups, setFirestoreGroups] = React.useState([])
+  const [FirestoreTests, setFirestoreTests] = React.useState([])
+  const [FirestoreQuestions, setFirestoreQuestions] = React.useState([])
+  const [groupOfTest, setGroupOfTest] = React.useState("")
+  const [moduleIDs, setModuleIDs] = React.useState([])
+  const [modules, setModules] = React.useState([])
 
+  const handleSetup = (newValue, actionMeta) =>{
+    var pos = FirestoreTests.findIndex(obj => obj['title'] === newValue["value"])
+    if(pos !== -1){
+        let tmp = FirestoreTests[pos]
+        setIsZH(tmp["zh"])
+        setTestDetails({title: tmp["title"], description: tmp["description"], icon: tmp["icon"]})
+        setModuleIDs([...tmp["moduleIDs"]])
+        tmp["moduleIDs"].map((moduleName) =>{
+            setModules([...modules, tmp[moduleName]])
+        })
+        if(tmp["zh"]){
+            setTimeOfZH({start: tmp["time"][0], end: tmp["time"][1]})
+            setGroupOfTest(tmp["group"])
+        }
+    }
+  }
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
-
-  const handleBack = () => {
+  const getQuestions = () =>{
+      db.collection('questions').get()
+      .then( snapshot => {
+        const data_from_web = []
+        snapshot.forEach(doc => {
+          const data = doc.data()
+          data_from_web.push({...data,id:doc.id})
+        })
+        setFirestoreQuestions([...data_from_web])
+      })
+      .catch( error => console.log(error))
+  }
+  const getTests = () =>{
+    db.collection('quizes').get()
+    .then( snapshot => {
+      const data_from_web = []
+      snapshot.forEach(doc => {
+        const data = doc.data()
+        data_from_web.push({...data,id:doc.id})
+      })
+      setFirestoreTests([...data_from_web])
+    })
+    .catch( error => console.log(error))
+    }
+    const getGroups = () =>{
+        db.collection('questions').get()
+        .then( snapshot => {
+        const data_from_web = []
+        snapshot.forEach(doc => {
+            const data = doc.data()
+            data_from_web.push({...data,id:doc.id})
+        })
+        setFirestoreGroups([...data_from_web])
+        })
+        .catch( error => console.log(error))
+    }
+    useEffect(() => {
+    getGroups()
+    getTests()
+    getQuestions()
+    },[]);
+    const handleBack = () => {
     setActiveStep(activeStep - 1);
-  };
+    };
+  
+    const handleTypeChange = (value) =>{
+    setTestType(value)
+    setIsZH(false)
+    setTestDetails({title: "", description: "", icon:""})
+    setTimeOfZH({start: "", end: ""})
+    setGroupOfTest("")
+    setModules([])
+    setModuleIDs([])
+    handleNext()
+    }
+
+  const handleDetailChange = (attr,value) =>{
+    switch (attr) {
+        case "title":
+            setTestDetails({...testDetails, title: value})
+            break;
+        case "description":
+            setTestDetails({...testDetails, description: value})
+            break;
+        case "icon":
+            setTestDetails({...testDetails, icon: value})
+            break;
+        case "zh" :
+            setIsZH(value)
+            break;
+        case "time-start" :
+            setTimeOfZH({...timeOfZH, start: value})
+            break;
+        case "time-end" :
+            setTimeOfZH({...timeOfZH, end: value})
+            break;
+        default:
+            throw new Error('Unknown attribute');
+      }
+  }
+  const handleGroupChange = (value) =>{
+     setGroupOfTest(value)
+  }
 
   return (
     <React.Fragment>
@@ -94,7 +203,7 @@ export default function Builder() {
       <main className={classes.layout} >
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">
-            Checkout
+            Feladatsor Manager
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label) => (
@@ -106,31 +215,38 @@ export default function Builder() {
           <React.Fragment>
             {activeStep === steps.length ? (
               <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Thank you for your order.
+                <Typography variant="h5" gutterBottom align="center">
+                  Sikeresen létrehozott egy tesztet.
                 </Typography>
-                <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order confirmation, and will
-                  send you an update when your order has shipped.
-                </Typography>
+                <Button 
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    href="/"
+                >
+                    Visszatérés a főoldalra
+                </Button>
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep)}
+                {getStepContent(activeStep, handleTypeChange, handleDetailChange, {isZH: isZH, testDetails: testDetails,timeOfZH: timeOfZH, type: testType, tests : FirestoreTests},handleGroupChange,groupOfTest,handleSetup)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} className={classes.button}>
-                      Back
+                      Vissza
                     </Button>
                   )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                  </Button>
+                  {activeStep !== 0? (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleNext}
+                        className={classes.button}
+                    >
+                        {activeStep === steps.length - 1  ? 'Befejezés és mentés' : 'Tovább'}
+                    </Button>
+                      ):(null)}
+                  
                 </div>
               </React.Fragment>
             )}
