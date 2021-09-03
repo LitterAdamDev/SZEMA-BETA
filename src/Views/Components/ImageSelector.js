@@ -49,7 +49,7 @@ export default class ImageSelector extends Component {
   
   render() {
     return (
-      <div>
+      <div style={{width:"100%",display:"flex", justifyContent:"center"}}>
         <ImagePicker 
           images={this.state.imageList.map((image, i) => ({src: image['url'], value: i, name : image['name']}))}
           onPick={this.onPick}

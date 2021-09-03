@@ -112,11 +112,18 @@ export default function Builder() {
         }
     }
   }
-  const handleModuleChange = () =>{
-
+  const handleModuleChange = (index,type,obj) =>{
   }
-  const handleQuestionChange = () =>{
-    
+  const handleQuestionChange = (type,obj) =>{
+    let tmp = [...modules]
+    if(type === "ADD"){
+      tmp.splice(obj.index+1,0,obj.data)
+    }else if(type === "REMOVE"){
+      tmp.splice(obj.index,1)
+    }else if(type === "MODIFY"){
+      tmp[obj.index] = obj.data
+    }
+    setModules(tmp)
   }
   const handleNext = () => {
     setActiveStep(activeStep + 1);

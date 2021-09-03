@@ -66,3 +66,11 @@
     color: #ffffff;
     background-color: #00abc9;
 }
+.image_picker {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}

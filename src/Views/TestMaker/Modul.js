@@ -1,26 +1,34 @@
 import React from 'react';
 import '../../css/Modul.css'
 import Question from './Question'
+import AddModuleDialog from './AddModulDialog';
+import ModifyModulDialog from './ModifyModulDialog';
 
 export default class Modul extends React.Component {
     constructor() {
         super();
         this.state = {
-            questions : []
+            questions : [],
+            data: []
         };
     }
     componentDidMount(){
-        let questionIDs = this.props.data["data"][0].split(':')
-        let questionSet = []
-        questionIDs.forEach((questionID) =>{
-            let pos = this.props.questions.findIndex(obj => obj.id === questionID)
-            if(pos !== -1){
-                questionSet.push(this.props.questions[pos])
-            }
-        })
-        this.setState({
-            questions : questionSet
-        })
+        
+    }
+    handleNewModul = (value) =>{
+        this.props.handleAddModul(this.props.index,value)
+    }
+    handleDeleteModul = () =>{
+        this.props.handleDeleteModul(this.props.index)
+    }
+    handleModifyModul = (data) =>{
+        this.props.handleModifyModul(this.props.index,data)
+    }
+    handleModifyQuestionsOfModul = (type) =>{
+        this.props.handleModifyModulQuestions()
+    }
+    handleDeleteQuestion = (index) =>{
+        this.props.handleModifyModulQuestions('REMOVE',{id: this.props.questions[index]["id"], index : this.props.index})
     }
     render() {
       return (
@@ -30,8 +38,8 @@ export default class Modul extends React.Component {
                     <div className="modul-title-handler">
                         <div className="modul-title">{this.props.data["data"][4]}</div>
                         <div className="modul-handler">
-                            <input type="button" value="Handler" />
-                            <input type="button" value="X"/>
+                            <ModifyModulDialog path='quizes/quiz_type' action={this.handleModifyModul} data={this.props.data["data"]}/>
+                            <input type="button" value="X" onClick={this.handleDeleteModul}/>
                         </div>
                     </div>
                     <div className="modul-description">
@@ -39,12 +47,12 @@ export default class Modul extends React.Component {
                     </div>
                 </div>
                 <div className="modul-body">
-                    {this.state.questions.map((questionData,index)=>{
-                        return <Question key={"question-"+index} data={questionData} />
+                    {this.props.questions.map((questionData,index)=>{
+                         return questionData?<Question key={"question-" + index} index={index} data={questionData} handleDeleteQuestion={this.handleDeleteQuestion}/> : null
                     })}
                 </div>
                 <div className="modul-footer">
-                    <input className="add-modul-btn" type="button"value="+" />
+                    <AddModuleDialog path='quizes/quiz_type' action={this.handleNewModul}/>
                 </div>
             </div>
           </>
@@ -52,6 +60,11 @@ export default class Modul extends React.Component {
     }
 }
 Modul.defaultProps = {
+    index : undefined,
     data : [],
-    questions : []
+    questions : [],
+    handleAddModul : undefined,
+    handleDeleteModul : undefined,
+    handleModifyModul : undefined,
+    handleModifyModulQuestions : undefined
 }

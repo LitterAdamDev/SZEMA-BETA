@@ -62,7 +62,7 @@ const classes = useStyles();
   return (
       <>
       <a>
-        <button class="modul-button" onClick={handleClickOpen}>
+        <button className="modul-button" onClick={handleClickOpen}>
             Modul módosítása
         </button>
       </a>

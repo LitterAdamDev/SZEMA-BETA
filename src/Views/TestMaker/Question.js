@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../css/Question.css'
+import AddQuestionDialog from './AddQuestionDialog';
 
 const abc = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N']
 export default class Question extends React.Component {
@@ -10,27 +11,31 @@ export default class Question extends React.Component {
     }
     componentDidMount(){
     }
+    handleDeleteQuestion = () =>{
+        this.props.handleDeleteQuestion(this.props.index)
+    }
     render() {
       return (
           <>
             <div className="question-container">
                 <div className="question-header">
                 <div className="question-data">
-                    {this.props.data.question}
+                    {this.props.data? this.props.data.question: ""}
                 </div>
                 <div className="question-handler">
-                    <input type="button"value="X" />
+                    <input type="button"value="X" onClick={this.handleDeleteQuestion}/>
                 </div>
                 </div>
                 <div className="question-body">
                     {
+                        this.props.data?
                         this.props.data.isPicture &&
                         (
-                            <img alt="Hiba" className="question-picture" src={this.props.data.picture}/>
-                        )
+                            <img alt="Hiba" className="question-picture" src={this.props.data?this.props.data.picture: ""}/>
+                        ):""
                     }
                     {
-                        this.props.data.answers.map((answer,index)=>{
+                        this.props.data?this.props.data.answers.map((answer,index)=>{
                             return (
                                 <div className="question-answer" 
                                 style={
@@ -75,11 +80,11 @@ export default class Question extends React.Component {
                                     </div>
                                 </div>
                             )
-                        })
+                        }):""
                     }
                 </div>
                 <div className="question-footer">
-                    <input className="add-question-btn" type="button"value="+" />
+                    <AddQuestionDialog />
                 </div>
             </div>
           </>
@@ -87,5 +92,7 @@ export default class Question extends React.Component {
     }
 }
 Question.defaultProps ={
-    data : undefined
+    data : undefined,
+    index : undefined,
+    handleDeleteQuestion : undefined,
 }
