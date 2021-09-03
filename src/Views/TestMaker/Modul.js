@@ -11,10 +11,11 @@ export default class Modul extends React.Component {
     }
     componentDidMount(){
         let questionIDs = this.props.data["data"][0].split(':')
-        let questionSet = questionIDs.map((questionID) =>{
-            let pos = this.props.questions.findIndex(obj => obj['id'] === questionID)
+        let questionSet = []
+        questionIDs.forEach((questionID) =>{
+            let pos = this.props.questions.findIndex(obj => obj.id === questionID)
             if(pos !== -1){
-                return this.props.questions[pos]
+                questionSet.push(this.props.questions[pos])
             }
         })
         this.setState({
@@ -30,6 +31,7 @@ export default class Modul extends React.Component {
                         <div className="modul-title">{this.props.data["data"][4]}</div>
                         <div className="modul-handler">
                             <input type="button" value="Handler" />
+                            <input type="button" value="X"/>
                         </div>
                     </div>
                     <div className="modul-description">
@@ -37,12 +39,12 @@ export default class Modul extends React.Component {
                     </div>
                 </div>
                 <div className="modul-body">
-                    {this.state.questions.map((questionData)=>{
-                        return <Question data={questionData}/>
+                    {this.state.questions.map((questionData,index)=>{
+                        return <Question key={"question-"+index} data={questionData} />
                     })}
                 </div>
                 <div className="modul-footer">
-                    +
+                    <input className="add-modul-btn" type="button"value="+" />
                 </div>
             </div>
           </>

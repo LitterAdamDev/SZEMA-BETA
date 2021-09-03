@@ -7,6 +7,7 @@
     justify-content: center;
     align-items: center;
     border: 1px solid black;
+    margin-bottom: 10px;
 }
 .modul-header{
     display: flex;
@@ -27,9 +28,8 @@
     padding: 10px 10px 10px 10px;
 }
 .modul-footer{
+    width: 100%;
     display: flex;
-    box-sizing: border-box;
-    padding: 10px 10px 10px 10px;
 }
 .modul-title-handler{
     display: flex;
@@ -38,6 +38,7 @@
 .modul-title{
     display: flex;
     width: 70%;
+    font-weight: 900;
 }
 .modul-handler{
     display: flex;
@@ -52,4 +53,16 @@
     flex-direction: row;
     justify-content: center;
     align-content: center;
+}
+.add-modul-btn{
+    width:100%;
+    border-radius: 0%;
+    color: #a9acb8;
+    background-color: #1c2442;
+}
+.add-modul-btn:hover{
+    width:100%;
+    border-radius: 0%;
+    color: #ffffff;
+    background-color: #00abc9;
 }

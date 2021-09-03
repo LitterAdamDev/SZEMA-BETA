@@ -24,7 +24,7 @@ export default class TestManager extends React.Component {
           {this.props.modules.map((module,index) =>{
             return (
               <>
-                <Modul data={module} questions={this.props.questions}/>
+                <Modul key={"modul-"+index} data={module} questions={this.props.questions}/>
               </>
             )
           })}

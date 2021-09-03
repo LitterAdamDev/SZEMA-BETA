@@ -7,7 +7,6 @@ import Select from 'react-select'
 export default function GroupManager({action,data,isZH,actGroup}) {
   const handleGroupChange = (obj,event) =>{
     action(obj.value)
-    console.log(obj.value)
   }
   return (
     <React.Fragment>

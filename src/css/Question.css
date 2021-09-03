@@ -1,0 +1,95 @@
+.question-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+.question-header{
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+.question-data{
+    display: flex;
+    width: 90%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-right: 1px solid black;
+}
+.question-handler{
+    display: flex;
+    width: 10%;
+    flex-direction: row;
+    justify-content: center;
+}
+.question-body{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+    box-sizing: border-box;
+    padding:10px;
+}
+.question-picture{
+    max-width: 20vh;
+    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+    box-sizing: border-box;
+    margin:20px 0 20px 0;
+}
+.question-answer{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 5px 20px 5px 20px;
+}
+.option{
+    width:60%;
+    display: flex;
+    flex-direction: row;
+    align-content:flex-start;
+    justify-content:left;
+    align-items:flex-start;
+}
+.answer{
+    width: 40%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+.answer-picture{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+.question-footer{
+    width:100%;
+}
+.add-question-btn{
+    width:100%;
+    border-radius: 0%;
+    color: #a9acb8;
+    background-color: #1c2442;
+}
+.add-question-btn:hover{
+    width:100%;
+    border-radius: 0%;
+    color: #ffffff;
+    background-color: #00abc9;
+}
