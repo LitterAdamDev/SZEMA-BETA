@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Modul from './Modul'
 import '../../css/TestManager.css'
-import Select from 'react-select'
+import AddModuleDialog from './AddModulDialog';
 
 export default class TestManager extends React.Component {
   constructor() {
@@ -24,13 +24,22 @@ export default class TestManager extends React.Component {
     this.props.handleModules('MODIFY',{index:index, data : tmp})
   }
   handleModifyModulQuestions = (type,obj) =>{
-    console.log(obj)
     if(type === 'REMOVE'){
       let cont = this.props.modules[obj.index]["data"][0].includes(':')
-      let std = this.props.modules[obj.index]["data"][0].replace(obj.id,'')
-      console.log(std)
+      let std = this.props.modules[obj.index]["data"][0]
+      if(!cont){
+        std = std.replace(obj.id,'')
+      }else{
+        std = std.replace(':' + obj.id,'')
+        std = std.replace( obj.id + ':','')
+      }
       let tmp = {...this.props.modules[obj.index]}
       tmp.data[0] = std
+      this.props.handleModules('MODIFY',{index:obj.index, data : tmp})
+    }
+    else if(type === 'ADD'){
+      let tmp = {...this.props.modules[obj.index]}
+      tmp.data[0] = obj.IDs
       this.props.handleModules('MODIFY',{index:obj.index, data : tmp})
     }
   }
@@ -41,6 +50,7 @@ export default class TestManager extends React.Component {
           Feladatsor kezelése
         </Typography>
         <div className="builder-body">
+          <AddModuleDialog zerotype={true} path='quizes/quiz_type' action={this.handleAddModul}/>
           {this.props.modules.map((module,index) =>{
             return (
               <>
@@ -57,6 +67,7 @@ export default class TestManager extends React.Component {
                       }
                     })
                   } 
+                  allQuestion={this.props.questions}
                   handleAddModul={this.handleAddModul}
                   handleDeleteModul={this.handleDeleteModul}
                   handleModifyModul={this.handleModifyModul}

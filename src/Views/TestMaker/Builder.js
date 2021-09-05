@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['Típus','Beállítások', 'Csoport', 'Feladatsor'];
 
-function getStepContent(step,handleTypeChange,handleDetailsChange,details,handleGroups,groups,groupOfTest,handleSetup,modules,handleModules,questions,handleQuestions) {
+function getStepContent(step,handleTypeChange,handleDetailsChange,details,handleGroups,groups,groupOfTest,handleSetup,modules,handleModules,questions,handleQuestions,handleSave) {
   switch (step) {
     case 0:
         return <Options action={handleTypeChange}/>;
@@ -74,7 +74,7 @@ function getStepContent(step,handleTypeChange,handleDetailsChange,details,handle
     case 2:
       return <GroupManager action={handleGroups} data={groups} isZH={details["isZH"]} actGroup={groupOfTest}/>;
     case 3 :
-      return <TestManager modules={modules} questions={questions} handleModules={handleModules} handleQuestions={handleQuestions}/>;
+      return <TestManager modules={modules} questions={questions} handleModules={handleModules} handleQuestions={handleQuestions} save={handleSave}/>;
     default:
       throw new Error('Unknown step');
   }
@@ -112,9 +112,9 @@ export default function Builder() {
         }
     }
   }
-  const handleModuleChange = (index,type,obj) =>{
+  const handleQuestionChange = (index,type,obj) =>{
   }
-  const handleQuestionChange = (type,obj) =>{
+  const handleModuleChange = (type,obj) =>{
     let tmp = [...modules]
     if(type === "ADD"){
       tmp.splice(obj.index+1,0,obj.data)
@@ -211,6 +211,32 @@ export default function Builder() {
   const handleGroupChange = (value) =>{
      setGroupOfTest(value)
   }
+  const handleSave = () =>{
+    let tmp = []
+    let IDs = []
+    modules.map((modul)=>{
+      tmp.push(modul.data)
+      IDs.push(modul.title)
+    })
+    db.collection('quizes')
+    .doc(testDetails['title'])
+    .set({
+      zh : isZH,
+      title: testDetails['title'],
+      time: [timeOfZH.start,  timeOfZH.end],
+      moduleIDs : [...IDs],
+      group : groupOfTest,
+      description : testDetails['description'],
+      icon : testDetails['icon'],
+      ...tmp
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+    .finally(()=>{
+      handleNext()
+    })
+  }
 
   return (
     <React.Fragment>
@@ -244,7 +270,7 @@ export default function Builder() {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep, handleTypeChange, handleDetailChange, {isZH: isZH, testDetails: testDetails,timeOfZH: timeOfZH, type: testType, tests : FirestoreTests},handleGroupChange,FirestoreGroups,groupOfTest,handleSetup,modules,handleModuleChange,FirestoreQuestions,handleQuestionChange)}
+                {getStepContent(activeStep, handleTypeChange, handleDetailChange, {isZH: isZH, testDetails: testDetails,timeOfZH: timeOfZH, type: testType, tests : FirestoreTests},handleGroupChange,FirestoreGroups,groupOfTest,handleSetup,modules,handleModuleChange,FirestoreQuestions,handleQuestionChange,handleSave)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} className={classes.button}>
@@ -255,7 +281,7 @@ export default function Builder() {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleNext}
+                        onClick={activeStep !== steps.length - 1  ? handleNext : handleSave}
                         className={classes.button}
                     >
                         {activeStep === steps.length - 1  ? 'Befejezés és mentés' : 'Tovább'}

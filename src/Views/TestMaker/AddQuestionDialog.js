@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,9 +9,7 @@ import { useTheme } from '@material-ui/core/styles';
 import "firebase/auth";
 import { makeStyles } from '@material-ui/core/styles';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import TextField from '@material-ui/core/TextField';
-import ChooseImageDialog from '../Components/dialogs/ChooseImageDialog'
-import { ControlPointDuplicateOutlined } from '@material-ui/icons';
+import ActionsInAccordionSummary from './ActionsInAccordionSummary'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,9 +28,11 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function AddQuestionDialog({path,action,data}) {
+export default function AddQuestionDialog({zerotype,action,questions}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [questionSET, setQuestionSET] = React.useState([]);
+  const [question, setQuestion] = React.useState('')
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -43,30 +43,47 @@ const classes = useStyles();
   const handleClose = () => {
     setOpen(false);
   };
+  const AddQuestion = () =>{
+    if(zerotype){
+      action(0,question)
+      console.log(question)
+    }else{
+      action(question)
+    }
+    setOpen(false);
+  }
+  useEffect(() => {
+    var tmp = [] 
+    questions.map((question)=>{
+      if(question){
+        tmp.push(question) 
+      }
+    })
+    setQuestionSET(tmp)
+  },[]);
   return (
       <>
       <input type="button" className="add-modul-btn" value="+" onClick={handleClickOpen}/>
       <Dialog
-        fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
+        fullScreen
         aria-labelledby="responsive-dialog-title"
-        
       >
         <DialogTitle id="responsive-dialog-title">
-            Kérdés hozzáadása
+            Kérdés hozzáadás
         </DialogTitle>
         <DialogContent>
-        <DialogContentText></DialogContentText>
-        <form autoComplete="off">
-           
-        </form>
+        <DialogContentText>
+          {questionSET.length === 0 && 'Nincsenek felhasználatlan kérdések.'}
+        </DialogContentText>
+        <ActionsInAccordionSummary dataset={questionSET} action={setQuestion}/>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="inherit">
             Mégsem
           </Button>
-          <Button color="inherit" autoFocus>
+          <Button color="inherit" autoFocus onClick={AddQuestion}>
             Hozzáadás
           </Button>
         </DialogActions>

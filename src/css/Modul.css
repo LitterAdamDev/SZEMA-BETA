@@ -26,6 +26,7 @@
     width: 100%;
     box-sizing: border-box;
     padding: 10px 10px 10px 10px;
+    flex-direction: column;
 }
 .modul-footer{
     width: 100%;

@@ -14,13 +14,16 @@ export default class Question extends React.Component {
     handleDeleteQuestion = () =>{
         this.props.handleDeleteQuestion(this.props.index)
     }
+    handleAddQuestion = (id) =>{
+        this.props.handleAddQuestion(this.props.index,id)
+    }
     render() {
       return (
           <>
             <div className="question-container">
                 <div className="question-header">
                 <div className="question-data">
-                    {this.props.data? this.props.data.question: ""}
+                    {this.props.data? this.props.data.question + ' [' + this.props.data.points + ' pont]': ""}
                 </div>
                 <div className="question-handler">
                     <input type="button"value="X" onClick={this.handleDeleteQuestion}/>
@@ -84,7 +87,16 @@ export default class Question extends React.Component {
                     }
                 </div>
                 <div className="question-footer">
-                    <AddQuestionDialog />
+                    <AddQuestionDialog 
+                        questions={
+                            this.props.allQuestion.map((question) =>{
+                                if(!this.props.IDs.includes(question.id)){
+                                    return question
+                                }
+                            })
+                            
+                        } 
+                        action={this.handleAddQuestion}/>
                 </div>
             </div>
           </>
@@ -93,6 +105,9 @@ export default class Question extends React.Component {
 }
 Question.defaultProps ={
     data : undefined,
+    IDs : [],
     index : undefined,
     handleDeleteQuestion : undefined,
+    handleAddQuestion : undefined,
+    allQuestion : [],
 }

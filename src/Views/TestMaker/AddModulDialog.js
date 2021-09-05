@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function AddModuleDialog({path,action}) {
+export default function AddModuleDialog({zerotype, path, action}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [description, setDescription] = React.useState('');
@@ -56,7 +56,11 @@ const classes = useStyles();
     setIcon(image['src'])
   }
   const handleAddModul = (event) => { 
-    action({'description' : description, 'icon' : icon, 'name' : name})
+    if(zerotype){
+      action(0,{'description' : description, 'icon' : icon, 'name' : name})
+    }else{
+      action({'description' : description, 'icon' : icon, 'name' : name})
+    }
     setOpen(false);
   };
 

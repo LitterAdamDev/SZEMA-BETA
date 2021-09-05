@@ -3,6 +3,7 @@ import '../../css/Modul.css'
 import Question from './Question'
 import AddModuleDialog from './AddModulDialog';
 import ModifyModulDialog from './ModifyModulDialog';
+import AddQuestionDialog from './AddQuestionDialog';
 
 export default class Modul extends React.Component {
     constructor() {
@@ -30,6 +31,37 @@ export default class Modul extends React.Component {
     handleDeleteQuestion = (index) =>{
         this.props.handleModifyModulQuestions('REMOVE',{id: this.props.questions[index]["id"], index : this.props.index})
     }
+    handleAddQuestion = (index,id) =>{
+        let str = ''
+        
+        var tmpArr = this.props.questions
+        
+        if(tmpArr[0] === undefined){
+            tmpArr = []
+        }
+        console.log(tmpArr)
+        if(tmpArr.length === 0){
+            str = id
+        }else{
+            tmpArr.map((question,idx)=>{
+                if(index !== idx){
+                    if (str === ''){
+                        str = question.id
+                    }else{
+                        str = str + ':' + question
+                    }
+                }else{
+                    if (str === ''){
+                        str = question.id + ':' + id
+                    }else{
+                        str = str + ':' + question.id + ':' + id
+                    }
+                }
+            })
+        }
+        this.props.handleModifyModulQuestions('ADD',{IDs : str, index : this.props.index})
+    }
+    
     render() {
       return (
           <>
@@ -42,13 +74,24 @@ export default class Modul extends React.Component {
                             <input type="button" value="X" onClick={this.handleDeleteModul}/>
                         </div>
                     </div>
-                    <div className="modul-description">
+                    <div className="modul-description" onClick={()=>{console.log(this.props.questions)}}>
                         {this.props.data["data"][3]}
                     </div>
                 </div>
                 <div className="modul-body">
+                    <AddQuestionDialog 
+                        action={this.handleAddQuestion} 
+                        zerotype = {true}
+                        questions={
+                            this.props.allQuestion.map((question)=>{
+                                if(!this.props.data.data[0].includes(question.id)){
+                                    return question
+                                }
+                            }) 
+                        }
+                    />
                     {this.props.questions.map((questionData,index)=>{
-                         return questionData?<Question key={"question-" + index} index={index} data={questionData} handleDeleteQuestion={this.handleDeleteQuestion}/> : null
+                         return questionData?<Question key={"question-" + index} index={index} data={questionData} IDs={this.props.data.data[0]} handleDeleteQuestion={this.handleDeleteQuestion} handleAddQuestion={this.handleAddQuestion} allQuestion={this.props.allQuestion}/> : null
                     })}
                 </div>
                 <div className="modul-footer">
@@ -66,5 +109,6 @@ Modul.defaultProps = {
     handleAddModul : undefined,
     handleDeleteModul : undefined,
     handleModifyModul : undefined,
-    handleModifyModulQuestions : undefined
+    handleModifyModulQuestions : undefined,
+    allQuestion : []
 }
