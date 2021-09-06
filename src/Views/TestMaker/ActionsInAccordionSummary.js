@@ -22,6 +22,7 @@ export default function ActionsInAccordionSummary({dataset,action}) {
   const [choosen, setChoosen] = React.useState('')
   useEffect(() => {
     setQuestions(dataset)
+    action('')
   },[]);
 
   const handleChange = (event) =>{
@@ -39,7 +40,7 @@ export default function ActionsInAccordionSummary({dataset,action}) {
       {(questions && questions[0])? (questions.map((question)=>{
 
         return(
-          <Accordion>
+          <Accordion key={question.id}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-label="Expand"

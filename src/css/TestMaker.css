@@ -5,3 +5,36 @@
     margin:0;
     background-color: #a9acb8;
 }
+.delete-btn{
+    width: 15vw;
+    height: 38px;
+    font-size: 1vw;
+    text-transform: none;
+    color: white;
+    border-radius: 4px;
+    background-color:#a32910;
+    color: #a9acb8;
+    display: block;
+    margin: 2.5vh 0 2.5vh 0;
+}
+.delete-btn:hover{
+    color: #ffffff;
+    background-color:#f32b03;
+}
+.multy-modul-picker{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    margin-top:10vh
+}
+.modify-modul-dialog{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}

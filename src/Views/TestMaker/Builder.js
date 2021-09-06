@@ -65,12 +65,12 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['Típus','Beállítások', 'Csoport', 'Feladatsor'];
 
-function getStepContent(step,handleTypeChange,handleDetailsChange,details,handleGroups,groups,groupOfTest,handleSetup,modules,handleModules,questions,handleQuestions,handleSave) {
+function getStepContent(step,handleTypeChange,handleDeleteTest,handleDetailsChange,details,handleGroups,groups,groupOfTest,handleSetup,modules,handleModules,questions,handleQuestions,handleSave) {
   switch (step) {
     case 0:
         return <Options action={handleTypeChange}/>;
     case 1:
-      return <Settings action={handleDetailsChange} data={details} handleSetup={handleSetup} />;
+      return <Settings action={handleDetailsChange} data={details} handleSetup={handleSetup} deleteTest={handleDeleteTest}/>;
     case 2:
       return <GroupManager action={handleGroups} data={groups} isZH={details["isZH"]} actGroup={groupOfTest}/>;
     case 3 :
@@ -86,7 +86,7 @@ export default function Builder() {
   const [testType, setTestType] = React.useState('NEW_TEST');
   const [isZH, setIsZH] = React.useState(false);
   const [testDetails, setTestDetails] = React.useState({title: "", description: "", icon:""});
-  const [timeOfZH, setTimeOfZH] = React.useState({start: "", end: ""})
+  const [timeOfZH, setTimeOfZH] = React.useState({start: 0, end: 0})
   const [FirestoreGroups, setFirestoreGroups] = React.useState([])
   const [FirestoreTests, setFirestoreTests] = React.useState([])
   const [FirestoreQuestions, setFirestoreQuestions] = React.useState([])
@@ -197,6 +197,10 @@ export default function Builder() {
             break;
         case "zh" :
             setIsZH(value)
+            if(!value){
+              setTimeOfZH({start: "", end: ""})
+              setGroupOfTest("")
+            }
             break;
         case "time-start" :
             setTimeOfZH({...timeOfZH, start: value})
@@ -211,25 +215,32 @@ export default function Builder() {
   const handleGroupChange = (value) =>{
      setGroupOfTest(value)
   }
+  const deleteTest = () =>{
+    db.collection('quizes').doc(testDetails['title']).delete().then(()=>{
+      handleBack()
+    }).catch((error)=>{console.log(error)})
+  }
   const handleSave = () =>{
-    let tmp = []
+    let tmp = {}
     let IDs = []
     modules.map((modul)=>{
-      tmp.push(modul.data)
+      tmp = {...tmp, [modul.title]: modul.data}
       IDs.push(modul.title)
     })
-    db.collection('quizes')
-    .doc(testDetails['title'])
-    .set({
+    let test ={
       zh : isZH,
       title: testDetails['title'],
-      time: [timeOfZH.start,  timeOfZH.end],
+      time: [Date.parse(timeOfZH.start), Date.parse(timeOfZH.end)],
       moduleIDs : [...IDs],
       group : groupOfTest,
       description : testDetails['description'],
       icon : testDetails['icon'],
       ...tmp
-    })
+    }
+    console.log(test)
+    db.collection('quizes')
+    .doc(testDetails['title'])
+    .set(test)
     .catch((error)=>{
       console.log(error)
     })
@@ -270,7 +281,7 @@ export default function Builder() {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep, handleTypeChange, handleDetailChange, {isZH: isZH, testDetails: testDetails,timeOfZH: timeOfZH, type: testType, tests : FirestoreTests},handleGroupChange,FirestoreGroups,groupOfTest,handleSetup,modules,handleModuleChange,FirestoreQuestions,handleQuestionChange,handleSave)}
+                {getStepContent(activeStep, handleTypeChange, deleteTest ,handleDetailChange, {isZH: isZH, testDetails: testDetails,timeOfZH: timeOfZH, type: testType, tests : FirestoreTests},handleGroupChange,FirestoreGroups,groupOfTest,handleSetup,modules,handleModuleChange,FirestoreQuestions,handleQuestionChange,handleSave)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} className={classes.button}>

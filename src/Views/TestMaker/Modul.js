@@ -33,13 +33,10 @@ export default class Modul extends React.Component {
     }
     handleAddQuestion = (index,id) =>{
         let str = ''
-        
         var tmpArr = this.props.questions
-        
         if(tmpArr[0] === undefined){
             tmpArr = []
         }
-        console.log(tmpArr)
         if(tmpArr.length === 0){
             str = id
         }else{
@@ -59,7 +56,9 @@ export default class Modul extends React.Component {
                 }
             })
         }
-        this.props.handleModifyModulQuestions('ADD',{IDs : str, index : this.props.index})
+        if(!str.includes('undefined') && !str.includes('[object Object]')){
+            this.props.handleModifyModulQuestions('ADD',{IDs : str, index : this.props.index})
+        }
     }
     
     render() {
@@ -70,11 +69,18 @@ export default class Modul extends React.Component {
                     <div className="modul-title-handler">
                         <div className="modul-title">{this.props.data["data"][4]}</div>
                         <div className="modul-handler">
-                            <ModifyModulDialog path='quizes/quiz_type' action={this.handleModifyModul} data={this.props.data["data"]}/>
+                            <ModifyModulDialog path='quizes/quiz_type' 
+                                prerequisite={
+                                    this.props.data["data"][1]
+                                }  
+                                action={this.handleModifyModul} 
+                                data={this.props.data["data"]} 
+                                allModul={this.props.allModulData}
+                            />
                             <input type="button" value="X" onClick={this.handleDeleteModul}/>
                         </div>
                     </div>
-                    <div className="modul-description" onClick={()=>{console.log(this.props.questions)}}>
+                    <div className="modul-description">
                         {this.props.data["data"][3]}
                     </div>
                 </div>
@@ -82,20 +88,26 @@ export default class Modul extends React.Component {
                     <AddQuestionDialog 
                         action={this.handleAddQuestion} 
                         zerotype = {true}
-                        questions={
-                            this.props.allQuestion.map((question)=>{
-                                if(!this.props.data.data[0].includes(question.id)){
-                                    return question
-                                }
-                            }) 
-                        }
+                        questions={this.props.allQuestion}
+                        usedIDs ={this.props.data.data[0]}
                     />
                     {this.props.questions.map((questionData,index)=>{
-                         return questionData?<Question key={"question-" + index} index={index} data={questionData} IDs={this.props.data.data[0]} handleDeleteQuestion={this.handleDeleteQuestion} handleAddQuestion={this.handleAddQuestion} allQuestion={this.props.allQuestion}/> : null
+                         return questionData?<Question 
+                                                key={"question-" + index} 
+                                                index={index} 
+                                                data={questionData} 
+                                                IDs={this.props.data.data[0]} 
+                                                handleDeleteQuestion={this.handleDeleteQuestion} 
+                                                handleAddQuestion={this.handleAddQuestion} 
+                                                allQuestion={this.props.allQuestion}
+                                            /> : null
                     })}
                 </div>
                 <div className="modul-footer">
-                    <AddModuleDialog path='quizes/quiz_type' action={this.handleNewModul}/>
+                    <AddModuleDialog 
+                        path='quizes/quiz_type' 
+                        action={this.handleNewModul}
+                    />
                 </div>
             </div>
           </>
@@ -110,5 +122,6 @@ Modul.defaultProps = {
     handleDeleteModul : undefined,
     handleModifyModul : undefined,
     handleModifyModulQuestions : undefined,
-    allQuestion : []
+    allQuestion : [],
+    allModulData : [],
 }

@@ -28,38 +28,48 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function AddQuestionDialog({zerotype,action,questions}) {
+export default function AddQuestionDialog({zerotype,action,questions,usedIDs}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [questionSET, setQuestionSET] = React.useState([]);
   const [question, setQuestion] = React.useState('')
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleClickOpen = (event) => {
     event.preventDefault()
+    var tmp = [] 
+    if(zerotype){
+      questions.map((question)=>{
+        if(!usedIDs.includes(question.id)){
+          tmp.push(question)
+        }
+      })
+    }else{
+      questions.map((question)=>{
+        if(question){
+          tmp.push(question) 
+        }
+      })
+    }
+    setQuestionSET(tmp)
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
   const AddQuestion = () =>{
-    if(zerotype){
-      action(0,question)
-      console.log(question)
+    if(question === ''){
+      setOpen(false);
     }else{
-      action(question)
+      if(zerotype){
+        action(0,question)
+      }else{
+        action(question)
+      }
+      setOpen(false);
     }
-    setOpen(false);
   }
   useEffect(() => {
-    var tmp = [] 
-    questions.map((question)=>{
-      if(question){
-        tmp.push(question) 
-      }
-    })
-    setQuestionSET(tmp)
+    
   },[]);
   return (
       <>

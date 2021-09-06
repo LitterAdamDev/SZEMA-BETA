@@ -11,7 +11,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
 import ChooseImageDialog from '../Components/dialogs/ChooseImageDialog'
-import { ControlPointDuplicateOutlined } from '@material-ui/icons';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,12 +35,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function ModifyModulDialog({path,action,data}) {
+export default function ModifyModulDialog({prerequisite,path,action,data,allModul}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [description, setDescription] = React.useState('');
   const [name, setName] = React.useState('');
   const [icon, setIcon] = React.useState(null);
+  const [selection, setSelection] = React.useState('')
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -46,6 +52,7 @@ const classes = useStyles();
     setDescription(data[3])
     setName(data[4])
     setIcon(data[2])
+    setSelection(prerequisite)
   };
   const handleClose = () => {
     setOpen(false);
@@ -60,10 +67,25 @@ const classes = useStyles();
     setIcon(image)
   }
   const handleAddModul = (event) => { 
-    action({'description' : description, 'icon' : icon, 'name' : name})
+    action({'description' : description, 'icon' : icon, 'name' : name, selection: selection})
     setOpen(false);
   };
-
+  const handleModulSelect = (event) =>{
+    let id = event.target.id
+    let tmp = selection
+    if(event.target.checked){
+      if(tmp === ''){
+        tmp = id
+      }else{
+        tmp = tmp + ':' + id
+      }
+    }else{
+      tmp = tmp.replace(id + ':','')
+      tmp = tmp.replace(':' + id,'')
+      tmp = tmp.replace(id,'')
+    }
+    setSelection(tmp)
+  }
   return (
       <>
       <input type="button" value="handler" onClick={handleClickOpen}/>
@@ -72,15 +94,13 @@ const classes = useStyles();
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
-        
+       
       >
-        <DialogTitle id="responsive-dialog-title">
+        <DialogTitle id="responsive-dialog-title"  style={{width: "100%"}}>
             Modul módosítása
         </DialogTitle>
-        <DialogContent>
-        <DialogContentText></DialogContentText>
-        <form autoComplete="off">
-            <img class="folder-icon" src={icon} alt="Még nincsen hozzáadva icon a modulhoz."></img>
+        <DialogContent className="modify-modul-dialog">
+            <img style={{maxHeight: "20vh", border: "inset"}} src={icon} alt="Még nincsen hozzáadva icon a modulhoz."></img>
             <ChooseImageDialog path={path} action={handleIcon}/>
             <br/>
             <TextField
@@ -103,7 +123,36 @@ const classes = useStyles();
                 onChange={handleDescription}
                 value={description}
             />
-        </form>
+            <div className="multy-modul-picker">
+              Előkövetelmények:
+            {
+              allModul.map((modul,index)=>{
+                if(modul.title !== name){
+                  return(
+                    <Accordion key={index} style={{width: "100%"}}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-label="Expand"
+                        aria-controls="additional-actions3-content"
+                        id="additional-actions3-header"
+                      >
+                        <FormControlLabel
+                          aria-label="Acknowledge"
+                          onClick={(event) => event.stopPropagation()}
+                          onFocus={(event) => event.stopPropagation()}
+                          control={<Checkbox id={modul.title} onChange={handleModulSelect} defaultChecked={selection.includes(modul.title)}/>}
+                          label={modul.title}
+                        />
+                      </AccordionSummary>
+                      <AccordionDetails>
+                              {modul.description}
+                      </AccordionDetails>
+                    </Accordion>
+                  )
+                }
+              })
+            }
+            </div>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="inherit">

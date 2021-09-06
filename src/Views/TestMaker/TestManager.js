@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Modul from './Modul'
 import '../../css/TestManager.css'
 import AddModuleDialog from './AddModulDialog';
+import ModifyModulDialog from './ModifyModulDialog';
 
 export default class TestManager extends React.Component {
   constructor() {
@@ -20,7 +21,7 @@ export default class TestManager extends React.Component {
     this.props.handleModules('ADD',{index:index,data: tmp})
   }
   handleModifyModul = (index,obj) =>{
-    let tmp = {title: obj.name, data: [this.props.modules[index]["data"][0],"",obj.icon,obj.description,obj.name]}
+    let tmp = {title: obj.name, data: [this.props.modules[index]["data"][0],obj.selection,obj.icon,obj.description,obj.name]}
     this.props.handleModules('MODIFY',{index:index, data : tmp})
   }
   handleModifyModulQuestions = (type,obj) =>{
@@ -50,7 +51,15 @@ export default class TestManager extends React.Component {
           Feladatsor kezelése
         </Typography>
         <div className="builder-body">
-          <AddModuleDialog zerotype={true} path='quizes/quiz_type' action={this.handleAddModul}/>
+          <AddModuleDialog 
+            zerotype={true} 
+            path='quizes/quiz_type' 
+            allModul={
+              this.props.modules.map((modul)=>{
+                return {title: modul.title, description: 'modul["data"][3]'}
+              })
+            } 
+            action={this.handleAddModul}/>
           {this.props.modules.map((module,index) =>{
             return (
               <>
@@ -67,6 +76,11 @@ export default class TestManager extends React.Component {
                       }
                     })
                   } 
+                  allModulData ={
+                    this.props.modules.map((modul)=>{
+                      return {title: modul.title, "description": modul.data[3]}
+                    })
+                  }
                   allQuestion={this.props.questions}
                   handleAddModul={this.handleAddModul}
                   handleDeleteModul={this.handleDeleteModul}

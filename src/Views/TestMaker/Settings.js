@@ -7,7 +7,18 @@ import Checkbox from '@material-ui/core/Checkbox';
 import ChooseImageDialog from '../Components/dialogs/ChooseImageDialog'
 import Select from 'react-select'
 
-export default function AddressForm({action,data,handleSetup}) {
+function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp);
+  var year = a.getFullYear();
+  var month = a.getMonth()< 10? '0' + a.getMonth() : a.getMonth()
+  var date = a.getDate()< 10? '0' + a.getDate() : a.getDate()
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var time = year + '-' + month  + '-' + date + 'T' + hour + ':' + min;
+  return time;
+}
+export default function Settings({action,data,handleSetup,deleteTest}) {
+  const [selectValue,setSelectValue] = React.useState(null)
   const handleChange = (event) =>{
     if(event.target.id === "zh"){
         action(event.target.id,event.target.checked)
@@ -17,6 +28,15 @@ export default function AddressForm({action,data,handleSetup}) {
   }
   const handleIconChange =(value)=>{
       action("icon",value)
+  }
+  const handleDeleteTest = () =>{
+    if(data["testDetails"].title !== ''){
+      deleteTest()
+    }
+  }
+  const handleSetupFront = (newValue, actionMeta) =>{
+    setSelectValue({label:newValue["value"], value: newValue["value"]})
+    handleSetup({value: newValue.value},null)
   }
   return (
     <React.Fragment>
@@ -40,12 +60,15 @@ export default function AddressForm({action,data,handleSetup}) {
               style={{width: "100%"}}
               placeholder="Teszt kiválasztása..."
               options={data["tests"].map((test)=>{return {label: test["title"], value : test["title"]}})}
-              onChange={handleSetup}
-              value={(data["testDetails"]["title"] !== "") && (data["type"] !== 'NEW_TEST')? {label: data["testDetails"]["title"], value : data["testDetails"]["title"]}:null}
+              onChange={handleSetupFront}
+              value={selectValue}
             />
           </Grid> 
         )
         }
+        {(data["type"] === 'EDIT_TEST') && (
+          <input type="button" className="delete-btn" value="Teszt törlése" onClick={handleDeleteTest}/>
+        )}
         <Grid item xs={12} sm={12} style={{width: "80%"}}>
           <TextField
             required
@@ -53,6 +76,7 @@ export default function AddressForm({action,data,handleSetup}) {
             name="title"
             label="Feladatsor neve"
             fullWidth
+            disabled={data["type"]==="EDIT_TEST"}
             value={data["testDetails"]["title"]}
             onChange={handleChange}
           />
@@ -117,6 +141,7 @@ export default function AddressForm({action,data,handleSetup}) {
                         InputLabelProps={{
                         shrink: true,
                         }}
+                        value={timeConverter(data["timeOfZH"].start)}
                         onChange={handleChange}
                     />
                 </Grid>
@@ -129,6 +154,7 @@ export default function AddressForm({action,data,handleSetup}) {
                         InputLabelProps={{
                         shrink: true,
                         }}
+                        value={timeConverter(data["timeOfZH"].end)}
                         onChange={handleChange}
                     />
                 </Grid>
