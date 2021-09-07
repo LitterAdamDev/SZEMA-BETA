@@ -123,7 +123,11 @@ export default function Builder() {
     if(pos !== -1){
         let tmp = FirestoreTests[pos]
         setIsZH(tmp["zh"])
-        setTestDetails({title: tmp["title"], description: tmp["description"], icon: tmp["icon"]})
+        if(testType === "TEMPLATE_TEST"){
+          setTestDetails({title: "", description: tmp["description"], icon: tmp["icon"]})
+        }else{
+          setTestDetails({title: tmp["title"], description: tmp["description"], icon: tmp["icon"]})
+        }
         setModuleIDs([...tmp["moduleIDs"]])
         let allModule = []
         tmp["moduleIDs"].map((moduleName) =>{

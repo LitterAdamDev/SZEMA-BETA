@@ -28,6 +28,7 @@ export default function Settings({canStep,handleStep,action,data,handleSetup,del
   },[data]);
 
   const handleChange = (event) =>{
+    console.log(event.target.id)
     if(event.target.id === "zh"){
         action(event.target.id,event.target.checked)
     }else if(event.target.id === "time-start"){
