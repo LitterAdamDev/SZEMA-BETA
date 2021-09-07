@@ -272,8 +272,12 @@ export default function Builder() {
       icon : testDetails['icon'],
       ...tmp
     }
+    let name = testDetails['title']
+    if(name === ""){
+      name = "no-name-test"
+    }
     db.collection('quizes')
-    .doc(testDetails['title'])
+    .doc(name)
     .set(test)
     .catch((error)=>{
       console.log(error)
