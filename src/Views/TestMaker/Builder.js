@@ -65,16 +65,39 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['Típus','Beállítások', 'Csoport', 'Feladatsor'];
 
-function getStepContent(step,handleTypeChange,handleDeleteTest,handleDetailsChange,details,handleGroups,groups,groupOfTest,handleSetup,modules,handleModules,questions,handleQuestions,handleSave) {
+function getStepContent(canStep,handleStep,step,handleTypeChange,handleDeleteTest,handleDetailsChange,details,handleGroups,groups,groupOfTest,handleSetup,modules,handleModules,questions,handleQuestions,handleSave) {
   switch (step) {
     case 0:
-        return <Options action={handleTypeChange}/>;
+        return <Options 
+          action={handleTypeChange}/>;
     case 1:
-      return <Settings action={handleDetailsChange} data={details} handleSetup={handleSetup} deleteTest={handleDeleteTest}/>;
+      return <Settings 
+        canStep={canStep}
+        handleStep={handleStep}
+        action={handleDetailsChange} 
+        data={details} 
+        handleSetup={handleSetup}
+        titles={
+          details["tests"].map((test)=>{
+            return test.title
+          })
+        }
+        deleteTest={handleDeleteTest}/>;
     case 2:
-      return <GroupManager action={handleGroups} data={groups} isZH={details["isZH"]} actGroup={groupOfTest}/>;
+      return <GroupManager 
+        action={handleGroups} 
+        data={groups} 
+        isZH={details["isZH"]} 
+        actGroup={groupOfTest}/>;
     case 3 :
-      return <TestManager modules={modules} questions={questions} handleModules={handleModules} handleQuestions={handleQuestions} save={handleSave}/>;
+      return <TestManager 
+        canStep={canStep}
+        handleStep={handleStep}
+        modules={modules} 
+        questions={questions} 
+        handleModules={handleModules} 
+        handleQuestions={handleQuestions} 
+        save={handleSave}/>;
     default:
       throw new Error('Unknown step');
   }
@@ -93,6 +116,7 @@ export default function Builder() {
   const [groupOfTest, setGroupOfTest] = React.useState("")
   const [moduleIDs, setModuleIDs] = React.useState([])
   const [modules, setModules] = React.useState([{title:"random", data : []}])
+  const [canStep, setCanStep] = React.useState(true)
 
   const handleSetup = (newValue, actionMeta) =>{
     var pos = FirestoreTests.findIndex(obj => obj['title'] === newValue["value"])
@@ -119,14 +143,20 @@ export default function Builder() {
     if(type === "ADD"){
       tmp.splice(obj.index+1,0,obj.data)
     }else if(type === "REMOVE"){
+      let curr = tmp[obj.index]['data'][4]
       tmp.splice(obj.index,1)
+      tmp.map((modul)=>{
+        modul.data[1] =modul.data[1].replace(':' + curr,'').replace(curr + ':','').replace(curr,'')
+      })
     }else if(type === "MODIFY"){
       tmp[obj.index] = obj.data
     }
     setModules(tmp)
   }
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    if(canStep){
+      setActiveStep(activeStep + 1);
+    }
   };
   const getQuestions = () =>{
       db.collection('questions').get()
@@ -171,6 +201,7 @@ export default function Builder() {
     },[]);
     const handleBack = () => {
       setActiveStep(activeStep - 1);
+      setCanStep(true)
     };
   
     const handleTypeChange = (value) =>{
@@ -230,14 +261,13 @@ export default function Builder() {
     let test ={
       zh : isZH,
       title: testDetails['title'],
-      time: [Date.parse(timeOfZH.start), Date.parse(timeOfZH.end)],
+      time: [timeOfZH.start, timeOfZH.end],
       moduleIDs : [...IDs],
       group : groupOfTest,
       description : testDetails['description'],
       icon : testDetails['icon'],
       ...tmp
     }
-    console.log(test)
     db.collection('quizes')
     .doc(testDetails['title'])
     .set(test)
@@ -281,7 +311,7 @@ export default function Builder() {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep, handleTypeChange, deleteTest ,handleDetailChange, {isZH: isZH, testDetails: testDetails,timeOfZH: timeOfZH, type: testType, tests : FirestoreTests},handleGroupChange,FirestoreGroups,groupOfTest,handleSetup,modules,handleModuleChange,FirestoreQuestions,handleQuestionChange,handleSave)}
+                {getStepContent(canStep, setCanStep, activeStep, handleTypeChange, deleteTest ,handleDetailChange, {isZH: isZH, testDetails: testDetails,timeOfZH: timeOfZH, type: testType, tests : FirestoreTests},handleGroupChange,FirestoreGroups,groupOfTest,handleSetup,modules,handleModuleChange,FirestoreQuestions,handleQuestionChange,handleSave)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} className={classes.button}>

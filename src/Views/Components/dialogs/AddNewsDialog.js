@@ -38,11 +38,13 @@ export default function AddNewsDialog({action,title}) {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [message, setMessage] = React.useState();
-  const [icon, setIcon] = React.useState();
+  const [message, setMessage] = React.useState('');
+  const [icon, setIcon] = React.useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
+    setMessage('')
+    setIcon('')
   };
 
   const handleClose = () => {

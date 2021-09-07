@@ -10,11 +10,14 @@ export default class Modul extends React.Component {
         super();
         this.state = {
             questions : [],
-            data: []
+            data: [],
+            allModul: [],
         };
     }
     componentDidMount(){
-        
+        this.setState({
+            allModul: this.props.allModul
+        })
     }
     handleNewModul = (value) =>{
         this.props.handleAddModul(this.props.index,value)
@@ -77,7 +80,7 @@ export default class Modul extends React.Component {
                                 data={this.props.data["data"]} 
                                 allModul={this.props.allModulData}
                             />
-                            <input type="button" value="X" onClick={this.handleDeleteModul}/>
+                            <input type="button" className="x-icon" value="X" onClick={this.handleDeleteModul}/>
                         </div>
                     </div>
                     <div className="modul-description">
@@ -105,8 +108,10 @@ export default class Modul extends React.Component {
                 </div>
                 <div className="modul-footer">
                     <AddModuleDialog 
+                        setCanStep={this.props.setCanStep}
                         path='quizes/quiz_type' 
                         action={this.handleNewModul}
+                        allModul={this.props.allModul} 
                     />
                 </div>
             </div>
@@ -124,4 +129,6 @@ Modul.defaultProps = {
     handleModifyModulQuestions : undefined,
     allQuestion : [],
     allModulData : [],
+    setCanStep : undefined,
+    allModul: [],
 }

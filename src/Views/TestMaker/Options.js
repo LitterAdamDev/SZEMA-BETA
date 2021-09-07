@@ -21,7 +21,7 @@ export default class TestMaker extends React.Component {
                     Új teszt sablonból
                 </div>
                 <div className="qtype" id="EDIT_TEST" onClick={this.handleTypeSelect}>
-                    Teszt módosítása
+                    Teszt módosítása / törlése
                 </div>
             </div>
           </>

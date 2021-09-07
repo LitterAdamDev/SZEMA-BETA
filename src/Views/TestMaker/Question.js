@@ -26,7 +26,7 @@ export default class Question extends React.Component {
                     {this.props.data? this.props.data.question + ' [' + this.props.data.points + ' pont]': ""}
                 </div>
                 <div className="question-handler">
-                    <input type="button"value="X" onClick={this.handleDeleteQuestion}/>
+                    <input type="button" value="X" className="x-icon-question" onClick={this.handleDeleteQuestion}/>
                 </div>
                 </div>
                 <div className="question-body">

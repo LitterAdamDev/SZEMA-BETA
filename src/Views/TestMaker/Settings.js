@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -17,11 +17,33 @@ function timeConverter(UNIX_timestamp){
   var time = year + '-' + month  + '-' + date + 'T' + hour + ':' + min;
   return time;
 }
-export default function Settings({action,data,handleSetup,deleteTest}) {
+export default function Settings({canStep,handleStep,action,data,handleSetup,deleteTest,titles}) {
   const [selectValue,setSelectValue] = React.useState(null)
+  const [start,setStart] = React.useState('')
+  const [end,setEnd] = React.useState('')
+
+  useEffect(() => {
+    setEnd(data.timeOfZH["end"])
+    setStart(data.timeOfZH["start"])
+  },[data]);
+
   const handleChange = (event) =>{
     if(event.target.id === "zh"){
         action(event.target.id,event.target.checked)
+    }else if(event.target.id === "time-start"){
+      action(event.target.id,event.target.value)
+      setStart(event.target.value)
+    }else if(event.target.id === "time-end"){
+      action(event.target.id,event.target.value)
+      setEnd(event.target.value)
+    }else if(event.target.id === "title"){
+      if(titles.includes(event.target.value)){
+        handleStep(false)
+      }else{
+        handleStep(true)
+      }
+      action(event.target.id,event.target.value)
+      setEnd(event.target.value)
     }else{
         action(event.target.id,event.target.value)
     }
@@ -78,6 +100,7 @@ export default function Settings({action,data,handleSetup,deleteTest}) {
             fullWidth
             disabled={data["type"]==="EDIT_TEST"}
             value={data["testDetails"]["title"]}
+            className={(data["type"] !=="EDIT_TEST") && titles.includes(data["testDetails"]["title"])? "wrong-input":""}
             onChange={handleChange}
           />
         </Grid>
@@ -137,11 +160,10 @@ export default function Settings({action,data,handleSetup,deleteTest}) {
                         id="time-start"
                         label="Kezdés időpontja"
                         type="datetime-local"
-                        defaultValue="2017-05-24T10:30"
                         InputLabelProps={{
                         shrink: true,
                         }}
-                        value={timeConverter(data["timeOfZH"].start)}
+                        value={start}
                         onChange={handleChange}
                     />
                 </Grid>
@@ -150,11 +172,10 @@ export default function Settings({action,data,handleSetup,deleteTest}) {
                         id="time-end"
                         label="Végzés időpontja"
                         type="datetime-local"
-                        defaultValue="2017-05-24T10:30"
                         InputLabelProps={{
                         shrink: true,
                         }}
-                        value={timeConverter(data["timeOfZH"].end)}
+                        value={end}
                         onChange={handleChange}
                     />
                 </Grid>

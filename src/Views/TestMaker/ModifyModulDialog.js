@@ -8,7 +8,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import "firebase/auth";
 import { makeStyles } from '@material-ui/core/styles';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
 import ChooseImageDialog from '../Components/dialogs/ChooseImageDialog'
 import Accordion from '@material-ui/core/Accordion';
@@ -88,7 +87,7 @@ const classes = useStyles();
   }
   return (
       <>
-      <input type="button" value="handler" onClick={handleClickOpen}/>
+      <input type="button" value="Módosítás" className="x-icon" onClick={handleClickOpen}/>
       <Dialog
         fullScreen={fullScreen}
         open={open}

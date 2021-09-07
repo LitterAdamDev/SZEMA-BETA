@@ -3,15 +3,21 @@ import Typography from '@material-ui/core/Typography';
 import Modul from './Modul'
 import '../../css/TestManager.css'
 import AddModuleDialog from './AddModulDialog';
-import ModifyModulDialog from './ModifyModulDialog';
 
 export default class TestManager extends React.Component {
   constructor() {
     super();
     this.state = {
+      allModul : []
     };
   }
   componentDidMount(){
+    let tmp = this.props.modules.map((modul)=>{
+      return modul.title
+    })
+    this.setState({
+      allModul : tmp
+    })
   }
   handleDeleteModul = (index) =>{
     this.props.handleModules("REMOVE",{index: index})
@@ -52,18 +58,22 @@ export default class TestManager extends React.Component {
         </Typography>
         <div className="builder-body">
           <AddModuleDialog 
+            setCanStep={this.props.handleStep}
             zerotype={true} 
             path='quizes/quiz_type' 
             allModul={
               this.props.modules.map((modul)=>{
-                return {title: modul.title, description: 'modul["data"][3]'}
+                return modul.title
               })
             } 
-            action={this.handleAddModul}/>
+            action={this.handleAddModul}
+            />
           {this.props.modules.map((module,index) =>{
             return (
               <>
                 <Modul 
+                  setCanStep={this.props.handleStep}
+                  allModul={this.state.allModul} 
                   key={"modul-"+index} 
                   id={"modul-"+index} 
                   index={index} 
@@ -101,4 +111,6 @@ TestManager.defaultProps = {
   questions : [],
   handleQuestions : undefined,
   handleModules : undefined,
+  canStep : true,
+  handleStep : undefined,
 }

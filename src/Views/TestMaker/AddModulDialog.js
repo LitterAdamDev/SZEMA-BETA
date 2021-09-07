@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -29,12 +29,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function AddModuleDialog({zerotype, path, action}) {
+export default function AddModuleDialog({setCanStep, zerotype, path, action, allModul}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [description, setDescription] = React.useState('');
   const [name, setName] = React.useState('');
   const [icon, setIcon] = React.useState(null);
+  const [allM, setAllM] = React.useState([]);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -42,6 +43,7 @@ const classes = useStyles();
     event.preventDefault()
     setDescription('')
     setOpen(true);
+    setAllM(allModul)
   };
   const handleClose = () => {
     setOpen(false);
@@ -50,18 +52,25 @@ const classes = useStyles();
     setDescription(event.target.value)
   }
   const handleName = (event) =>{
+    if(allModul.includes(event.target.value)){
+      setCanStep(false)
+    }else{
+      setCanStep(true)
+    }
     setName(event.target.value)
   }
   const handleIcon = (image) =>{
     setIcon(image['src'])
   }
   const handleAddModul = (event) => { 
-    if(zerotype){
-      action(0,{'description' : description, 'icon' : icon, 'name' : name})
-    }else{
-      action({'description' : description, 'icon' : icon, 'name' : name})
+    if(!allModul.includes(name)){
+      if(zerotype){
+        action(0,{'description' : description, 'icon' : icon, 'name' : name})
+      }else{
+        action({'description' : description, 'icon' : icon, 'name' : name})
+      }
+      setOpen(false);
     }
-    setOpen(false);
   };
 
   return (
@@ -82,6 +91,7 @@ const classes = useStyles();
         <form autoComplete="off">
             <ImageSelector path={path} action={handleIcon} fullWidth/>
             <br/>
+            {allM}
             <TextField
                 autoFocus
                 margin="dense"
@@ -89,6 +99,7 @@ const classes = useStyles();
                 label="Modul neve"
                 type="text"
                 fullWidth
+                className={allM.includes(name)? "wrong-input":""}
                 onChange={handleName}
                 value={name}
             />

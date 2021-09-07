@@ -15,6 +15,8 @@
     justify-content: center;
     align-items: center;
     border-bottom: 1px solid black;
+    position: relative;
+    background-color: #c0c2c7;
 }
 .question-data{
     display: flex;
@@ -39,6 +41,7 @@
     border-bottom: 1px solid black;
     box-sizing: border-box;
     padding:10px;
+    background-color: #c0c2c7;
 }
 .question-picture{
     max-width: 20vh;
