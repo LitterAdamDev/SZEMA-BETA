@@ -253,7 +253,14 @@ export default function Builder() {
   const deleteTest = () =>{
     db.collection('quizes').doc(testDetails['title']).delete().then(()=>{
       handleBack()
-    }).catch((error)=>{console.log(error)})
+    }).catch((error)=>{console.log(error)}).then(()=>{
+      let pos = FirestoreTests.findIndex(obj =>obj.id === testDetails['title'])
+      if(pos !== -1){
+        let tmp = [...FirestoreTests]
+        tmp.splice(pos,1)
+        setFirestoreTests(tmp)
+      }
+    })
   }
   const handleSave = () =>{
     let tmp = {}
