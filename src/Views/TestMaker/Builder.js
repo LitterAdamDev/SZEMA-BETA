@@ -275,6 +275,7 @@ export default function Builder() {
     let name = testDetails['title']
     if(name === ""){
       name = "no-name-test"
+      setTestDetails({...testDetails, title: name})
     }
     db.collection('quizes')
     .doc(name)
