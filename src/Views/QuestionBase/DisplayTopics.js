@@ -1,17 +1,14 @@
 // Import Firestore database
 import {db} from '../../config/base'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const DisplayTopics = () => {
 
 	const [info , setInfo] = useState([]);
-
-	// Start the fetch operation as soon as
-	// the page loads
-	window.addEventListener('load', () => {
+	// with no callback attributes it only gets called once at the first render
+	useEffect(() => {
 		Fetchdata();
-	});
-
+	},[]);
 	// Fetch the required data using the get() method
 	const Fetchdata = ()=>{
 		db.collection("topics").get().then((querySnapshot) => {
@@ -20,7 +17,7 @@ const DisplayTopics = () => {
 			querySnapshot.forEach(element => {
 				var data = element.data();
 				setInfo(arr => [...arr , data]);
-				
+				console.log(data)
 			});
 		})
 	}
