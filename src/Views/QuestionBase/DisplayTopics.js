@@ -16,8 +16,7 @@ const DisplayTopics = () => {
 			// it in array to display
 			querySnapshot.forEach(element => {
 				var data = element.data();
-				setInfo(arr => [...arr , data]);
-				console.log(data)
+				setInfo(arr => [...arr , {...data, id: data.id}]);
 			});
 		})
 	}
