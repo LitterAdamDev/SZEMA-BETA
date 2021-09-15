@@ -1,5 +1,5 @@
 // Import Firestore database
-import db from '../../config/base'
+import {db} from '../../config/base'
 import { useState } from 'react';
 
 const DisplayTopics = () => {
@@ -34,9 +34,9 @@ const DisplayTopics = () => {
 
 		{
 			info.map((data) => (
-			<Frame course={data.CourseEnrolled}
-				name={data.Nane}
-				age={data.Age}/>
+			<Frame course={data.Description}
+				name={data.Topicname}
+				age={data.Createdby}/>
 			))
 		}
 		</div>
@@ -45,14 +45,14 @@ const DisplayTopics = () => {
 }
 
 // Define how each display entry will be structured
-const Frame = ({course , name , age}) => {
-	console.log(course + " " + name + " " + age);
+const Frame = ({description , topicname , createdby}) => {
+	console.log(description + " " + topicname + " " + createdby);
 	return (
 	
 			<div className="div">
-                <p>NAME : {name}</p>
-                <p>Age : {age}</p>
-                <p>Course : {course}</p>
+                <p>nev : {topicname}</p>
+                <p>letrehozo : {createdby}</p>
+                <p>topik leiras : {description}</p>
 
 			</div>
 		
