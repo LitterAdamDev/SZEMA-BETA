@@ -11,9 +11,9 @@ const AddTheme = () => {
 
         // Add data to the store
         db.collection("topics").add({
-            Topic_name: topic_name,
+            Topicname: topic_name,
             Description: description,
-            Created_by: created_by
+            Createdby: created_by
         })
         .then((docRef) => {
             alert("A téma sikeresen létrehozva!");

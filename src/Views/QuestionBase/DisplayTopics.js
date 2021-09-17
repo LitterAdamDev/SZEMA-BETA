@@ -1,9 +1,15 @@
 // Import Firestore database
 import {db} from '../../config/base'
 import { useState, useEffect } from 'react';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 
 const DisplayTopics = () => {
 
+    
 	const [info , setInfo] = useState([]);
 	// with no callback attributes it only gets called once at the first render
 	useEffect(() => {
@@ -16,43 +22,29 @@ const DisplayTopics = () => {
 			// it in array to display
 			querySnapshot.forEach(element => {
 				var data = element.data();
+                //console.log(data);
 				setInfo(arr => [...arr , {...data, id: data.id}]);
 			});
 		})
 	}
-	
+
 	// Display the result on the page
 	return (
 		<div>
-			<center>
-			<h2>Topic details</h2>
-			</center>
-
-		{
-			info.map((data) => (
-			<Frame course={data.Description}
-				name={data.Topicname}
-				age={data.Createdby}/>
-			))
-		}
-		</div>
-
+        <FormControl float='left' marginBottom='10px' marginLeft='16px'>
+        <InputLabel  id="demo-simple-select-helper-label">Témakör kiválasztása</InputLabel>
+        <Select 
+                labelId="demo-simple-select-helper-label"
+                id="demo-simple-select-helper">
+                {
+                info.map((data) => (
+                <MenuItem value={data.Topicname}>{data.Topicname}</MenuItem>
+                ))
+                }
+                 </Select>
+                 <FormHelperText>Témakör kiválasztása a kérdés kategorizálásához</FormHelperText>
+       </FormControl>
+        </div>
 	);
 }
-
-// Define how each display entry will be structured
-const Frame = ({description , topicname , createdby}) => {
-	console.log(description + " " + topicname + " " + createdby);
-	return (
-	
-			<div className="div">
-                <p>nev : {topicname}</p>
-                <p>letrehozo : {createdby}</p>
-                <p>topik leiras : {description}</p>
-
-			</div>
-		
-	);
-}
-
 export default DisplayTopics;

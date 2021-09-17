@@ -14,16 +14,14 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 
 import Tooltip from '@material-ui/core/Tooltip';
 
 import QuestionAddAnswer from '../Components/QuestionAddAnswer';
+import DisplayTopics from '../QuestionBase/DisplayTopics';
+
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from "@material-ui/icons/Search";
 import ResHeader from '../Components/ResHeader'
@@ -54,6 +52,7 @@ const kerdesek = [
   { title: "Hatodik kerdes", id: 25 },
   { title: 'Hetedik kerdes', id: 26 },
 ];
+
 
 
 const useStyles = (theme) => ({
@@ -125,8 +124,6 @@ const useStyles = (theme) => ({
 });
 
 class QuestionBaseDashboard extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
@@ -174,23 +171,7 @@ class QuestionBaseDashboard extends React.Component {
       <h1>Kérdés létrehozása</h1><Divider />
   
       <Container>
-      <FormControl  className={classes.formControl}>
-        <InputLabel  id="demo-simple-select-helper-label">Témakör kiválasztása</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper">
-          <MenuItem value={0}>
-            <em>Nincs témakör</em>
-          </MenuItem>
-          <MenuItem value={1}>Térelemek ábrázolása</MenuItem>
-          <MenuItem value={2}>Síklapú testek vetületi ábrázolása</MenuItem>
-          <MenuItem value={3}>Forgástestek vetületi ábrázolás</MenuItem>
-          <MenuItem value={4}>Áthjatások/vetítési. Rajzi egyszerűsítések</MenuItem>
-          <MenuItem value={5}>Metszeti ábrázolás</MenuItem>
-          <MenuItem value={6}>Méretmegadás műszaki rajzokon</MenuItem>
-        </Select>
-        <FormHelperText>Témakör kiválasztása a kérdés kategorizálásához</FormHelperText>
-      </FormControl>
+      <DisplayTopics></DisplayTopics>
       </Container>
       <form className={classes.root} noValidate autoComplete="off">
       
