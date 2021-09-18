@@ -8,8 +8,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 
 const DisplayTopics = () => {
-
-    
 	const [info , setInfo] = useState([]);
 	// with no callback attributes it only gets called once at the first render
 	useEffect(() => {
@@ -30,8 +28,8 @@ const DisplayTopics = () => {
 
 	// Display the result on the page
 	return (
-		<div>
-        <FormControl float='left' marginBottom='10px' marginLeft='16px'>
+		
+        <FormControl style ={{width: 'auto', marginLeft: '-28vw'}}>
         <InputLabel  id="demo-simple-select-helper-label">Témakör kiválasztása</InputLabel>
         <Select 
                 labelId="demo-simple-select-helper-label"
@@ -44,7 +42,7 @@ const DisplayTopics = () => {
                  </Select>
                  <FormHelperText>Témakör kiválasztása a kérdés kategorizálásához</FormHelperText>
        </FormControl>
-        </div>
+     
 	);
 }
 export default DisplayTopics;
