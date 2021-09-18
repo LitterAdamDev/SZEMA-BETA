@@ -28,7 +28,7 @@ const DisplayTopics = () => {
 
 	// Display the result on the page
 	return (
-		
+		<div className="asd">
         <FormControl style ={{width: 'auto', marginLeft: '-28vw'}}>
         <InputLabel  id="demo-simple-select-helper-label">Témakör kiválasztása</InputLabel>
         <Select 
@@ -42,7 +42,9 @@ const DisplayTopics = () => {
                  </Select>
                  <FormHelperText>Témakör kiválasztása a kérdés kategorizálásához</FormHelperText>
        </FormControl>
-     
+        <p style={{marginTop: '-2vw'}}>Gomb</p>
+
+       </div> 
 	);
 }
 export default DisplayTopics;
