@@ -480,13 +480,13 @@ function QuestionBaseDashboard() {
                 <QuestionAddAnswer
                   getOtherAns={getOtherAns}
                   otherCurrentAns={correctAns}
-                  title="Több helyes válasz megadása"
+                  title="Helyes válasz hozzáadása"
                 />
 
                 <QuestionAddAnswer
                   getOtherAns={getOtherBadAns}
                   otherCurrentAns={badAns}
-                  title="Rossz válasz megadása"
+                  title="Rossz válasz hozzáadása"
                   badAnswer
                 />
 
