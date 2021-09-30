@@ -1,80 +1,116 @@
-import React, { useState } from 'react';
-import Container from '@material-ui/core/Container';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import RemoveIcon from '@material-ui/icons/Remove';
-import AddIcon from '@material-ui/icons/Add';
-import Icon from '@material-ui/core/Icon';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useState, useEffect } from "react";
+import Container from "@material-ui/core/Container";
+import TextField from "@material-ui/core/TextField";
 
-import { makeStyles } from '@material-ui/core/styles';
+import IconButton from "@material-ui/core/IconButton";
+import RemoveIcon from "@material-ui/icons/Remove";
+import AddIcon from "@material-ui/icons/Add";
+import Icon from "@material-ui/core/Icon";
+import { v4 as uuidv4 } from "uuid";
+
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    '& .MuiTextField-root': {
+    "& .MuiTextField-root": {
       margin: theme.spacing(1),
     },
   },
   button: {
     margin: theme.spacing(1),
-  }
-}))
+  },
+}));
 
 //function App() {
-export default function QuestionAddAnswer() {
-  const classes = useStyles()
-  const [inputFields, setInputFields] = useState([
-    { id: uuidv4(), questionOption: '' },
-  ]);
+export default function QuestionAddAnswer({
+  otherCurrentAns,
+  getOtherAns,
+  title,
+  badAnswer,
+}) {
+  const classes = useStyles();
+  // const dispatch = useDispatch();
+  // let { data } = useSelector(({ questionAddAnswer }) => questionAddAnswer);
+
+  const [inputFields, setInputFields] = useState([{ questionOption: "" }]);
+
+  getOtherAns(inputFields);
+
+  useEffect(() => {
+    console.log("otherCurrentAns", otherCurrentAns);
+    setInputFields([{ questionOption: "" }]);
+
+    if (otherCurrentAns.length > 0) {
+      let otherAnswer = [];
+
+      otherCurrentAns.forEach((v, i) => {
+        if (badAnswer) {
+          otherAnswer.push({ questionOption: v });
+        } else {
+          if (i !== 0) otherAnswer.push({ questionOption: v });
+        }
+      });
+      setInputFields(otherAnswer);
+    }
+  }, [badAnswer, otherCurrentAns]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("InputFields", inputFields);
   };
 
-  const handleChangeInput = (id, event) => {
-    const newInputFields = inputFields.map(i => {
-      if(id === i.id) {
-        i[event.target.name] = event.target.value
+  const handleChangeInput = (currIndex, event) => {
+    const newInputFields = inputFields.map((i, index) => {
+      if (currIndex === index) {
+        i[event.target.name] = event.target.value;
       }
       return i;
-    })
-    
+    });
+
     setInputFields(newInputFields);
-  }
+  };
 
-  const handleAddFields = () => {
-    setInputFields([...inputFields, { id: uuidv4(), questionOption: '' }])
-  }
+  const handleAddFields = (index) => {
+    setInputFields([...inputFields, { questionOption: "" }]);
+  };
 
-  const handleRemoveFields = id => {
-    const values  = [...inputFields];
-    values.splice(values.findIndex(value => value.id === id), 1);
+  const handleRemoveFields = (index) => {
+    const values = [...inputFields];
+    values.splice(index, 1);
     setInputFields(values);
-  }
+  };
 
   return (
-      <form className={classes.root} onSubmit={handleSubmit} noValidate autoComplete="off">
-        { inputFields.map(inputField => (
-          <div key={inputField.id}>
+    <form
+      className={classes.root}
+      onSubmit={handleSubmit}
+      noValidate
+      autoComplete="off"
+    >
+      {inputFields.map((inputField, index) => (
+        <div key={index}>
           <TextField
-          name="questionOption"
-          //style = {{width: 100}}
-          label="Új válasz lehetőség"
-          style ={{width: '80%'}}
-          placeholder="Kérem adjon meg egy válasz lehetőséget..."
-          InputLabelProps={{shrink: true,}}
-          variant="outlined"
-          value={inputField.questionOption}
-          onChange={event => handleChangeInput(inputField.id, event)}
+            name="questionOption"
+            label={title}
+            style={{ width: "80%" }}
+            placeholder="Adjon meg egy új válasz lehetőséget..."
+            InputLabelProps={{ shrink: true }}
+            variant="outlined"
+            value={inputField.questionOption}
+            onChange={(event) => handleChangeInput(index, event)}
           />
 
-          <IconButton disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)}>
-            <RemoveIcon /></IconButton>
-          <IconButton onClick={handleAddFields}> <AddIcon /> </IconButton>
-          </div>
-        )) }
-      </form>
+          <IconButton
+            disabled={inputFields.length === 1}
+            onClick={() => handleRemoveFields(index)}
+          >
+            <RemoveIcon />
+          </IconButton>
+          <IconButton onClick={() => handleAddFields(index)}>
+            {" "}
+            <AddIcon />{" "}
+          </IconButton>
+        </div>
+      ))}
+    </form>
   );
 }
