@@ -26,7 +26,6 @@ export default function QuestionAddAnswer({
   otherCurrentAns,
   getOtherAns,
   title,
-  badAnswer,
 }) {
   const classes = useStyles();
   // const dispatch = useDispatch();
@@ -44,15 +43,11 @@ export default function QuestionAddAnswer({
       let otherAnswer = [];
 
       otherCurrentAns.forEach((v, i) => {
-        if (badAnswer) {
-          otherAnswer.push({ questionOption: v });
-        } else {
-          if (i !== 0) otherAnswer.push({ questionOption: v });
-        }
+        otherAnswer.push({ questionOption: v });
       });
       setInputFields(otherAnswer);
     }
-  }, [badAnswer, otherCurrentAns]);
+  }, [otherCurrentAns]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

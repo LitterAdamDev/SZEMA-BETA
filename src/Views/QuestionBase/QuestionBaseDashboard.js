@@ -154,7 +154,7 @@ function QuestionBaseDashboard() {
     });
 
     let withoutObjAns = otherAnserFilter.map((v) => v.questionOption);
-    withoutObjAns.unshift(correctAnsValue);
+    //withoutObjAns.unshift(correctAnsValue);
 
     const otherBadAnserFilter = allOherBadAns.filter((obj) => {
       return obj.questionOption !== "";
@@ -209,7 +209,7 @@ function QuestionBaseDashboard() {
     });
 
     let withoutObjAns = otherAnserFilter.map((v) => v.questionOption);
-    withoutObjAns.unshift(correctAnsValue);
+    //withoutObjAns.unshift(correctAnsValue);
     const otherBadAnserFilter = allOherBadAns.filter((obj) => {
       return obj.questionOption !== "";
     });
@@ -311,7 +311,6 @@ function QuestionBaseDashboard() {
     setSelectBoxTopicValue("");
     setPoint("");
     setCurrentQuestion("");
-    setCorrectAnsValue("");
     setCurrentQuestionEdit("");
     setCorrectAns([]);
     setBadAns([]);
@@ -333,7 +332,6 @@ function QuestionBaseDashboard() {
     setCurrentQuestionEdit(question);
     setCorrectAns(rightAnswer);
     setBadAns(answers);
-    setCorrectAnsValue(rightAnswer[0]);
     setPoint(points);
     setCurrentTopic(topicName);
   };
@@ -352,7 +350,7 @@ function QuestionBaseDashboard() {
     firebase
       .storage()
       .ref()
-      .child(file.name)
+      .child(file.name + Math.random())
       .put(file)
       .then((snapshot) => {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
@@ -477,24 +475,7 @@ function QuestionBaseDashboard() {
                   />
                 )}
 
-                <TextField
-                  id="outlined-full-width"
-                  label="Helyes válasz megadása"
-                  value={correctAnsValue}
-                  onChange={(e) => {
-                    setCorrectAnsValue(e.target.value);
-                  }}
-                  style={{ margin: 8 }}
-                  placeholder="Kérem adja meg a helyes választ..."
-                  // helperText="Full width!"
-                  style={{ width: "91%" }}
-                  multiline
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="outlined"
-                />
+                
                 {/* ide a valasz lehetosegeket hozzaado comp */}
                 <QuestionAddAnswer
                   getOtherAns={getOtherAns}
