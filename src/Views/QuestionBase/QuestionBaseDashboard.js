@@ -187,7 +187,8 @@ function QuestionBaseDashboard() {
         requiredData[d] == undefined ||
         requiredData[d] == false
       ) {
-        swal("Warning!", `${camelCase(d)} field are empty`);
+        //swal("Figyelem!", `${camelCase(d)} mezők üresek!`);
+         swal("Figyelem!", `Töltse ki a szükséges mezőket!`);
         return;
         break;
       }
@@ -196,10 +197,10 @@ function QuestionBaseDashboard() {
     db.collection("questions")
       .add(data)
       .then((docRef) => {
-        swal("Good job!", "Question add succesfully", "success");
+        swal("Sikeres művelet!", "Kérdés sikeresen hozzáadva", "success");
         cencel();
       })
-      .catch((error) => swal("Error", "Error adding question"));
+      .catch((error) => swal("Hiba", "Hiba a kérdés hozzáadásakor"));
   };
 
   const update = () => {
@@ -242,7 +243,8 @@ function QuestionBaseDashboard() {
         requiredData[d] == undefined ||
         requiredData[d] == false
       ) {
-        swal("Warning!", `${camelCase(d)} field are empty`);
+        //swal("Warning!", `${camelCase(d)} field are empty`);
+        swal("Figyelem!", `Töltse ki a szükséges mezőket!`);
         return;
         break;
       }
@@ -252,10 +254,10 @@ function QuestionBaseDashboard() {
       .doc(updatedId)
       .update(data)
       .then((docRef) => {
-        swal("Good job!", "Question Updated succesfully", "success");
+        swal("Sikeres művelet!", "A kérdés sikeresen módosítva!", "success");
         cencel();
       })
-      .catch((error) => swal("Error", "Error Updating question"));
+      .catch((error) => swal("Hiba", "Hiba a kérdés frissítésekor"));
   };
 
   const deleteQuestion = (id) => {
