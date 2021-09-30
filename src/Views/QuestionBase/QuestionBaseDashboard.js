@@ -1,61 +1,46 @@
-import React from "react";
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import 'firebase/firestore'
+import React, { useEffect, useState } from "react";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Toolbar from "@material-ui/core/Toolbar";
+import Skeleton from "react-loading-skeleton";
+import swal from "sweetalert";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import "firebase/firestore";
 import { withStyles } from "@material-ui/core/styles";
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import FormControl from "@material-ui/core/FormControl";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
 
-import FormControl from '@material-ui/core/FormControl';
-import Button from '@material-ui/core/Button';
+import Tooltip from "@material-ui/core/Tooltip";
 
-import Tooltip from '@material-ui/core/Tooltip';
+import QuestionAddAnswer from "../Components/QuestionAddAnswer";
+import DisplayTopics from "./DisplayTopics";
+import DisplayTopicsWithDialog from "./DisplayTopicsWithDialog";
 
-import QuestionAddAnswer from '../Components/QuestionAddAnswer';
-import DisplayTopics from '../QuestionBase/DisplayTopics';
-
-import InputAdornment from '@material-ui/core/InputAdornment';
+import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
-import ResHeader from '../Components/ResHeader'
+import ResHeader from "../Components/ResHeader";
+import storage, { db } from "../../config/base";
+import firebase from "firebase/app";
 
 //for lists
 function ListItemLink(props) {
-  
-  
   return <ListItem button component="a" {...props} />;
-  
 }
 
-const temakorok = [
-  { title: 'Térelemek ábrázolása', id: 1 },
-  { title: 'Síklapú testek vetületi ábrázolása', id: 2 },
-  { title: 'Forgástestek vetületi ábrázolás', id: 3 },
-  { title: 'Áthjatások/vetítési. Rajzi egyszerűsítések', id: 4 },
-  { title: 'Metszeti ábrázolás', id: 5 },
-  { title: "Méretmegadás műszaki rajzokon", id: 6 },
-];
-
-const kerdesek = [
-  { title: 'Elso kerdes', id: 20 },
-  { title: 'Masodik kerdes', id: 21 },
-  { title: 'Harmadik kerdes', id: 22 },
-  { title: 'Negyedik kerdes', id: 23 },
-  { title: 'Otodik kerdes', id: 24 },
-  { title: "Hatodik kerdes", id: 25 },
-  { title: 'Hetedik kerdes', id: 26 },
-];
-
-
-
-const useStyles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
   },
@@ -70,12 +55,12 @@ const useStyles = (theme) => ({
     paddingBottom: theme.spacing(8),
   },
   card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
   },
   cardMedia: {
-    paddingTop: '56.25%', // 16:9
+    paddingTop: "56.25%", // 16:9
   },
   cardContent: {
     flexGrow: 1,
@@ -83,23 +68,22 @@ const useStyles = (theme) => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
-    
   },
   themeQuestions: {
-    display: 'inline-block',
-    verticalAlign: 'text-top',
-    margin: '15px',
-    width: '100%',
+    display: "inline-block",
+    verticalAlign: "text-top",
+    margin: "15px",
+    width: "100%",
     maxWidth: 450,
     backgroundColor: theme.palette.background.paper,
     //boxShadow: '0px 0px 12px 2px rgba(15, 15, 15, 0.281)',
-    boxShadow: '0px 0px 12px 2px rgba(15, 15, 15, 0.2)',
-    borderRadius: '6px',
-    padding: '17px 10px',
-    marginTop: '15px',
+    boxShadow: "0px 0px 12px 2px rgba(15, 15, 15, 0.2)",
+    borderRadius: "6px",
+    padding: "17px 10px",
+    marginTop: "15px",
   },
   createQuestion: {
-    display: 'center',
+    display: "center",
     //verticalAlign: 'text-top',
     //margin: '15px',
     //width: '100%',
@@ -107,251 +91,650 @@ const useStyles = (theme) => ({
     maxWidth: 450,
     backgroundColor: theme.palette.background.paper,
     //boxShadow: '0px 0px 12px 2px rgba(15, 15, 15, 0.281)',
-    boxShadow: '0px 0px 12px 2px rgba(15, 15, 15, 0.2)',
-    borderRadius: '6px',
-    padding: '17px 10px',
-    marginTop: '-25px',
-    marginBottom: '15px',
+    boxShadow: "0px 0px 12px 2px rgba(15, 15, 15, 0.2)",
+    borderRadius: "6px",
+    padding: "17px 10px",
+    marginTop: "-25px",
+    marginBottom: "15px",
   },
   gombok: {
-    padding: '2rem',
+    padding: "2rem",
   },
   formControl: {
-    float: 'left',
-    marginBottom: '10px',
-    marginLeft: '16px',
-  }
-});
+    float: "left",
+    marginBottom: "10px",
+    marginLeft: "16px",
+  },
+}));
 
-class QuestionBaseDashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-  componentDidMount(){
-  }
+function QuestionBaseDashboard() {
+  const classes = useStyles();
 
-  cancelCourse = () => { 
-    this.setState({
-      inputVal_1: ""
+  const [allTopicsForQuestions, setAllTopicsForQuestions] = useState([]);
+  const [allQuestions, setAllQuestions] = useState([]);
+  const [currentTopic, setCurrentTopic] = useState("");
+  const [selectBoxTopicValue, setSelectBoxTopicValue] = useState("");
+
+  const [inputTopic, setInputTopic] = useState("");
+  const [currentQuestion, setCurrentQuestion] = useState("");
+  const [point, setPoint] = useState("");
+  const [correctAns, setCorrectAns] = useState([]);
+  const [correctAnsValue, setCorrectAnsValue] = useState("");
+  const [allOherAns, setAllOherAns] = useState([]);
+  const [allOherBadAns, setAllOherBadAns] = useState([]);
+  const [badAns, setBadAns] = useState([]);
+  const [currentQuestionEdit, setCurrentQuestionEdit] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+  const [updatedId, setUpdateId] = useState(false);
+  const [src, setSrc] = useState("");
+
+  useEffect(() => {
+    getAllTopics();
+  }, []);
+
+  useEffect(() => {
+    getAllQuestionRelatedToTopic();
+    setCurrentQuestion("");
+  }, [currentTopic]);
+
+  const getValueOfTopic = (value) => {
+    setSelectBoxTopicValue(value);
+  };
+
+  const getOtherAns = (arr) => {
+    setAllOherAns(arr);
+  };
+  const getOtherBadAns = (arr) => {
+    setAllOherBadAns(arr);
+  };
+
+  const add = () => {
+    const otherAnserFilter = allOherAns.filter((obj) => {
+      return obj.questionOption !== "";
     });
+
+    let withoutObjAns = otherAnserFilter.map((v) => v.questionOption);
+    withoutObjAns.unshift(correctAnsValue);
+
+    const otherBadAnserFilter = allOherBadAns.filter((obj) => {
+      return obj.questionOption !== "";
+    });
+    let withoutObjBadAns = otherBadAnserFilter.map((v) => v.questionOption);
+    let requiredData = {
+      topicName: selectBoxTopicValue,
+      point,
+      question: currentQuestionEdit,
+      rightAnswer: withoutObjAns,
+      badAnswers: withoutObjBadAns,
+    };
+
+    let data = {
+      answers: requiredData.badAnswers,
+      isPicture: src ? true : false,
+      picture: src,
+      points: requiredData.point,
+      question: requiredData.question,
+      rightAnswer: requiredData.rightAnswer,
+      topicName: requiredData.topicName,
+      type: withoutObjAns.length > 1 ? 1 : 0,
+    };
+
+    for (var d in requiredData) {
+      if (
+        requiredData[d] == "" ||
+        withoutObjAns.length < 1 ||
+        requiredData[d] == null ||
+        requiredData[d] == undefined ||
+        requiredData[d] == false
+      ) {
+        swal("Warning!", `${camelCase(d)} field are empty`);
+        return;
+        break;
+      }
+    }
+
+    db.collection("questions")
+      .add(data)
+      .then((docRef) => {
+        swal("Good job!", "Question add succesfully", "success");
+        cencel();
+      })
+      .catch((error) => swal("Error", "Error adding question"));
+  };
+
+  const update = () => {
+    const otherAnserFilter = allOherAns.filter((obj) => {
+      return obj.questionOption !== "";
+    });
+
+    let withoutObjAns = otherAnserFilter.map((v) => v.questionOption);
+    withoutObjAns.unshift(correctAnsValue);
+    const otherBadAnserFilter = allOherBadAns.filter((obj) => {
+      return obj.questionOption !== "";
+    });
+
+    let withoutObjBadAns = otherBadAnserFilter.map((v) => v.questionOption);
+
+    let requiredData = {
+      topicName: selectBoxTopicValue,
+      point,
+      question: currentQuestionEdit,
+      rightAnswer: withoutObjAns,
+      badAnswers: withoutObjBadAns,
+    };
+
+    let data = {
+      answers: requiredData.badAnswers,
+      isPicture: src ? true : false,
+      picture: src,
+      points: requiredData.point,
+      question: requiredData.question,
+      rightAnswer: requiredData.rightAnswer,
+      topicName: requiredData.topicName,
+      type: withoutObjAns.length > 1 ? 1 : 0,
+    };
+
+    for (var d in requiredData) {
+      if (
+        requiredData[d] == "" ||
+        withoutObjAns.length < 1 ||
+        requiredData[d] == null ||
+        requiredData[d] == undefined ||
+        requiredData[d] == false
+      ) {
+        swal("Warning!", `${camelCase(d)} field are empty`);
+        return;
+        break;
+      }
+    }
+
+    db.collection("questions")
+      .doc(updatedId)
+      .update(data)
+      .then((docRef) => {
+        swal("Good job!", "Question Updated succesfully", "success");
+        cencel();
+      })
+      .catch((error) => swal("Error", "Error Updating question"));
+  };
+
+  const deleteQuestion = (id) => {
+    setAllQuestions(allQuestions.filter((item) => item.id !== id));
+    db.collection("questions").doc(id).delete();
+  };
+
+  const deleteTopic = (id, Topicname) => {
+    setAllQuestions(allTopicsForQuestions.filter((item) => item.id !== id));
+    db.collection("questions")
+      .where("topicName", "==", Topicname)
+      .onSnapshot((snapshot) => {
+        snapshot.docs.map((doc) => {
+          deleteQuestion(doc.id);
+        });
+      });
+    db.collection("topics").doc(id).delete();
+  };
+
+  const getAllTopics = () => {
+    db.collection("topics").onSnapshot((snapshot) => {
+      setAllTopicsForQuestions(
+        snapshot.docs.map((doc) => {
+          let data = doc.data();
+          data.id = doc.id;
+          return data;
+        })
+      );
+    });
+  };
+
+  const getAllQuestionRelatedToTopic = () => {
+    db.collection("questions")
+      .where("topicName", "==", currentTopic)
+      .onSnapshot((snapshot) => {
+        setAllQuestions(
+          snapshot.docs.map((doc) => {
+            let data = doc.data();
+
+            data.id = doc.id;
+            return data;
+          })
+        );
+      });
+  };
+
+  const cencel = () => {
+    setIsEdit(false);
+    setCurrentTopic("");
+    setSrc("");
+    setSelectBoxTopicValue("");
+    setPoint("");
+    setCurrentQuestion("");
+    setCorrectAnsValue("");
+    setCurrentQuestionEdit("");
+    setCorrectAns([]);
+    setBadAns([]);
+  };
+
+  const editQuestion = ({
+    question,
+    id,
+    topicName,
+    rightAnswer,
+    points,
+    answers,
+    picture,
+  }) => {
+    setIsEdit(true);
+    setSrc(picture ? picture : "");
+    setUpdateId(id);
+    setCurrentQuestion(question);
+    setCurrentQuestionEdit(question);
+    setCorrectAns(rightAnswer);
+    setBadAns(answers);
+    setCorrectAnsValue(rightAnswer[0]);
+    setPoint(points);
+    setCurrentTopic(topicName);
+  };
+
+  const onSelectFile = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => setSrc(reader.result));
+      reader.readAsDataURL(e.target.files[0]);
+
+      imageUpload(e.target.files[0]);
+    }
+  };
+
+  const imageUpload = (file) => {
+    firebase
+      .storage()
+      .ref()
+      .child(file.name)
+      .put(file)
+      .then((snapshot) => {
+        snapshot.ref.getDownloadURL().then((downloadURL) => {
+          console.log(downloadURL);
+        });
+      });
+
+    setSrc(null);
+  };
+
+  const blockInvalidChar = (e) =>
+    ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
+
+  function camelCase(camelCase) {
+    return camelCase
+      .replace(/([A-Z])/g, (match) => ` ${match}`)
+      .replace(/^./, (match) => match.toUpperCase());
   }
 
-  state = {
-    userInput: ''
-   }
-
-   onClick = () => {
-    this.setState({
-      userInput: 'Test'
-    })
-  }
-
-  render(){
-  
-
-    const { classes } = this.props;
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        <ResHeader />
-        <main>
-          {/* Hero unit */}
-          <div className={classes.heroContent}>
-            <Container maxWidth="sm">
-             {/*  <Typography component="h1" variant="h3" align="center" color="textPrimary" gutterBottom>
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <ResHeader />
+      <main>
+        {/* Hero unit */}
+        <div className={classes.heroContent}>
+          <Container maxWidth="sm">
+            {/*  <Typography component="h1" variant="h3" align="center" color="textPrimary" gutterBottom>
                  Kérdésbázis
               </Typography>*/}
-            </Container>
+          </Container>
 
-            <center>
-            
-      <div className={classes.createQuestion}>
-      <h1>Kérdés létrehozása</h1><Divider />
-  
-      <Container>
-      <DisplayTopics></DisplayTopics>
-      </Container>
-      <form className={classes.root} noValidate autoComplete="off">
-      
-      <TextField 
-          id="outlined-full-width"
-          label="Új kérdés létrehozása"
-          style={{ margin: 8 }}
-          placeholder="Kérem írja be a kérdést..."
-         // helperText="Full width!"
-         style ={{width: '91%'}}
-          multiline
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="outlined"
-        />
-        <TextField
-          id="outlined-full-width"
-          label="Helyes válasz megadása"
-          style={{ margin: 8 }}
-          placeholder="Kérem írja be a helyes választ..."
-         // helperText="Full width!"
-         style ={{width: '91%'}}
-          multiline
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="outlined"
-        />
-          {/* ide a valasz lehetosegeket hozzaado comp */}
-          <QuestionAddAnswer/> 
+          <center>
+            <div className={classes.createQuestion}>
+              <h1>Kérdések kezelése</h1>
+              <Divider />
 
-          {/*<input id="haha" value={this.state.userInput} name="sampleInput" />*/}
+              <Container
+                style={{
+                  display: "flex",
+                  marginLeft: 20,
 
-     {/* Elvetésre rányomva a módosítás gomb megjelenik és a hozzáadás is. Kérdések a ... témakörben-re rányomva pedig a módosítás és a hozzáadás eltűnik. */}
-    <div className={classes.gombok}>
-    <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue", margin: "2rem" }}>Ezzel a gombbal a kérdés létrehozása mezők törölhetők.</h1>}>
-    <Button variant="contained" onClick={this.cancelCourse}>Elvetés</Button>
-    </Tooltip>
-    <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Ezzel a gombbal a jelenleg betöltött kérdés módosítható.</h1>}>
-    <Button variant="contained" color="primary" style={{margin:"1rem"}} >Módosítás</Button>
-    </Tooltip>
-    <Tooltip title={<h1 style={{lineHeight:"1.5rem", fontSize:"15px", color: "lightblue" }}>Ezzel a gombbal a eegy új kérdés adható hozzá a kiválasztott témakorhöz.</h1>}>
-    <Button variant="contained" color="secondary">Hozzáadás</Button>
-    </Tooltip>
-    </div>
-       
+                  justifyContent: "space-between",
+                }}
+              >
+                {/* <DisplayTopics
+                  getValueOfTopic={getValueOfTopic}
+                  defaultValue={isEdit ? currentTopic : ""}
+                /> */}
+                <DisplayTopicsWithDialog
+                  getValueOfTopic={getValueOfTopic}
+                  defaultValue={isEdit ? currentTopic : ""}
+                />
 
-  {/*><TextField id="filled-basic" label="Filled" variant="filled" />
+                <label for="uploadBtn">
+                  <div
+                    style={{
+                      width: 100,
+                      height: 40,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "20px",
+                      backgroundColor: "#1c2442",
+                      color: "#fff",
+                      cursor: "pointer",
+                      margin: "20px 20px",
+                    }}
+                  >
+                    Kép feltöltés
+                  </div>
+
+                  <input
+                    id="uploadBtn"
+                    style={{ display: "none" }}
+                    onChange={(e) => onSelectFile(e)}
+                    type="file"
+                    accept="image/png,image/jpeg,image/jpg"
+                  />
+                </label>
+              </Container>
+
+              <form className={classes.root} noValidate autoComplete="off">
+                <TextField
+                  id="outlined-full-width"
+                  label="Pontszám meghatározása"
+                  style={{ margin: 8, width: "91%" }}
+                  InputProps={{ inputProps: { min: 0, max: 20 } }}
+                  type="number"
+                  onKeyDown={blockInvalidChar}
+                  value={point}
+                  onChange={(e) => setPoint(e.target.value)}
+                  placeholder="Kérem adja meg a kívánt pontszámot a kérdéshez..."
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+                <TextField
+                  id="outlined-full-width"
+                  label="Új kérdés létrehozása"
+                  style={{ margin: 8 }}
+                  value={currentQuestionEdit}
+                  onChange={(e) => setCurrentQuestionEdit(e.target.value)}
+                  placeholder="Kérem adjon meg egy kérdést ..."
+                  // helperText="Full width!"
+                  style={{ width: "91%" }}
+                  multiline
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+
+                {src && (
+                  <img
+                    style={{ width: "80%", height: "auto", margin: "30px 0" }}
+                    src={src}
+                    alt="image"
+                  />
+                )}
+
+                <TextField
+                  id="outlined-full-width"
+                  label="Helyes válasz megadása"
+                  value={correctAnsValue}
+                  onChange={(e) => {
+                    setCorrectAnsValue(e.target.value);
+                  }}
+                  style={{ margin: 8 }}
+                  placeholder="Kérem adja meg a helyes választ..."
+                  // helperText="Full width!"
+                  style={{ width: "91%" }}
+                  multiline
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+                {/* ide a valasz lehetosegeket hozzaado comp */}
+                <QuestionAddAnswer
+                  getOtherAns={getOtherAns}
+                  otherCurrentAns={correctAns}
+                  title="Több helyes válasz megadása"
+                />
+
+                <QuestionAddAnswer
+                  getOtherAns={getOtherBadAns}
+                  otherCurrentAns={badAns}
+                  title="Rossz válasz megadása"
+                  badAnswer
+                />
+
+                {/*<input id="haha" value={this.state.userInput} name="sampleInput" />*/}
+
+                {/* Elvetésre rányomva a módosítás gomb megjelenik és a hozzáadás is. Kérdések a ... témakörben-re rányomva pedig a módosítás és a hozzáadás eltűnik. */}
+                <div className={classes.gombok}>
+                  <Tooltip
+                    title={
+                      <h1
+                        style={{
+                          lineHeight: "1.5rem",
+                          fontSize: "15px",
+                          color: "lightblue",
+                          margin: "2rem",
+                        }}
+                      >
+                        Jelenleg betöltött mezők elvetése. Az adott kérdést nem törli!
+                      </h1>
+                    }
+                  >
+                    <Button onClick={cencel} variant="contained">
+                      Elvetés
+                    </Button>
+                  </Tooltip>
+                  {isEdit ? (
+                    <Tooltip
+                      title={
+                        <h1
+                          style={{
+                            lineHeight: "1.5rem",
+                            fontSize: "15px",
+                            color: "lightblue",
+                          }}
+                        >
+                          A jelenleg betöltött kérdés felülírása. Nem vesz fel új kérdést, csupán a jelenlegit módosítja.
+                        </h1>
+                      }
+                    >
+                      <Button
+                        onClick={update}
+                        variant="contained"
+                        color="primary"
+                        style={{ margin: "1rem" }}
+                      >
+                        Módosítás
+                      </Button>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip
+                      title={
+                        <h1
+                          style={{
+                            lineHeight: "1.5rem",
+                            fontSize: "15px",
+                            color: "lightblue",
+                          }}
+                        >
+                          Új kérdés hozzáadása, a beállított témakörrel és válaszokkal, képpel.
+                        </h1>
+                      }
+                    >
+                      <Button
+                        onClick={add}
+                        style={{ marginLeft: 10 }}
+                        variant="contained"
+                        color="secondary"
+                      >
+                        Hozzáadás
+                      </Button>
+                    </Tooltip>
+                  )}
+                </div>
+
+                {/*><TextField id="filled-basic" label="Filled" variant="filled" />
   <TextField id="outlined-basic" label="Outlined" variant="outlined" />*/}
-  </form>
-      </div>
-            
-      <div className={classes.themeQuestions}>
-      
-      
-      <h1>Témakörök a kérdésekhez</h1>
-      {/*<SearchField placeholder='Keresés a témakörök között...' />*/}
+              </form>
+            </div>
 
-      <Autocomplete
-        freeSolo
-        id="free-solo-2-demo"
-        disableClearable
-        options={temakorok.map((option) => option.title)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Keresés a témakörök között..."
-            margin="normal"
-            variant="outlined"
-            InputProps={{ ...params.InputProps, type: 'search',  endAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-             ) }}
-            />
-            )}
-          />
+            <div className={classes.themeQuestions}>
+              <h1>Témakörök</h1>
+              {/*<SearchField placeholder='Keresés a témakörök között...' />*/}
 
-      <Divider />
-      <List component="nav" aria-label="secondary mailbox folders"> 
-        <ListItem button> {/*  simple button */}
-        
-          <ListItemText primary="Térelemek ábrázolása" />
-        </ListItem>
-        <ListItemLink href="#simple-list">    
-          <ListItemText primary="Síklapú testek vetületi ábrázolása" /> 
-        </ListItemLink>
-        <ListItem button>
-          <ListItemText primary="Forgástestek vetületi ábrázolása" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Áthatások/Vetítési. Rajzi egyszerűsítések" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Metszeti ábrázolás" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Méretmegadás műszaki rajzokon" />
-        </ListItem>
-      </List>
+              <Autocomplete
+                freeSolo
+                id="free-solo-2-demo"
+                disableClearable
+                inputValue={currentTopic}
+                options={
+                  allTopicsForQuestions.length > 0
+                    ? allTopicsForQuestions.map((option) => option.Topicname)
+                    : []
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Témakörök keresése ..."
+                    margin="normal"
+                    onChange={(e) => setCurrentTopic(e.target.value)}
+                    variant="outlined"
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                      endAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
+              />
 
-    </div>
-   
-    
+              <Divider />
+              <List component="nav" aria-label="secondary mailbox folders">
+                {allTopicsForQuestions.length > 0 ? (
+                  allTopicsForQuestions.map(
+                    ({ Topicname, id, Description }, index) => (
+                      <Tooltip
+                        style={{ cursor: "pointer" }}
+                        title={Description ? Description : "Nincs leírás"}
+                      >
+                        <ListItem key={id}>
+                          <ListItemText primary={Topicname} />
+                          <IconButton
+                            onClick={() => setCurrentTopic(Topicname)}
+                            edge="end"
+                            aria-label="delete"
+                          >
+                            <ArrowForwardIosIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => deleteTopic(id, Topicname)}
+                            edge="end"
+                            aria-label="delete"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItem>
+                      </Tooltip>
+                    )
+                  )
+                ) : (
+                  <Skeleton height={34} count={5} />
+                )}
+              </List>
+            </div>
 
-    <div className={classes.themeQuestions}>
-    
-      <h1>Kérdések keresése témakörben</h1>
+            <div className={classes.themeQuestions}>
+              <h1>Kérdések a témakörökben</h1>
 
-      <Autocomplete
-        freeSolo
-        id="free-solo-2-demo"
-        disableClearable
-        options={kerdesek.map((option) => option.title)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Keresés a kérdések között..."
-            margin="normal"
-            variant="outlined"
-            
-            InputProps={{ ...params.InputProps, type: 'search',  endAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-             ) }}
-            />
-            )}
-          />
-        
-     
-    
+              <Autocomplete
+                freeSolo
+                id="free-solo-2-demo"
+                disableClearable
+                inputValue={currentQuestion}
+                options={allQuestions.map((option) => option.question)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Kérdések keresése ..."
+                    margin="normal"
+                    variant="outlined"
+                    onChange={(e) => setCurrentQuestion(e.target.value)}
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                      endAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
+              />
 
-
-      <Divider />
-    <List component="nav" aria-label="secondary mailbox folders">  
-          <ListItem button > {/*  simple button */}
-          <ListItemText primary="Elso kerdes" />
-          </ListItem>
-          <ListItem button> {/*  simple button */}
-          <ListItemText primary="Masodik kerdes" />
-          </ListItem>
-          <ListItem button> {/*  simple button */}
-          <ListItemText primary="Harmadik kerdes" />
-          </ListItem>
-          <ListItem button> {/*  simple button */}
-          <ListItemText primary="Negyedik kerdes" />
-          </ListItem>
-          <ListItem button> 
-          <ListItemText primary="Otodik kerdes" />
-          </ListItem>
-          <ListItem button> 
-          <ListItemText primary="Hatodik kerdes.." />
-          </ListItem>
-    </List>
-    </div>
-
-    </center>
- 
-
-      </div>
-        </main>
-        {/* Footer */}
-        <footer className={classes.footer}>
-         {/* <Typography variant="h6" align="center" gutterBottom>
+              <Divider />
+              <List component="nav" aria-label="secondary mailbox folders">
+                {allQuestions.length > 0 ? (
+                  allQuestions.map((item, index) => (
+                    <ListItem key={item.id}>
+                      <ListItemText primary={item.question} />
+                      <IconButton
+                        onClick={() => editQuestion(item)}
+                        edge="end"
+                        aria-label="delete"
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => deleteQuestion(item.id)}
+                        edge="end"
+                        aria-label="delete"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItem>
+                  ))
+                ) : (
+                  <Skeleton height={34} count={5} />
+                )}
+              </List>
+            </div>
+          </center>
+        </div>
+      </main>
+      {/* Footer */}
+      <footer className={classes.footer}>
+        {/* <Typography variant="h6" align="center" gutterBottom>
             SZEMA
           </Typography>*/}
-          <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-              <strong>SZEMA - </strong>Széchenyi István Egyetem
-          </Typography>
-          <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-              Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089 
-          </Typography>
-        </footer>
-        {/* End footer */}
-      </React.Fragment>
-    );
-  }
+        <Typography
+          variant="subtitle1"
+          align="center"
+          color="textSecondary"
+          component="p"
+        >
+          <strong>SZEMA - </strong>Széchenyi István Egyetem
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          align="center"
+          color="textSecondary"
+          component="p"
+        >
+          Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089
+        </Typography>
+      </footer>
+      {/* End footer */}
+    </React.Fragment>
+  );
 }
 export default withStyles(useStyles)(QuestionBaseDashboard);
