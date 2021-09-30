@@ -20,14 +20,14 @@ export default function FreeSoloCreateOptionDialog({
 
   const [value, setValue] = useState({
     Topicname: "",
-    description: "",
+    Description: "",
     Createdby: "",
   });
   const [open, toggleOpen] = useState(false);
   const [info, setInfo] = useState([]);
   const [dialogValue, setDialogValue] = useState({
     Topicname: "",
-    description: "",
+    Description: "",
     Createdby: "",
   });
 
@@ -69,7 +69,7 @@ export default function FreeSoloCreateOptionDialog({
   const handleClose = () => {
     setDialogValue({
       Topicname: "",
-      description: "",
+      Description: "",
     });
 
     toggleOpen(false);
@@ -100,14 +100,14 @@ export default function FreeSoloCreateOptionDialog({
               toggleOpen(true);
               setDialogValue({
                 Topicname: newValue,
-                description: "",
+                Description: "",
               });
             });
           } else if (newValue && newValue.inputValue) {
             toggleOpen(true);
             setDialogValue({
               Topicname: newValue.inputValue,
-              description: "",
+              Description: "",
             });
           } else {
             setValue(newValue);
@@ -172,11 +172,11 @@ export default function FreeSoloCreateOptionDialog({
             <TextField
               margin="dense"
               id="name"
-              value={dialogValue.description}
+              value={dialogValue.Description}
               onChange={(event) =>
                 setDialogValue({
                   ...dialogValue,
-                  description: event.target.value,
+                  Description: event.target.value,
                 })
               }
               label="Témakör leírása"
@@ -197,6 +197,6 @@ export default function FreeSoloCreateOptionDialog({
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 const top100Films = [
-  { Topicname: "The Shawshank Redemption", description: 1994 },
-  { Topicname: "The Godfather", description: 1972 },
+  { Topicname: "The Shawshank Redemption", Description: 1994 },
+  { Topicname: "The Godfather", Description: 1972 },
 ];
