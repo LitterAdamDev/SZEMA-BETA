@@ -21,7 +21,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm i
- Firebase deploy:
+ Firebase-deploy:
     needs: [APP-CI]
     if: success()
     runs-on: ubuntu-latest
