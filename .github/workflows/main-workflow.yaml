@@ -24,7 +24,7 @@ jobs:
     - run: npm run build
     build_and_preview:
     needs: [APP-CI]
-    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+    if: success()
     name: Firebase build and preview on PR
     runs-on: ubuntu-latest
     steps:
