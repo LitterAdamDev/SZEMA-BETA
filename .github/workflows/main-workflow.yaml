@@ -22,9 +22,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm i
     - run: npm run build
-    build_and_preview:
+  build_and_preview:
     needs: [APP-CI]
-    if: success()
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     name: Firebase build and preview on PR
     runs-on: ubuntu-latest
     steps:
@@ -34,7 +34,7 @@ jobs:
         repoToken: '${{ secrets.GITHUB_TOKEN }}'
         firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SZEMA_BETA }}'
         projectId: szema-beta
-    build_and_deploy:
+  build_and_deploy:
     needs: [APP-CI]
     if: success()
     name: Firebase build and deploy
