@@ -21,16 +21,17 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm i
- build_and_deploy:
+    - run: npm run build
+  build_and_deploy:
     needs: [APP-CI]
     if: success()
     name: Firebase build and hosting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SZEMA_BETA }}'
-          channelId: live
-          projectId: szema-beta
+    - uses: actions/checkout@v2
+    - uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        repoToken: '${{ secrets.GITHUB_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SZEMA_BETA }}'
+         channelId: live
+         projectId: szema-beta
