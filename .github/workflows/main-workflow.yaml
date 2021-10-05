@@ -26,7 +26,6 @@ jobs:
     needs: [APP-CI]
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     name: Firebase build and preview on PR
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: FirebaseExtended/action-hosting-deploy@v0
