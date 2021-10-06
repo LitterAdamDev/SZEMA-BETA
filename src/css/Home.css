@@ -10,6 +10,8 @@
     color:white !important;
     background-color: #1c2442;
     box-sizing: border-box;
+    border: 3px solid #ffffff;
+    border-radius: 25px;
     padding: 0.5vw
 }
 .main-button{
