@@ -18,7 +18,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-
+import CircularProgress from "@mui/material/CircularProgress";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -113,9 +113,9 @@ function QuestionBaseDashboard() {
   const [allTopicsForQuestions, setAllTopicsForQuestions] = useState([]);
   const [allQuestions, setAllQuestions] = useState([]);
   const [currentTopic, setCurrentTopic] = useState("");
+  const [currentTopicInputValue, setCurrentTopicInputValue] = useState("");
   const [selectBoxTopicValue, setSelectBoxTopicValue] = useState("");
 
-  const [inputTopic, setInputTopic] = useState("");
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [point, setPoint] = useState("");
   const [correctAns, setCorrectAns] = useState([]);
@@ -127,6 +127,7 @@ function QuestionBaseDashboard() {
   const [isEdit, setIsEdit] = useState(false);
   const [updatedId, setUpdateId] = useState(false);
   const [src, setSrc] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getAllTopics();
@@ -307,6 +308,7 @@ function QuestionBaseDashboard() {
   const cencel = () => {
     setIsEdit(false);
     setCurrentTopic("");
+    setCurrentTopicInputValue("");
     setSrc("");
     setSelectBoxTopicValue("");
     setPoint("");
@@ -326,6 +328,7 @@ function QuestionBaseDashboard() {
     picture,
   }) => {
     setIsEdit(true);
+    setLoading(false);
     setSrc(picture ? picture : "");
     setUpdateId(id);
     setCurrentQuestion(question);
@@ -334,12 +337,13 @@ function QuestionBaseDashboard() {
     setBadAns(answers);
     setPoint(points);
     setCurrentTopic(topicName);
+    setCurrentTopicInputValue(setCurrentTopicInputValue);
   };
 
   const onSelectFile = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
-      reader.addEventListener("load", () => setSrc(reader.result));
+      //reader.addEventListener("load", () => setSrc(reader.result));
       reader.readAsDataURL(e.target.files[0]);
 
       imageUpload(e.target.files[0]);
@@ -347,14 +351,19 @@ function QuestionBaseDashboard() {
   };
 
   const imageUpload = (file) => {
+    setLoading(true);
+    console.log(file);
     firebase
       .storage()
       .ref()
+      .child(file.name)
       .child(file.name + Math.random())
       .put(file)
       .then((snapshot) => {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
           console.log(downloadURL);
+          setSrc(downloadURL);
+          setLoading(false);
         });
       });
 
@@ -423,10 +432,10 @@ function QuestionBaseDashboard() {
                 /> */}
                 <DisplayTopicsWithDialog
                   getValueOfTopic={getValueOfTopic}
-                  defaultValue={isEdit ? currentTopic : ""}
+                  defaultValue={currentTopic}
                 />
 
-                <label for="uploadBtn">
+                  <label for="file-input-id">
                   <div
                     style={{
                       width: 100,
@@ -441,13 +450,18 @@ function QuestionBaseDashboard() {
                       margin: "20px 20px",
                     }}
                   >
-                    Kép feltöltés
+                    {!loading ? (
+                      "Kép feltöltés"
+                    ) : (
+                      <CircularProgress size={30} color="warning" />
+                    )}
                   </div>
 
                   <input
-                    id="uploadBtn"
+                    id="file-input-id"
+                    onClick={(e) => (e.target.value = "")}
                     style={{ display: "none" }}
-                    onChange={(e) => onSelectFile(e)}
+                    onInputCapture={(e) => onSelectFile(e)}
                     type="file"
                     accept="image/png,image/jpeg,image/jpg"
                   />
