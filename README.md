@@ -1,2 +1,2 @@
 ## SZEMA Web application
-Firebase hosting domain: https://szema-beta.firebaseapp.com/
+Firebase hosting domain: https://szema-beta.web.app/
