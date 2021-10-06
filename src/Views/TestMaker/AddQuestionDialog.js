@@ -78,16 +78,21 @@ const classes = useStyles();
         fullScreen
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">
+        <DialogTitle id="responsive-dialog-title" style={{backgroundColor: "#1c2442", color: "#ffffff"}}>
             Kérdés hozzáadás
         </DialogTitle>
-        <DialogContent>
+        <DialogContent className="question-add-dialog-content">
         <DialogContentText>
           {questionSET.length === 0 && 'Nincsenek felhasználatlan kérdések.'}
         </DialogContentText>
-        <ActionsInAccordionSummary dataset={questionSET} action={setQuestion}/>
+        <div className="question-filters">
+
+        </div>
+        <div className="question-picker">
+          <ActionsInAccordionSummary dataset={questionSET} action={setQuestion}/>
+        </div>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{backgroundColor: "#1c2442", color: "#ffffff"}}>
           <Button autoFocus onClick={handleClose} color="inherit">
             Mégsem
           </Button>

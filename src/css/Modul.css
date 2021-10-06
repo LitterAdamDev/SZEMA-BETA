@@ -78,3 +78,31 @@
     justify-content: center;
     align-items: center;
 }
+.question-picker{
+    width: 100%;
+    height: 60vh;
+    overflow: scroll;
+    overflow-x: unset;
+    border: 1px solid black;
+    background-color: #5c606e;
+    border-radius: 5px;
+}
+.question-add-dialog-content{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    background-color: #a9acb8;
+}
+.question-filters{
+    display: flex;
+    width: 100%;
+    height: 40vh;
+    border: 1px solid black;
+    background-color: #5c606e;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin-top: 140px;
+}
