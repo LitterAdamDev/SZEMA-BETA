@@ -103,7 +103,7 @@ const classes = useStyles();
   }
   return (
       <>
-      <input type="button" className="add-modul-btn" value="+" onClick={handleClickOpen}/>
+      <input type="button" className="add-question-btn" value="ÚJ KÉRDÉS" onClick={handleClickOpen}/>
       <Dialog
         open={open}
         onClose={handleClose}
