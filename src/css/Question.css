@@ -84,15 +84,17 @@
 .question-footer{
     width:100%;
 }
+
 .add-question-btn{
     width:100%;
     border-radius: 0%;
     color: #a9acb8;
-    background-color: #1c2442;
+    background-color: #454850;
+    border: 1px solid black;
 }
 .add-question-btn:hover{
     width:100%;
     border-radius: 0%;
     color: #ffffff;
-    background-color: #00abc9;
+    background-color: #00d6fc;
 }
