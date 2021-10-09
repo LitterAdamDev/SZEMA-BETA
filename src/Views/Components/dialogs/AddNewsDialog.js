@@ -88,12 +88,22 @@ export default function AddNewsDialog({action,title}) {
           </Toolbar>
         </AppBar>
             <div class="news-dialog-fullwidth">
+              <div 
+                style={{
+                  fontWeight: 900,
+                  fontSize: "6vh",
+                  paddingTop: "6vh"
+                }}
+              >
+                Ikon kiválasztása
+              </div>
               <div class="news-dialog-iconpicker">
                   <ImageSelector path="post_icons" action={handleIconChange}/>
               </div>
             </div>
             <div class="news-dialog-fullwidth">
                   <textarea 
+                    style={{resize: 'none'}}
                     class="news-dialog-textarea"
                     placeholder="Tartalom"
                     onChange={handleMessageChange}

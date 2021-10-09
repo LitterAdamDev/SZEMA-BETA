@@ -5,15 +5,15 @@
     margin:0;
     background-color: #bec1ca;
 }
-body::-webkit-scrollbar,div::-webkit-scrollbar {
+body::-webkit-scrollbar, div::-webkit-scrollbar, textarea::-webkit-scrollbar {
     width: .5em !important;
 }
 
-body::-webkit-scrollbar-track,div::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track, div::-webkit-scrollbar-track, textarea::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) !important;
 }
 
-body::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb {
     background-color: rgb(61, 58, 58) !important;
     outline: 1px solid rgb(0, 0, 0) !important;
 }

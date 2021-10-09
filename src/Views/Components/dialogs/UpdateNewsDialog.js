@@ -103,7 +103,8 @@ export default function UpdateNewsDialog({action, toUpdate, title}) {
             </div>
           </div>
           <div class="news-dialog-fullwidth">
-                <textarea 
+                <textarea  
+                  style={{resize: 'none'}}
                   class="news-dialog-textarea"
                   placeholder="Tartalom"
                   onChange={handleMessageChange}
