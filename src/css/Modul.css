@@ -80,7 +80,8 @@
 }
 .question-picker{
     width: 100%;
-    height: 60vh;
+    max-height: 30vh;
+    max-height: 60vh;
     overflow: scroll;
     overflow-x: unset;
     border: 1px solid black;
@@ -99,10 +100,11 @@
 .question-filters{
     display: flex;
     width: 100%;
-    height: 40vh;
     border: 1px solid black;
-    background-color: #5c606e;
     border-radius: 5px;
+    background-color: rgb(92, 96, 110);
     margin-bottom: 10px;
-    margin-top: 140px;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-between;
 }

@@ -48,7 +48,7 @@ export default class Modul extends React.Component {
                     if (str === ''){
                         str = question.id
                     }else{
-                        str = str + ':' + question
+                        str = str + ':' + question.id
                     }
                 }else{
                     if (str === ''){

@@ -24,6 +24,9 @@ export default function ActionsInAccordionSummary({dataset,action}) {
     setQuestions(dataset)
     action('')
   },[]);
+  useEffect(() => {
+    setQuestions(dataset)
+  },[dataset]);
 
   const handleChange = (event) =>{
     let id = event.target.id

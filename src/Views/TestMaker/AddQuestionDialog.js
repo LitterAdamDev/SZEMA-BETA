@@ -8,10 +8,17 @@ import "firebase/auth";
 import { makeStyles } from '@material-ui/core/styles';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import ActionsInAccordionSummary from './ActionsInAccordionSummary'
+import TextField from '@material-ui/core/TextField';
+import Select from 'react-select'
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
+      '& > *': {
+      margin: theme.spacing(1),
+      width: '25ch',
+      backgroundColor: "white",
+    },
       flexGrow: 1,
     },
     menuButton: {
@@ -30,11 +37,15 @@ export default function AddQuestionDialog({zerotype,action,questions,usedIDs}) {
 const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [questionSET, setQuestionSET] = React.useState([]);
-  const [question, setQuestion] = React.useState('')
+  const [question, setQuestion] = React.useState('');
+  const [topics, setTopics] = React.useState(['Összes']);
+  const [topicFilter, setTopicFilter] = React.useState('Összes');
+  const [filteredQuestions,setFilteredQuestions] = React.useState([]);
 
   const handleClickOpen = (event) => {
     event.preventDefault()
     var tmp = [] 
+    var topicNames = ['Összes']
     if(zerotype){
       questions.map((question)=>{
         if(!usedIDs.includes(question.id)){
@@ -48,9 +59,33 @@ const classes = useStyles();
         }
       })
     }
+    questions.map((question)=>{
+      if(question && question.topicName){
+        if(!topicNames.includes(question.topicName)){
+          topicNames.push(question.topicName)
+        }
+      }
+    })
     setQuestionSET(tmp)
+    setFilteredQuestions(tmp)
+    setTopics(topicNames)
     setOpen(true);
   };
+  const handleFilters = (newValue, actionMeta)=>{
+    setTopicFilter(newValue.value)
+    let tmp = []
+    if(newValue.value === 'Összes'){
+      setFilteredQuestions(questionSET)
+    }else{
+      questionSET && questionSET.map((question)=>{
+        if(question && question.topicName){
+          if(!usedIDs.includes(question.id) && question.topicName === newValue.value)
+          tmp.push(question)
+        }
+      })
+      setFilteredQuestions(tmp)
+    }
+  }
   const handleClose = () => {
     setOpen(false);
   };
@@ -66,9 +101,6 @@ const classes = useStyles();
       setOpen(false);
     }
   }
-  useEffect(() => {
-    
-  },[]);
   return (
       <>
       <input type="button" className="add-modul-btn" value="+" onClick={handleClickOpen}/>
@@ -86,10 +118,17 @@ const classes = useStyles();
           {questionSET.length === 0 && 'Nincsenek felhasználatlan kérdések.'}
         </DialogContentText>
         <div className="question-filters">
-
+          <Select 
+            id="test-select"
+            style={{width: "100%"}}
+            placeholder="Témakör kiválasztása..."
+            options={topics && topics.map((topic)=>{return {label: topic, value : topic}})}
+            onChange={handleFilters}
+            value={{label:topicFilter, value:topicFilter}}
+          />
         </div>
         <div className="question-picker">
-          <ActionsInAccordionSummary dataset={questionSET} action={setQuestion}/>
+          <ActionsInAccordionSummary dataset={filteredQuestions} action={setQuestion}/>
         </div>
         </DialogContent>
         <DialogActions style={{backgroundColor: "#1c2442", color: "#ffffff"}}>

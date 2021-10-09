@@ -94,8 +94,9 @@ export default class Question extends React.Component {
                                     return question
                                 }
                             })
-                            
                         } 
+                        usedIDs={this.props.IDs}
+                        zerotype={false}
                         action={this.handleAddQuestion}/>
                 </div>
             </div>
