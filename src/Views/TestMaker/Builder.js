@@ -24,7 +24,7 @@ function Copyright() {
       {' Minden jog fenntartva!'}
       </Link>{' '}
     </Typography>
-  );
+    );
 }
 
 const useStyles = makeStyles((theme) => ({

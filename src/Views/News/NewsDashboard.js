@@ -28,6 +28,7 @@ const useStyles = (theme) => ({
     backgroundColor: 'white',
     padding: theme.spacing(8, 0, 6),
     height : "100vh",
+    
   },
   cardGrid: {
     paddingTop: theme.spacing(8),
@@ -47,6 +48,7 @@ const useStyles = (theme) => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(2),
+    backgroundColor: "#1c2442",
   },
 });
 
@@ -151,6 +153,17 @@ class NewsDashboard extends React.Component {
             </Grid>
           </Container>
           </div>
+          <footer className={classes.footer} style={{color: "red"}}>
+        <Typography
+          variant="subtitle1"
+          align="center"
+          color="textSecondary"
+          component="p">
+          <div className="footer-text" style={{color: "white"}}>
+          <strong>SZEMA - </strong>Széchenyi István Egyetem
+          </div>
+        </Typography>
+      </footer>
         </main>
       </React.Fragment>
     );

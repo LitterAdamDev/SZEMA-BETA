@@ -54,6 +54,11 @@ const useStyles = (theme) => ({
   cardContent: {
     flexGrow: 1,
   },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(2),
+    backgroundColor: "#1c2442",
+  },
 });
 
 class CreateTestDashboard extends React.Component {
@@ -165,6 +170,17 @@ class CreateTestDashboard extends React.Component {
               Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089 
           </Typography>
         </footer>*/}
+        <footer className={classes.footer} style={{color: "red"}}>
+        <Typography
+          variant="subtitle1"
+          align="center"
+          color="textSecondary"
+          component="p">
+          <div className="footer-text" style={{color: "white"}}>
+          <strong>SZEMA - </strong>Széchenyi István Egyetem
+          </div>
+        </Typography>
+      </footer>
       </React.Fragment>
     );
   }
