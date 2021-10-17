@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   heroContent: {
     padding: theme.spacing(8, 0, 6),
+    backgroundColor: "#bec1ca",
   },
   heroButtons: {
     marginTop: theme.spacing(4),
@@ -67,7 +68,8 @@ const useStyles = makeStyles((theme) => ({
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
+    padding: theme.spacing(2),
+    backgroundColor: "#1c2442",
   },
   themeQuestions: {
     display: "inline-block",
@@ -744,16 +746,18 @@ function QuestionBaseDashboard() {
           color="textSecondary"
           component="p"
         >
+          <div className="footer-text" style={{color: "white"}}>
           <strong>SZEMA - </strong>Széchenyi István Egyetem
+          </div>
         </Typography>
-        <Typography
+        {/* <Typography
           variant="subtitle1"
           align="center"
           color="textSecondary"
           component="p"
         >
           Biró István - istvanbiro.bwe@gmail.com - 06-30-403-9089
-        </Typography>
+        </Typography> */}
       </footer>
       {/* End footer */}
     </React.Fragment>
