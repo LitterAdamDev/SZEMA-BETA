@@ -638,7 +638,7 @@ function QuestionBaseDashboard() {
               />
 
               <Divider />
-              <List component="nav" aria-label="secondary mailbox folders">
+              <List component="nav" aria-label="secondary mailbox folders" style={{maxHeight: '20vw', overflow: 'auto'}}>
                 {allTopicsForQuestions.length > 0 ? (
                   allTopicsForQuestions.map(
                     ({ Topicname, id, Description }, index) => (
@@ -702,7 +702,7 @@ function QuestionBaseDashboard() {
               />
 
               <Divider />
-              <List component="nav" aria-label="secondary mailbox folders">
+              <List component="nav" aria-label="secondary mailbox folders" style={{maxHeight: '20vw', overflow: 'auto'}}>
                 {allQuestions.length > 0 ? (
                   allQuestions.map((item, index) => (
                     <ListItem key={item.id}>
