@@ -264,12 +264,16 @@ function QuestionBaseDashboard() {
   };
 
   const deleteQuestion = (id) => {
+    if(window.confirm("Biztosan törli a kérdést?")){
     setAllQuestions(allQuestions.filter((item) => item.id !== id));
     db.collection("questions").doc(id).delete();
+    }
+    window.location.reload();
   };
 
   const deleteTopic = (id, Topicname) => {
-    setAllQuestions(allTopicsForQuestions.filter((item) => item.id !== id));
+    if(window.confirm("Biztosan törli a témakört?")){
+      setAllQuestions(allTopicsForQuestions.filter((item) => item.id !== id));
     db.collection("questions")
       .where("topicName", "==", Topicname)
       .onSnapshot((snapshot) => {
@@ -278,6 +282,7 @@ function QuestionBaseDashboard() {
         });
       });
     db.collection("topics").doc(id).delete();
+    } 
   };
 
   const getAllTopics = () => {
