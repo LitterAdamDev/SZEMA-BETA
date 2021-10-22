@@ -267,8 +267,8 @@ function QuestionBaseDashboard() {
     if(window.confirm("Biztosan törli a kérdést?")){
     setAllQuestions(allQuestions.filter((item) => item.id !== id));
     db.collection("questions").doc(id).delete();
-    }
     window.location.reload();
+    }
   };
 
   const deleteTopic = (id, Topicname) => {
