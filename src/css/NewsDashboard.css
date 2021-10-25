@@ -31,12 +31,13 @@ body{
     display: flex;
     width: 100%;
     flex-wrap: nowrap;
+    box-sizing: border-box;
+    padding-top: 2vw;
     justify-content: center;
     align-items: center;
     align-content: center;
     padding-bottom: 2vw;
     box-sizing: border-box;
-    height: 50vh;
     background-color: #a9acb8;
     flex-direction: column;
 }

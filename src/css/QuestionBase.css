@@ -76,11 +76,11 @@
 } 
 .answer-handler{
     width: 20%;
-    overflow: hidden;
+    overflow: auto;
 }
 .answer-content, .answer-type{
     width: 30%;
-    overflow: hidden;
+    overflow: auto;
 }
 .answer-counters{
     width: 20%;

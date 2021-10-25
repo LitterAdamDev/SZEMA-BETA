@@ -72,7 +72,7 @@ export default function UpdateNewsDialog({action, toUpdate, title}) {
         <EditIcon style={{ color: '#1c2442'}}/>
       </Button>
       </Tooltip>
-      <Dialog fullScreen open={open} style={{zIndex: "10000"}} onClose={handleClose} TransitionComponent={Transition}>
+      <Dialog open={open} style={{zIndex: "10000"}} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" style={{color: "#ffffff"}} onClick={handleClose} aria-label="close">
@@ -107,6 +107,7 @@ export default function UpdateNewsDialog({action, toUpdate, title}) {
                   style={{resize: 'none'}}
                   class="news-dialog-textarea"
                   placeholder="Tartalom"
+                  rows="10"
                   onChange={handleMessageChange}
                   value={message}
                 />

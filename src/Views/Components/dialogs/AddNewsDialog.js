@@ -65,7 +65,7 @@ export default function AddNewsDialog({action,title}) {
         Új hír létrehozása
       </Button>
       </Tooltip>
-      <Dialog fullScreen open={open} onClose={handleClose} style={{zIndex: "10000"}} TransitionComponent={Transition}>
+      <Dialog open={open} onClose={handleClose} style={{zIndex: "10000", height: "100vh"}} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
@@ -106,6 +106,7 @@ export default function AddNewsDialog({action,title}) {
                     style={{resize: 'none'}}
                     class="news-dialog-textarea"
                     placeholder="Tartalom"
+                    rows="10"
                     onChange={handleMessageChange}
                     value={message}
                   />

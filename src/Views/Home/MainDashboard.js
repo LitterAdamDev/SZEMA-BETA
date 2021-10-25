@@ -136,7 +136,7 @@ class CreateTestDashboard extends React.Component {
             <Container className={classes.cardGrid} maxWidth="md">
               <Grid container spacing={4}>
               {this.state.cards_array.map((card) => (
-                <Grid item key={card["id"]} xs={12} sm={6} md={4}>
+                <Grid item key={card["id"]} xs={12} sm={12} md={4}>
                   <Card className={classes.card}>
                     <CardMedia
                       className={classes.cardMedia}

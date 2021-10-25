@@ -72,13 +72,13 @@ export default function ActionsInAccordionSummary({dataset,action}) {
                         return (
                             <div className="question-answer" 
                             style={
-                                (question.type=== 0 && question.rightAnswer-1 === index) || 
-                                (question.type=== 1 && question.rightAnswer[index])|| 
-                                (question.type=== 3)? {background: "green", fontWeight:"700"}: {}}>
+                                (question.type === 0 && question.rightAnswer-1 === index) || 
+                                (question.type === 1 && question.rightAnswer[index])|| 
+                                (question.type === 3)? {background: "green", fontWeight:"700"}: {}}>
                                 <div className="option">
                                     {[3,4].includes(question.type)?
                                         (
-                                            abc[index]+". Megoldás: " + answer
+                                            abc[index]+". Kérdés: " + answer
                                         ):(
                                             abc[index]+". Lehetőség: " + answer
                                         )

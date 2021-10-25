@@ -42,12 +42,13 @@ export default class Question extends React.Component {
                             return (
                                 <div className="question-answer" 
                                 style={
-                                    (this.props.data.type=== 0 && this.props.data.rightAnswer-1 === index) || 
-                                    (this.props.data.type=== 1 && this.props.data.rightAnswer[index])? {background: "green", fontWeight:"700"}: {}}>
+                                    (this.props.data.type === 0 && this.props.data.rightAnswer-1 === index) || 
+                                    (this.props.data.type === 1 && this.props.data.rightAnswer[index]) || 
+                                    (this.props.data.type === 3)? {background: "green", fontWeight:"700"}: {}}>
                                     <div className="option">
                                         {[3,4].includes(this.props.data.type)?
                                             (
-                                                abc[index]+". Megoldás: " + answer
+                                                abc[index]+". Kérdés: " + answer
                                             ):(
                                                 abc[index]+". Lehetőség: " + answer
                                             )
@@ -72,7 +73,7 @@ export default class Question extends React.Component {
                                         }
                                         {
                                             this.props.data.type === 3 && (
-                                                this.props.data.rightAnswer[index]
+                                                abc[index]+". Megoldás: " + this.props.data.rightAnswer[index]
                                             )
                                         }
                                         {
