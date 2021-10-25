@@ -55,9 +55,9 @@ const classes = useStyles();
 
   return (
       <>
-      <a>
+      <a style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", alignContent: "center"}}>
         <button class="icon-picker-button" onClick={handleClickOpen}>
-            Icon kiválasztása
+            Kép kiválasztása
         </button>
       </a>
       <Dialog
@@ -69,7 +69,7 @@ const classes = useStyles();
         
       >
         <DialogTitle id="responsive-dialog-title">
-            Icon kiválasztása
+            Kép kiválasztása
         </DialogTitle>
         <DialogContent>
         <DialogContentText></DialogContentText>

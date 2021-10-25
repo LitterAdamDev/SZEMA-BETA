@@ -17,7 +17,6 @@ const useStyles = makeStyles({
 
 export default function ActionsInAccordionSummary({dataset,action}) {
   const classes = useStyles();
-  
   const [questions,setQuestions] = React.useState([])
   const [choosen, setChoosen] = React.useState('')
   useEffect(() => {
@@ -26,6 +25,7 @@ export default function ActionsInAccordionSummary({dataset,action}) {
   },[]);
   useEffect(() => {
     setQuestions(dataset)
+    console.log(dataset)
   },[dataset]);
 
   const handleChange = (event) =>{
@@ -73,7 +73,8 @@ export default function ActionsInAccordionSummary({dataset,action}) {
                             <div className="question-answer" 
                             style={
                                 (question.type=== 0 && question.rightAnswer-1 === index) || 
-                                (question.type=== 1 && question.rightAnswer[index])? {background: "green", fontWeight:"700"}: {}}>
+                                (question.type=== 1 && question.rightAnswer[index])|| 
+                                (question.type=== 3)? {background: "green", fontWeight:"700"}: {}}>
                                 <div className="option">
                                     {[3,4].includes(question.type)?
                                         (
@@ -102,7 +103,9 @@ export default function ActionsInAccordionSummary({dataset,action}) {
                                     }
                                     {
                                         question.type === 3 && (
-                                            question.rightAnswer[index]
+                                          <>
+                                            {"Helyes válasz: " + question.rightAnswer[index]}
+                                          </>                                        
                                         )
                                     }
                                     {
