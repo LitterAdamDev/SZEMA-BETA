@@ -9,7 +9,7 @@ import MainDashboard from "./Views/Home/MainDashboard"
 import TestMaker from './Views/TestMaker/TestMaker'
 import AddTopic from './Views/QuestionBase/AddTopic'
 import DisplayTopic from './Views/QuestionBase/DisplayTopics'
-
+import QuestionBaseIndex from './Views/QuestionBaseManager/QuestionBaseIndex'
 
 const App = () => {
   return (
@@ -18,10 +18,11 @@ const App = () => {
           <Route exact path="/login" component={Login} />
           <PrivateRoute exact path="/" component={MainDashboard}/>
           <PrivateRoute path="/news" component={NewsDashboard} />
-          <PrivateRoute path="/questionbase" component={QuestionBaseDashboard} />
           <PrivateRoute path="/createtest" component={TestMaker} />
+          <PrivateRoute path="/questionbase" component={QuestionBaseIndex} />
+          {/*<PrivateRoute path="/questionbase" component={QuestionBaseDashboard} />
           <PrivateRoute path="/addtopic" component={AddTopic} />
-          <PrivateRoute path="/displaytopics" component={DisplayTopic} />
+          <PrivateRoute path="/displaytopics" component={DisplayTopic} />*/}
 
       </Router>
     </AuthProvider>

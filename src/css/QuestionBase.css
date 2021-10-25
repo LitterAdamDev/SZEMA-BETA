@@ -1,0 +1,115 @@
+.questionbase-main{
+    padding-top: 2%;
+    min-height: 100vh;
+    background-color: #bec1ca;
+    position: relative;
+    width: 100%;
+}
+.questionhandler{
+    min-height: 30vh;
+    border-radius: 5px;
+    border: 2px solid black;
+    background-color: rgb(171, 163, 187);
+}
+.topichandler{
+    margin-bottom: 5vh;
+    min-height: 30vh;
+    border-radius: 5px;
+    border: 2px solid black;
+    background-color: rgb(171, 163, 187);
+}
+.topic-actions, .question-actions{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+.action{
+    width:33.333333333%;
+    font-weight: 700;
+    height: 5vh;
+    border-radius: 5px;
+    background-color:#1c2442;
+    color: white;
+    display: block;
+}
+.action:disabled{
+    background-color: grey;
+    color:darkslategray;
+}
+.action:disabled:hover{
+    background-color: grey;
+    color:darkslategray;
+}
+.action:hover{
+    background-color: #00abc9 ;
+}
+.questions-picture{
+    width: 90%;
+    border: inset;
+}
+#topic-select{
+    width: 100%;
+}
+.question-image-handler, .question-detail-handler, .question-answer-handler{
+    border: 1px solid black;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 3vh;
+}
+.question-answer-handler{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+}
+.answer-counters, .answer-content, .answer-type{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+} 
+.answer-handler{
+    width: 20%;
+    overflow: hidden;
+}
+.answer-content, .answer-type{
+    width: 30%;
+    overflow: hidden;
+}
+.answer-counters{
+    width: 20%;
+    height: 50px;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+    align-content: flex-end;
+    flex-wrap: nowrap;
+}
+.answer-handler{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+.answer-handler-btn{
+    width:2vw;
+    background-color: rgb(151, 29, 29);
+}
+.answer-handler-btn:nth-child(2){
+    width:2vw;
+    background-color: rgb(14, 179, 14);
+
+}
+.answer-handler-btn:disabled{
+    background-color: grey;
+    color: white;
+}
