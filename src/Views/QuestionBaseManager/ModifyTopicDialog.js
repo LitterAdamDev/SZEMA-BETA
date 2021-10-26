@@ -88,7 +88,7 @@ export default function ModifyTopicDialog({action, choosen_topic_id, topics, top
                 </DialogContent>
                 <DialogActions>
                 <Button onClick={handleClose}>Mégse</Button>
-                <Button onClick={handleSave}>Módosítás</Button>
+                <Button onClick={handleSave} disabled={!saveable}>Módosítás</Button>
                 </DialogActions>
             </Dialog>
         </>
