@@ -224,7 +224,8 @@ class QuestionBaseIndex extends React.Component {
     }
     handleSelectTopicFilter = (value, event) =>{
       this.setState({
-        topicFilter : value
+        topicFilter : value,
+        choosen_question : undefined
       })
       let tmp = []
       this.state.FirestoreQuestions.map((question) =>{
