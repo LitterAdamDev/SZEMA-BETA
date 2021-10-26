@@ -246,7 +246,7 @@ export default function ModifyQuestionDialog({topics, action, choosen_question_i
     }
     return (
     <>
-        <input type="button" onClick={handleClickOpen} disabled={choosen_question_id !== undefined} className="action new-topic-action" value="Új kérdés"/>
+        <input type="button" style={{borderTopLeftRadius: "0px"}} onClick={handleClickOpen} disabled={choosen_question_id !== undefined} className="action new-topic-action" value="Új kérdés"/>
         <Dialog open={open}  onClose={handleClose}>
             <DialogTitle>Kérdés létrehozása</DialogTitle>
             <DialogContent style={{textAlign: "center",}}>

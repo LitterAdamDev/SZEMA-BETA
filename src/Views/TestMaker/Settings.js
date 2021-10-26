@@ -100,7 +100,7 @@ export default function Settings({canStep,handleStep,action,data,handleSetup,del
             fullWidth
             disabled={data["type"]==="EDIT_TEST"}
             value={data["testDetails"]["title"]}
-            className={(data["type"] !=="EDIT_TEST") && titles.includes(data["testDetails"]["title"])? "wrong-input":""}
+            error={(data["type"] !=="EDIT_TEST") && titles.includes(data["testDetails"]["title"])}
             onChange={handleChange}
           />
         </Grid>

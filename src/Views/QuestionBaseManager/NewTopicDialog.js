@@ -9,8 +9,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import 'firebase/firestore'
 import {db} from '../../config/base'
 
-export default function NewTopicDialog({action,choosen_topic_id}) {
+export default function NewTopicDialog({action,choosen_topic_id, topicNames}) {
     const [open, setOpen] = React.useState(false);
+    const [saveable, setSaveable] = React.useState(true);
     const [name, setName] = React.useState("");
     const [description, setDescription] = React.useState("");
 
@@ -38,6 +39,13 @@ export default function NewTopicDialog({action,choosen_topic_id}) {
     const handleNameChange = (event) =>{
         event.preventDefault()
         setName(event.target.value)
+        if(topicNames.includes(event.target.value)){
+            setSaveable(false)
+        }else{
+            if(!saveable){
+                setSaveable(true)
+            }
+        }
     }
     const handleDescriptionChange = (event) =>{
         event.preventDefault()
@@ -45,7 +53,7 @@ export default function NewTopicDialog({action,choosen_topic_id}) {
     }
     return (
     <>
-        <input type="button" onClick={handleClickOpen} disabled={choosen_topic_id !== undefined} className="action new-topic-action" value="Új témakör"/>
+        <input type="button" style={{borderTopLeftRadius : "5px"}} onClick={handleClickOpen} disabled={choosen_topic_id !== undefined} className="action new-topic-action" value="Új témakör"/>
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Témakör létrehozása</DialogTitle>
             <DialogContent>
@@ -60,6 +68,7 @@ export default function NewTopicDialog({action,choosen_topic_id}) {
                 fullWidth
                 variant="standard"
                 value={name}
+                error= {!saveable}
                 onChange={handleNameChange}
             />
             <TextField
@@ -75,7 +84,7 @@ export default function NewTopicDialog({action,choosen_topic_id}) {
             </DialogContent>
             <DialogActions>
             <Button onClick={handleClose}>Mégse</Button>
-            <Button onClick={handleSave}>Létrehozás</Button>
+            <Button onClick={handleSave} disabled={!saveable}>Létrehozás</Button>
             </DialogActions>
         </Dialog>
     </>
