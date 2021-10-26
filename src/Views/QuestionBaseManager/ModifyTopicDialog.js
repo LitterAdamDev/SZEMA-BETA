@@ -9,8 +9,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import 'firebase/firestore'
 import {db} from '../../config/base'
 
-export default function ModifyTopicDialog({action, choosen_topic_id, topics}) {
+export default function ModifyTopicDialog({action, choosen_topic_id, topics, topicNames}) {
     const [open, setOpen] = React.useState(false);
+    const [saveable, setSaveable] = React.useState(true)
     const [name, setName] = React.useState("");
     const [description, setDescription] = React.useState("");
 
@@ -42,6 +43,13 @@ export default function ModifyTopicDialog({action, choosen_topic_id, topics}) {
     const handleNameChange = (event) =>{
         event.preventDefault()
         setName(event.target.value)
+        if(topicNames.includes(event.target.value)){
+            setSaveable(false)
+        }else{
+            if(!saveable){
+                setSaveable(true)
+            }
+        }
     }
     const handleDescriptionChange = (event) =>{
         event.preventDefault()
@@ -64,6 +72,7 @@ export default function ModifyTopicDialog({action, choosen_topic_id, topics}) {
                     fullWidth
                     variant="standard"
                     value={name}
+                    error= {!saveable}
                     onChange={handleNameChange}
                 />
                 <TextField

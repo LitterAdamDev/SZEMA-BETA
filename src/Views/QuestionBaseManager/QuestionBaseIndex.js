@@ -251,7 +251,12 @@ class QuestionBaseIndex extends React.Component {
                           choosen_topic_id={this.state.choosen_topic}
                           topicNames = {this.state.FirestoreTopics.map((topic)=>{return topic.Topicname})}
                         />
-                        <ModifyTopicDialog action={this.handleModifiedTopic} choosen_topic_id={this.state.choosen_topic} topics={this.state.FirestoreTopics}/>
+                        <ModifyTopicDialog 
+                          action={this.handleModifiedTopic} 
+                          choosen_topic_id={this.state.choosen_topic} 
+                          topics={this.state.FirestoreTopics}
+                          topicNames = {this.state.FirestoreTopics.map((topic)=>{return topic.Topicname})}
+                          />
                         <input style={{ borderTopRightRadius : "5px"}} type="button" onClick={this.handleDeleteTopic} disabled={this.state.choosen_topic === undefined} className="action delete-topic action" value="Törlés"/>
                       </div>
                         <div className="question-picker">
