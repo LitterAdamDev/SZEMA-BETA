@@ -33,7 +33,7 @@ export default function Settings({canStep,handleStep,action,data,handleSetup,del
     }else if(event.target.id === "time-start"){
       action(event.target.id,event.target.value)
       setStart(event.target.value)
-      if(event.target.value > end){
+      if(event.target.value > end && start !=''){
         alert('A zárthelyi dolgozat befejezésének időpontja nem előzheti meg a kezdés időpontját!')
         action(event.target.id,end)
         setStart(end)
