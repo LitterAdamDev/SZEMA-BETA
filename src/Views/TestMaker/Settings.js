@@ -33,9 +33,19 @@ export default function Settings({canStep,handleStep,action,data,handleSetup,del
     }else if(event.target.id === "time-start"){
       action(event.target.id,event.target.value)
       setStart(event.target.value)
+      if(event.target.value > end){
+        alert('A zárthelyi dolgozat befejezésének időpontja nem előzheti meg a kezdés időpontját!')
+        action(event.target.id,end)
+        setStart(end)
+      }
     }else if(event.target.id === "time-end"){
       action(event.target.id,event.target.value)
       setEnd(event.target.value)
+      if(event.target.value < start){
+        alert('A zárthelyi dolgozat befejezésének időpontja nem előzheti meg a kezdés időpontját!')
+        action(event.target.id,start)
+        setEnd(start)
+      }
     }else if(event.target.id === "title"){
       if(titles.includes(event.target.value)){
         handleStep(false)
